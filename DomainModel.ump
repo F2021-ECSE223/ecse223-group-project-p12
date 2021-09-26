@@ -1,0 +1,178 @@
+namespace ca.mcgill.ecse223.climbsafe.model;
+
+class NMC{
+  1 <@>- 0..1 User;
+  1 <@>- 0..1 Hotel;
+}
+
+enum Stars{
+  One, Two, Three, Four, Five
+}
+
+class ClimbingSeason{
+  1 -- * Equipment;
+  1 -- * EquipmentBundle;
+  1 -- * Assignment;
+  Date startDate;
+  Date endDate;
+  Integer guideWeeklyRate;
+}
+
+class Equipment{
+  name;
+  description;
+  Double weight;
+  Integer price;
+}
+
+class EquipmentBundle{
+ * -- * Equipment;
+}
+
+class User{
+  abstract;
+  unique username;
+  password;
+}
+
+class Member{
+  isA User;
+  Integer emergencyContact;
+}
+
+class Guide{
+  isA User;
+  Integer emergencyContact;
+}
+
+class Administrator{
+  singleton;
+  1 <@>- 0..1 ClimbingSeason;
+  isA User;
+  immutable username="admin@nmc.nt";
+  password="admin";
+}
+
+class Hotel{
+  name;
+  address;
+  Integer stars;
+  Integer pricePerNight;
+}
+
+class Assignment{
+  0..* -- 1 Member;
+  1 -- 0..1 Guide;
+  1 -- 0..1 Hotel;
+  1 -- 0..* Equipment;
+  Integer startWeek;
+  Integer duration;
+  Integer price;
+}
+//$?[End_of_model]$?
+
+namespace -;
+
+
+class NMC
+{
+  position 470 12 109 42.3625;
+  position.association NMC__User 0,42 28,0;
+  position.association Equipment__NMC 39,42 30,0;
+  position.association Hike__NMC 110,42 0,10;
+  position.association ClimbingSeason__NMC 0,42 30,0;
+  position.association EquipmentBundle__NMC 0,10 11,0;
+  position.association Hotel__NMC 110,42 2,0;
+}
+
+class Equipment
+{
+  position 56 411 148.312 94.5625;
+}
+
+class User
+{
+  position 200 76 141.444 93.5625;
+}
+
+class Administrator
+{
+  position 2 217 141.444 77.1625;
+  position.association Administrator__ClimbingSeason 53,77 92,0;
+}
+
+class Member
+{
+  position 394 232 209.156 59.7625;
+}
+
+class Guide
+{
+  position 169 217 209.156 59.7625;
+}
+
+class EquipmentBundle
+{
+  position 324 442 140.85 42.3625;
+  position.association Equipment__EquipmentBundle 0,0 149,2;
+}
+
+class Hotel
+{
+  position 719 177 173.319 111.963;
+}
+
+class Equipment
+{
+  position 56 411 148.312 94.5625;
+}
+
+class EquipmentBundle
+{
+  position 324 442 140.85 42.3625;
+}
+
+class User
+{
+  position 200 76 141.444 93.5625;
+}
+
+class Member
+{
+  position 394 232 209.156 59.7625;
+}
+
+class Guide
+{
+  position 169 217 209.156 59.7625;
+}
+
+class Administrator
+{
+  position 2 217 141.444 77.1625;
+}
+
+class Hotel
+{
+  position 719 177 173.319 111.963;
+}
+
+class ClimbingSeason
+{
+  position 2 307 198.512 94.5625;
+  position.association ClimbingSeason__Equipment 99,77 43,0;
+  position.association ClimbingSeason__Hike 199,25 0,64;
+  position.association ClimbingSeason__Hotel 122,0 0,10;
+  position.association ClimbingSeason__EquipmentBundle 171,95 0,3;
+  position.association Booking__ClimbingSeason 199,87 0,10;
+  position.association Assignment__ClimbingSeason 199,83 0,10;
+}
+
+class Assignment
+{
+  position 387 323 151.256 94.5625;
+  position.association Assignment__Equipment 0,10 149,9;
+  position.association Assignment__Guide 0,10 20,60;
+  position.association Assignment__Hotel 27,0 0,10;
+  position.association Assignment__Member 6,0 0,10;
+}
