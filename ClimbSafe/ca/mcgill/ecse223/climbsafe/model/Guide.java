@@ -4,9 +4,9 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 44 "../../../../../../model.ump"
-// line 110 "../../../../../../model.ump"
-// line 146 "../../../../../../model.ump"
+// line 46 "../../../../../../model.ump"
+// line 120 "../../../../../../model.ump"
+// line 156 "../../../../../../model.ump"
 public class Guide extends User
 {
 
@@ -24,9 +24,9 @@ public class Guide extends User
   // CONSTRUCTOR
   //------------------------
 
-  public Guide(String aUsername, String aPassword, NMC aNMC, int aEmergencyContact, Assignment aAssignment)
+  public Guide(String aUsername, String aName, String aPassword, NMC aNMC, int aEmergencyContact, Assignment aAssignment)
   {
-    super(aUsername, aPassword, aNMC);
+    super(aUsername, aName, aPassword, aNMC);
     emergencyContact = aEmergencyContact;
     boolean didAddAssignment = setAssignment(aAssignment);
     if (!didAddAssignment)

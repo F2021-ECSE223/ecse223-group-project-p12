@@ -4,9 +4,9 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 33 "../../../../../../model.ump"
-// line 94 "../../../../../../model.ump"
-// line 136 "../../../../../../model.ump"
+// line 34 "../../../../../../model.ump"
+// line 104 "../../../../../../model.ump"
+// line 146 "../../../../../../model.ump"
 public abstract class User
 {
 
@@ -22,6 +22,7 @@ public abstract class User
 
   //User Attributes
   private String username;
+  private String name;
   private String password;
 
   //User Associations
@@ -31,8 +32,9 @@ public abstract class User
   // CONSTRUCTOR
   //------------------------
 
-  public User(String aUsername, String aPassword, NMC aNMC)
+  public User(String aUsername, String aName, String aPassword, NMC aNMC)
   {
+    name = aName;
     password = aPassword;
     if (!setUsername(aUsername))
     {
@@ -68,6 +70,14 @@ public abstract class User
     return wasSet;
   }
 
+  public boolean setName(String aName)
+  {
+    boolean wasSet = false;
+    name = aName;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setPassword(String aPassword)
   {
     boolean wasSet = false;
@@ -89,6 +99,11 @@ public abstract class User
   public static boolean hasWithUsername(String aUsername)
   {
     return getWithUsername(aUsername) != null;
+  }
+
+  public String getName()
+  {
+    return name;
   }
 
   public String getPassword()
@@ -145,6 +160,7 @@ public abstract class User
   {
     return super.toString() + "["+
             "username" + ":" + getUsername()+ "," +
+            "name" + ":" + getName()+ "," +
             "password" + ":" + getPassword()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "nMC = "+(getNMC()!=null?Integer.toHexString(System.identityHashCode(getNMC())):"null");
   }

@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.*;
 
 // line 13 "../../../../../../model.ump"
-// line 161 "../../../../../../model.ump"
+// line 171 "../../../../../../model.ump"
 public class ClimbingSeason
 {
 
@@ -187,9 +187,9 @@ public class ClimbingSeason
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Equipment addEquipment(String aName, String aDescription, double aWeight, int aPrice, Assignment aAssignment)
+  public Equipment addEquipment(String aName, String aDescription, double aWeight, int aPrice, Request aRequest, Assignment aAssignment)
   {
-    return new Equipment(aName, aDescription, aWeight, aPrice, this, aAssignment);
+    return new Equipment(aName, aDescription, aWeight, aPrice, this, aRequest, aAssignment);
   }
 
   public boolean addEquipment(Equipment aEquipment)
@@ -259,9 +259,9 @@ public class ClimbingSeason
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public EquipmentBundle addEquipmentBundle()
+  public EquipmentBundle addEquipmentBundle(int aDiscount, Request aRequest, Assignment aAssignment)
   {
-    return new EquipmentBundle(this);
+    return new EquipmentBundle(aDiscount, this, aRequest, aAssignment);
   }
 
   public boolean addEquipmentBundle(EquipmentBundle aEquipmentBundle)

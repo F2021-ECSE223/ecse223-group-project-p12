@@ -5,8 +5,8 @@ package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
 // line 22 "../../../../../../model.ump"
-// line 89 "../../../../../../model.ump"
-// line 126 "../../../../../../model.ump"
+// line 99 "../../../../../../model.ump"
+// line 136 "../../../../../../model.ump"
 public class Equipment
 {
 
@@ -23,13 +23,14 @@ public class Equipment
   //Equipment Associations
   private ClimbingSeason climbingSeason;
   private List<EquipmentBundle> equipmentBundles;
+  private Request request;
   private Assignment assignment;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Equipment(String aName, String aDescription, double aWeight, int aPrice, ClimbingSeason aClimbingSeason, Assignment aAssignment)
+  public Equipment(String aName, String aDescription, double aWeight, int aPrice, ClimbingSeason aClimbingSeason, Request aRequest, Assignment aAssignment)
   {
     name = aName;
     description = aDescription;
@@ -41,6 +42,11 @@ public class Equipment
       throw new RuntimeException("Unable to create equipment due to climbingSeason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     equipmentBundles = new ArrayList<EquipmentBundle>();
+    boolean didAddRequest = setRequest(aRequest);
+    if (!didAddRequest)
+    {
+      throw new RuntimeException("Unable to create equipment due to request. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
     boolean didAddAssignment = setAssignment(aAssignment);
     if (!didAddAssignment)
     {
@@ -137,6 +143,11 @@ public class Equipment
   {
     int index = equipmentBundles.indexOf(aEquipmentBundle);
     return index;
+  }
+  /* Code from template association_GetOne */
+  public Request getRequest()
+  {
+    return request;
   }
   /* Code from template association_GetOne */
   public Assignment getAssignment()
@@ -245,6 +256,25 @@ public class Equipment
     return wasAdded;
   }
   /* Code from template association_SetOneToMany */
+  public boolean setRequest(Request aRequest)
+  {
+    boolean wasSet = false;
+    if (aRequest == null)
+    {
+      return wasSet;
+    }
+
+    Request existingRequest = request;
+    request = aRequest;
+    if (existingRequest != null && !existingRequest.equals(aRequest))
+    {
+      existingRequest.removeEquipment(this);
+    }
+    request.addEquipment(this);
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_SetOneToMany */
   public boolean setAssignment(Assignment aAssignment)
   {
     boolean wasSet = false;
@@ -278,6 +308,12 @@ public class Equipment
     {
       aEquipmentBundle.removeEquipment(this);
     }
+    Request placeholderRequest = request;
+    this.request = null;
+    if(placeholderRequest != null)
+    {
+      placeholderRequest.removeEquipment(this);
+    }
     Assignment placeholderAssignment = assignment;
     this.assignment = null;
     if(placeholderAssignment != null)
@@ -295,6 +331,7 @@ public class Equipment
             "weight" + ":" + getWeight()+ "," +
             "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "climbingSeason = "+(getClimbingSeason()!=null?Integer.toHexString(System.identityHashCode(getClimbingSeason())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "request = "+(getRequest()!=null?Integer.toHexString(System.identityHashCode(getRequest())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "assignment = "+(getAssignment()!=null?Integer.toHexString(System.identityHashCode(getAssignment())):"null");
   }
 }

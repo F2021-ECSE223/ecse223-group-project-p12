@@ -27,11 +27,13 @@ class Equipment{
 
 class EquipmentBundle{
  * -- * Equipment;
+  Integer discount;
 }
 
 class User{
   abstract;
   unique username;
+  name;
   password;
 }
 
@@ -48,7 +50,6 @@ class Guide{
 class Administrator{
   singleton;
   1 <@>- 0..1 ClimbingSeason;
-  isA User;
   immutable username="admin@nmc.nt";
   password="admin";
 }
@@ -60,11 +61,20 @@ class Hotel{
   Integer pricePerNight;
 }
 
+class Request {
+  0..1 -- 1 Member;
+  1 -- 0..1 Hotel;
+  1 -- 0..* Equipment;
+  1 -- 0..* EquipmentBundle;
+  Integer duration;
+}
+
 class Assignment{
   0..* -- 1 Member;
   1 -- 0..1 Guide;
   1 -- 0..1 Hotel;
   1 -- 0..* Equipment;
+  1 -- 0..* EquipmentBundle;
   Integer startWeek;
   Integer duration;
   Integer price;
@@ -92,23 +102,23 @@ class Equipment
 
 class User
 {
-  position 200 76 141.444 93.5625;
+  position 293 83 141.444 110.963;
 }
 
 class Administrator
 {
-  position 2 217 141.444 77.1625;
+  position 6 206 141.444 77.1625;
   position.association Administrator__ClimbingSeason 53,77 92,0;
 }
 
 class Member
 {
-  position 394 232 209.156 59.7625;
+  position 429 230 209.156 59.7625;
 }
 
 class Guide
 {
-  position 169 217 209.156 59.7625;
+  position 159 236 209.156 59.7625;
 }
 
 class EquipmentBundle
@@ -134,22 +144,22 @@ class EquipmentBundle
 
 class User
 {
-  position 200 76 141.444 93.5625;
+  position 293 83 141.444 110.963;
 }
 
 class Member
 {
-  position 394 232 209.156 59.7625;
+  position 429 230 209.156 59.7625;
 }
 
 class Guide
 {
-  position 169 217 209.156 59.7625;
+  position 159 236 209.156 59.7625;
 }
 
 class Administrator
 {
-  position 2 217 141.444 77.1625;
+  position 6 206 141.444 77.1625;
 }
 
 class Hotel
@@ -175,4 +185,14 @@ class Assignment
   position.association Assignment__Guide 0,10 20,60;
   position.association Assignment__Hotel 27,0 0,10;
   position.association Assignment__Member 6,0 0,10;
+  position.association Assignment__EquipmentBundle 0,10 5,0;
+}
+
+class Request
+{
+  position 566 396 109 42.3625;
+  position.association Hotel__Request 110,10 0,10;
+  position.association Equipment__Request 0,10 149,25;
+  position.association EquipmentBundle__Request 0,10 53,0;
+  position.association Member__Request 0,10 40,59;
 }

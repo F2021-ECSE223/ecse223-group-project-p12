@@ -2,13 +2,12 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse223.climbsafe.model;
-import java.util.*;
 import java.sql.Date;
 
-// line 49 "../../../../../../model.ump"
-// line 99 "../../../../../../model.ump"
-// line 151 "../../../../../../model.ump"
-public class Administrator extends User
+// line 51 "../../../../../../model.ump"
+// line 109 "../../../../../../model.ump"
+// line 161 "../../../../../../model.ump"
+public class Administrator
 {
 
   //------------------------
@@ -32,9 +31,8 @@ public class Administrator extends User
   // CONSTRUCTOR
   //------------------------
 
-  private Administrator(String aUsername, String aPassword, NMC aNMC)
+  private Administrator()
   {
-    super(aUsername, aPassword, aNMC);
     username = "admin@nmc.nt";
     password = "admin";
   }
@@ -57,14 +55,6 @@ public class Administrator extends User
     boolean wasSet = false;
     password = aPassword;
     wasSet = true;
-    return wasSet;
-  }
-  /* Code from template attribute_Set_subclass */
-  public boolean setUsername(String aUsername)
-  {
-    boolean wasSet = false;
-    if (!canSetUsername) { return false; }
-      wasSet = super.setUsername(aUsername);
     return wasSet;
   }
 
@@ -125,7 +115,6 @@ public class Administrator extends User
       existingClimbingSeason.delete();
       existingClimbingSeason.setAdministrator(null);
     }
-    super.delete();
   }
 
 

@@ -5,7 +5,7 @@ package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
 // line 4 "../../../../../../model.ump"
-// line 78 "../../../../../../model.ump"
+// line 88 "../../../../../../model.ump"
 public class NMC
 {
 

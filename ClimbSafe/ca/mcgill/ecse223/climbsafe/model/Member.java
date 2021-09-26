@@ -4,9 +4,9 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 39 "../../../../../../model.ump"
-// line 105 "../../../../../../model.ump"
-// line 141 "../../../../../../model.ump"
+// line 41 "../../../../../../model.ump"
+// line 115 "../../../../../../model.ump"
+// line 151 "../../../../../../model.ump"
 public class Member extends User
 {
 
@@ -18,15 +18,16 @@ public class Member extends User
   private int emergencyContact;
 
   //Member Associations
+  private Request request;
   private List<Assignment> assignments;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Member(String aUsername, String aPassword, NMC aNMC, int aEmergencyContact)
+  public Member(String aUsername, String aName, String aPassword, NMC aNMC, int aEmergencyContact)
   {
-    super(aUsername, aPassword, aNMC);
+    super(aUsername, aName, aPassword, aNMC);
     emergencyContact = aEmergencyContact;
     assignments = new ArrayList<Assignment>();
   }
@@ -46,6 +47,17 @@ public class Member extends User
   public int getEmergencyContact()
   {
     return emergencyContact;
+  }
+  /* Code from template association_GetOne */
+  public Request getRequest()
+  {
+    return request;
+  }
+
+  public boolean hasRequest()
+  {
+    boolean has = request != null;
+    return has;
   }
   /* Code from template association_GetMany */
   public Assignment getAssignment(int index)
@@ -76,6 +88,33 @@ public class Member extends User
   {
     int index = assignments.indexOf(aAssignment);
     return index;
+  }
+  /* Code from template association_SetOptionalOneToOne */
+  public boolean setRequest(Request aNewRequest)
+  {
+    boolean wasSet = false;
+    if (request != null && !request.equals(aNewRequest) && equals(request.getMember()))
+    {
+      //Unable to setRequest, as existing request would become an orphan
+      return wasSet;
+    }
+
+    request = aNewRequest;
+    Member anOldMember = aNewRequest != null ? aNewRequest.getMember() : null;
+
+    if (!this.equals(anOldMember))
+    {
+      if (anOldMember != null)
+      {
+        anOldMember.request = null;
+      }
+      if (request != null)
+      {
+        request.setMember(this);
+      }
+    }
+    wasSet = true;
+    return wasSet;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfAssignments()
@@ -152,6 +191,12 @@ public class Member extends User
 
   public void delete()
   {
+    Request existingRequest = request;
+    request = null;
+    if (existingRequest != null)
+    {
+      existingRequest.delete();
+    }
     for(int i=assignments.size(); i > 0; i--)
     {
       Assignment aAssignment = assignments.get(i - 1);
@@ -164,6 +209,7 @@ public class Member extends User
   public String toString()
   {
     return super.toString() + "["+
-            "emergencyContact" + ":" + getEmergencyContact()+ "]";
+            "emergencyContact" + ":" + getEmergencyContact()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "request = "+(getRequest()!=null?Integer.toHexString(System.identityHashCode(getRequest())):"null");
   }
 }
