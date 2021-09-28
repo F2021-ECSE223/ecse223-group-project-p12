@@ -1,21 +1,28 @@
 namespace ca.mcgill.ecse223.climbsafe.model;
 
-class NMC{
-  1 <@>- 0..1 User;
-  1 <@>- 0..1 Hotel;
+class ClimbSafe{
+  1 <@>- 1 NMC;
 }
 
 enum Stars{
   One, Two, Three, Four, Five
 }
 
+class NMC{
+  1 <@>- * Equipment;
+  1 <@>- * EquipmentBundle;
+  1 <@>- 0..1 ClimbingSeason;
+  1 <@>- * Hotel;
+  1 <@>- 1 Administrator;
+  Integer guideWeeklyRate;
+}
+
 class ClimbingSeason{
-  1 -- * Equipment;
-  1 -- * EquipmentBundle;
-  1 -- * Assignment;
   Date startDate;
   Date endDate;
-  Integer guideWeeklyRate;
+  1 <@>- * Assignment;
+  1 memberSeason <@>- * Visitor member;
+  1 guideSseason <@>- * Visitor guide;
 }
 
 class Equipment{
@@ -30,26 +37,23 @@ class EquipmentBundle{
   Integer discount;
 }
 
-class User{
-  abstract;
-  unique username;
+class Visitor{
+  unique immutable username;
   name;
   password;
+  Integer emergencyContact;
+  1 <@>- 0..1 MemberRequest;
 }
 
-class Member{
-  isA User;
-  Integer emergencyContact;
-}
-
-class Guide{
-  isA User;
-  Integer emergencyContact;
+class MemberRequest{
+  Boolean needsHotel;
+  Boolean needsGuide;
+  1 -- 0..* Equipment;
+  1 -- 0..* EquipmentBundle;
 }
 
 class Administrator{
-  singleton;
-  1 <@>- 0..1 ClimbingSeason;
+  
   immutable username="admin@nmc.nt";
   password="admin";
 }
@@ -61,138 +65,118 @@ class Hotel{
   Integer pricePerNight;
 }
 
-class Request {
-  0..1 -- 1 Member;
-  1 -- 0..1 Hotel;
-  1 -- 0..* Equipment;
-  1 -- 0..* EquipmentBundle;
-  Integer duration;
-}
-
 class Assignment{
-  0..* -- 1 Member;
-  1 -- 0..1 Guide;
   1 -- 0..1 Hotel;
-  1 -- 0..* Equipment;
-  1 -- 0..* EquipmentBundle;
+  1 memberAssignment -- 1 Visitor member;
+  0..* guideAssignment -- 0..1 Visitor guide;
   Integer startWeek;
   Integer duration;
   Integer price;
 }
-//$?[End_of_model]$?
+
+
 
 namespace -;
 
 
-class NMC
+class ClimbSafe
 {
-  position 470 12 109 42.3625;
-  position.association NMC__User 0,42 28,0;
-  position.association Equipment__NMC 39,42 30,0;
-  position.association Hike__NMC 110,42 0,10;
-  position.association ClimbingSeason__NMC 0,42 30,0;
-  position.association EquipmentBundle__NMC 0,10 11,0;
-  position.association Hotel__NMC 110,42 2,0;
+  position.association ClimbSafe__User 110,10 0,10;
+  position.association ClimbSafe__Hotel 110,24 0,10;
+  position.association ClimbSafe__NMC 14,43 2,0;
+  position.association ClimbSafe__ClimbingSeason 110,19 0,10;
+  position 43 22 109 42.5208;
 }
 
-class Equipment
+class ClimbSafe
 {
-  position 56 411 148.312 94.5625;
-}
-
-class User
-{
-  position 293 83 141.444 110.963;
-}
-
-class Administrator
-{
-  position 6 206 141.444 77.1625;
-  position.association Administrator__ClimbingSeason 53,77 92,0;
-}
-
-class Member
-{
-  position 429 230 209.156 59.7625;
-}
-
-class Guide
-{
-  position 159 236 209.156 59.7625;
-}
-
-class EquipmentBundle
-{
-  position 324 442 140.85 42.3625;
-  position.association Equipment__EquipmentBundle 0,0 149,2;
-}
-
-class Hotel
-{
-  position 719 177 173.319 111.963;
-}
-
-class Equipment
-{
-  position 56 411 148.312 94.5625;
-}
-
-class EquipmentBundle
-{
-  position 324 442 140.85 42.3625;
-}
-
-class User
-{
-  position 293 83 141.444 110.963;
-}
-
-class Member
-{
-  position 429 230 209.156 59.7625;
-}
-
-class Guide
-{
-  position 159 236 209.156 59.7625;
-}
-
-class Administrator
-{
-  position 6 206 141.444 77.1625;
-}
-
-class Hotel
-{
-  position 719 177 173.319 111.963;
+  position 43 22 109 42.5208;
 }
 
 class ClimbingSeason
 {
-  position 2 307 198.512 94.5625;
-  position.association ClimbingSeason__Equipment 99,77 43,0;
-  position.association ClimbingSeason__Hike 199,25 0,64;
-  position.association ClimbingSeason__Hotel 122,0 0,10;
-  position.association ClimbingSeason__EquipmentBundle 171,95 0,3;
-  position.association Booking__ClimbingSeason 199,87 0,10;
-  position.association Assignment__ClimbingSeason 199,83 0,10;
+  position 264 264 130 76.5208;
+  position.association Assignment__ClimbingSeason 123,0 0,10;
+  position.association ClimbingSeason:season__Visitor:member 131,9 0,10;
+  position.association ClimbingSeason__Visitor:guide 131,29 0,30;
+  position.association ClimbingSeason:memberSeason__Visitor:member 131,44 0,10;
+  position.association ClimbingSeason:guideSseason__Visitor:guide 80,78 0,74;
+}
+
+class NMC
+{
+  position 42 160 199.958 59.5208;
+  position.association Assignment__NMC 199,9 0,10;
+  position.association Administrator__NMC 129,0 0,71;
+  position.association ClimbingSeason__NMC 148,59 0,0;
+  position.association Equipment__NMC 52,60 4,0;
+  position.association Hotel__NMC 196,0 0,106;
+  position.association EquipmentBundle__NMC 0,53 2,0;
+}
+
+class Equipment
+{
+  position 90 352 148.833 110.521;
+}
+
+class EquipmentBundle
+{
+  position 32 606 141.375 59.5208;
+  position.association Equipment__EquipmentBundle 69,0 2,111;
+}
+
+class Administrator
+{
+  position 194 19 141.958 76.5208;
+}
+
+class Hotel
+{
+  position 471 23 173.906 111.953;
 }
 
 class Assignment
 {
-  position 387 323 151.256 94.5625;
-  position.association Assignment__Equipment 0,10 149,9;
-  position.association Assignment__Guide 0,10 20,60;
-  position.association Assignment__Hotel 27,0 0,10;
-  position.association Assignment__Member 6,0 0,10;
-  position.association Assignment__EquipmentBundle 0,10 5,0;
+  position 605 209 152.417 93.5208;
+  position.association Assignment__Guide 26,0 209,59;
+  position.association Assignment__Equipment 0,10 141,1;
+  position.association Assignment__Member 6,0 0,40;
+  position.association Assignment__EquipmentBundle 0,10 34,0;
+  position.association Assignment__Hotel 143,0 166,110;
+  position.association Assignment:memberAssignment__Visitor:member 0,86 64,0;
+  position.association Assignment:guideAssignment__Visitor:guide 152,86 204,0;
 }
 
-class Request
+class Visitor
 {
-  position 566 396 109 42.3625;
-  position.association Hotel__Request 110,10 0,10;
-  position.association Equipment__Request 0,10 149,25;
-  position.association EquipmentBundle__Request 0,10 53,0;
-  position.association Member__Request 0,10 40,59;
+  position 555 426 209.688 110.521;
+  position.association MemberRequest__Visitor 0,110 159,8;
+}
+
+namespace -;
+
+class MemberRequest
+{
+  position 300 529 166.771 76.5208;
+  position.association Equipment__MemberRequest 59,0 141,81;
+  position.association EquipmentBundle__MemberRequest 0,34 142,25;
+}//$?[End_of_model]$?
+
+namespace -;
+
+
+class EquipmentBundle
+{
+  position 23 538 141.469 61.0078;
+}
+
+class Visitor
+{
+  position.association MemberRequest__Visitor 0,110 159,8;
+  position 555 426 209.688 110.521;
+}
+
+class Visitor
+{
+  position 555 426 209.688 110.521;
 }

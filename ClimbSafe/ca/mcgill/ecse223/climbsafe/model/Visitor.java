@@ -32,7 +32,7 @@ public class Visitor
   private ClimbingSeason memberSeason;
   private ClimbingSeason guideSseason;
   private Assignment memberAssignment;
-  private Assignment guideAssignment;
+  private List<Assignment> guideAssignment;
 
   //------------------------
   // CONSTRUCTOR
@@ -62,6 +62,7 @@ public class Visitor
       throw new RuntimeException("Unable to create Visitor due to aMemberAssignment. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     memberAssignment = aMemberAssignment;
+    guideAssignment = new ArrayList<Assignment>();
   }
 
   public Visitor(String aUsername, String aName, String aPassword, int aEmergencyContact, ClimbingSeason aMemberSeason, ClimbingSeason aGuideSseason, int aStartWeekForMemberAssignment, int aDurationForMemberAssignment, int aPriceForMemberAssignment, ClimbingSeason aClimbingSeasonForMemberAssignment)
@@ -84,6 +85,7 @@ public class Visitor
       throw new RuntimeException("Unable to create guide due to guideSseason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     memberAssignment = new Assignment(aStartWeekForMemberAssignment, aDurationForMemberAssignment, aPriceForMemberAssignment, this, aClimbingSeasonForMemberAssignment);
+    guideAssignment = new ArrayList<Assignment>();
   }
 
   //------------------------
@@ -169,16 +171,35 @@ public class Visitor
   {
     return memberAssignment;
   }
-  /* Code from template association_GetOne */
-  public Assignment getGuideAssignment()
+  /* Code from template association_GetMany */
+  public Assignment getGuideAssignment(int index)
   {
-    return guideAssignment;
+    Assignment aGuideAssignment = guideAssignment.get(index);
+    return aGuideAssignment;
+  }
+
+  public List<Assignment> getGuideAssignment()
+  {
+    List<Assignment> newGuideAssignment = Collections.unmodifiableList(guideAssignment);
+    return newGuideAssignment;
+  }
+
+  public int numberOfGuideAssignment()
+  {
+    int number = guideAssignment.size();
+    return number;
   }
 
   public boolean hasGuideAssignment()
   {
-    boolean has = guideAssignment != null;
+    boolean has = guideAssignment.size() > 0;
     return has;
+  }
+
+  public int indexOfGuideAssignment(Assignment aGuideAssignment)
+  {
+    int index = guideAssignment.indexOf(aGuideAssignment);
+    return index;
   }
   /* Code from template association_SetOptionalOneToOne */
   public boolean setMemberRequest(MemberRequest aNewMemberRequest)
@@ -245,38 +266,76 @@ public class Visitor
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOptionalOneToOptionalOne */
-  public boolean setGuideAssignment(Assignment aNewGuideAssignment)
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfGuideAssignment()
   {
-    boolean wasSet = false;
-    if (aNewGuideAssignment == null)
+    return 0;
+  }
+  /* Code from template association_AddManyToOptionalOne */
+  public boolean addGuideAssignment(Assignment aGuideAssignment)
+  {
+    boolean wasAdded = false;
+    if (guideAssignment.contains(aGuideAssignment)) { return false; }
+    Visitor existingGuide = aGuideAssignment.getGuide();
+    if (existingGuide == null)
     {
-      Assignment existingGuideAssignment = guideAssignment;
-      guideAssignment = null;
-      
-      if (existingGuideAssignment != null && existingGuideAssignment.getGuide() != null)
-      {
-        existingGuideAssignment.setGuide(null);
-      }
-      wasSet = true;
-      return wasSet;
+      aGuideAssignment.setGuide(this);
     }
-
-    Assignment currentGuideAssignment = getGuideAssignment();
-    if (currentGuideAssignment != null && !currentGuideAssignment.equals(aNewGuideAssignment))
+    else if (!this.equals(existingGuide))
     {
-      currentGuideAssignment.setGuide(null);
+      existingGuide.removeGuideAssignment(aGuideAssignment);
+      addGuideAssignment(aGuideAssignment);
     }
-
-    guideAssignment = aNewGuideAssignment;
-    Visitor existingGuide = aNewGuideAssignment.getGuide();
-
-    if (!equals(existingGuide))
+    else
     {
-      aNewGuideAssignment.setGuide(this);
+      guideAssignment.add(aGuideAssignment);
     }
-    wasSet = true;
-    return wasSet;
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeGuideAssignment(Assignment aGuideAssignment)
+  {
+    boolean wasRemoved = false;
+    if (guideAssignment.contains(aGuideAssignment))
+    {
+      guideAssignment.remove(aGuideAssignment);
+      aGuideAssignment.setGuide(null);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addGuideAssignmentAt(Assignment aGuideAssignment, int index)
+  {  
+    boolean wasAdded = false;
+    if(addGuideAssignment(aGuideAssignment))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfGuideAssignment()) { index = numberOfGuideAssignment() - 1; }
+      guideAssignment.remove(aGuideAssignment);
+      guideAssignment.add(index, aGuideAssignment);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveGuideAssignmentAt(Assignment aGuideAssignment, int index)
+  {
+    boolean wasAdded = false;
+    if(guideAssignment.contains(aGuideAssignment))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfGuideAssignment()) { index = numberOfGuideAssignment() - 1; }
+      guideAssignment.remove(aGuideAssignment);
+      guideAssignment.add(index, aGuideAssignment);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addGuideAssignmentAt(aGuideAssignment, index);
+    }
+    return wasAdded;
   }
 
   public void delete()
@@ -307,9 +366,9 @@ public class Visitor
     {
       existingMemberAssignment.delete();
     }
-    if (guideAssignment != null)
+    while( !guideAssignment.isEmpty() )
     {
-      guideAssignment.setGuide(null);
+      guideAssignment.get(0).setGuide(null);
     }
   }
 
@@ -324,7 +383,6 @@ public class Visitor
             "  " + "memberRequest = "+(getMemberRequest()!=null?Integer.toHexString(System.identityHashCode(getMemberRequest())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "memberSeason = "+(getMemberSeason()!=null?Integer.toHexString(System.identityHashCode(getMemberSeason())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "guideSseason = "+(getGuideSseason()!=null?Integer.toHexString(System.identityHashCode(getGuideSseason())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "memberAssignment = "+(getMemberAssignment()!=null?Integer.toHexString(System.identityHashCode(getMemberAssignment())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "guideAssignment = "+(getGuideAssignment()!=null?Integer.toHexString(System.identityHashCode(getGuideAssignment())):"null");
+            "  " + "memberAssignment = "+(getMemberAssignment()!=null?Integer.toHexString(System.identityHashCode(getMemberAssignment())):"null");
   }
 }

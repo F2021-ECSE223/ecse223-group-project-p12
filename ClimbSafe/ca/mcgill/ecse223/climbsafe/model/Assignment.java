@@ -159,35 +159,19 @@ public class Assignment
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOptionalOneToOptionalOne */
-  public boolean setGuide(Visitor aNewGuide)
+  /* Code from template association_SetOptionalOneToMany */
+  public boolean setGuide(Visitor aGuide)
   {
     boolean wasSet = false;
-    if (aNewGuide == null)
+    Visitor existingGuide = guide;
+    guide = aGuide;
+    if (existingGuide != null && !existingGuide.equals(aGuide))
     {
-      Visitor existingGuide = guide;
-      guide = null;
-      
-      if (existingGuide != null && existingGuide.getGuideAssignment() != null)
-      {
-        existingGuide.setGuideAssignment(null);
-      }
-      wasSet = true;
-      return wasSet;
+      existingGuide.removeGuideAssignment(this);
     }
-
-    Visitor currentGuide = getGuide();
-    if (currentGuide != null && !currentGuide.equals(aNewGuide))
+    if (aGuide != null)
     {
-      currentGuide.setGuideAssignment(null);
-    }
-
-    guide = aNewGuide;
-    Assignment existingGuideAssignment = aNewGuide.getGuideAssignment();
-
-    if (!equals(existingGuideAssignment))
-    {
-      aNewGuide.setGuideAssignment(this);
+      aGuide.addGuideAssignment(this);
     }
     wasSet = true;
     return wasSet;
@@ -228,7 +212,9 @@ public class Assignment
     }
     if (guide != null)
     {
-      guide.setGuideAssignment(null);
+      Visitor placeholderGuide = guide;
+      this.guide = null;
+      placeholderGuide.removeGuideAssignment(this);
     }
     ClimbingSeason placeholderClimbingSeason = climbingSeason;
     this.climbingSeason = null;
