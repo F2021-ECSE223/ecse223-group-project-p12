@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 73 "../../../../../../model.ump"
-// line 182 "../../../../../../model.ump"
+// line 69 "../../../../../../model.ump"
+// line 139 "../../../../../../model.ump"
 public class Assignment
 {
 
@@ -19,29 +19,38 @@ public class Assignment
   private int price;
 
   //Assignment Associations
-  private Member member;
-  private Guide guide;
   private Hotel hotel;
-  private List<Equipment> equipment;
-  private List<EquipmentBundle> equipmentBundles;
+  private Visitor member;
+  private Visitor guide;
   private ClimbingSeason climbingSeason;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Assignment(int aStartWeek, int aDuration, int aPrice, Member aMember, ClimbingSeason aClimbingSeason)
+  public Assignment(int aStartWeek, int aDuration, int aPrice, Visitor aMember, ClimbingSeason aClimbingSeason)
   {
     startWeek = aStartWeek;
     duration = aDuration;
     price = aPrice;
-    boolean didAddMember = setMember(aMember);
-    if (!didAddMember)
+    if (aMember == null || aMember.getMemberAssignment() != null)
     {
-      throw new RuntimeException("Unable to create assignment due to member. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create Assignment due to aMember. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    equipment = new ArrayList<Equipment>();
-    equipmentBundles = new ArrayList<EquipmentBundle>();
+    member = aMember;
+    boolean didAddClimbingSeason = setClimbingSeason(aClimbingSeason);
+    if (!didAddClimbingSeason)
+    {
+      throw new RuntimeException("Unable to create assignment due to climbingSeason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+  }
+
+  public Assignment(int aStartWeek, int aDuration, int aPrice, String aUsernameForMember, String aNameForMember, String aPasswordForMember, int aEmergencyContactForMember, ClimbingSeason aMemberSeasonForMember, ClimbingSeason aGuideSseasonForMember, ClimbingSeason aClimbingSeason)
+  {
+    startWeek = aStartWeek;
+    duration = aDuration;
+    price = aPrice;
+    member = new Visitor(aUsernameForMember, aNameForMember, aPasswordForMember, aEmergencyContactForMember, aMemberSeasonForMember, aGuideSseasonForMember, this);
     boolean didAddClimbingSeason = setClimbingSeason(aClimbingSeason);
     if (!didAddClimbingSeason)
     {
@@ -92,22 +101,6 @@ public class Assignment
     return price;
   }
   /* Code from template association_GetOne */
-  public Member getMember()
-  {
-    return member;
-  }
-  /* Code from template association_GetOne */
-  public Guide getGuide()
-  {
-    return guide;
-  }
-
-  public boolean hasGuide()
-  {
-    boolean has = guide != null;
-    return has;
-  }
-  /* Code from template association_GetOne */
   public Hotel getHotel()
   {
     return hotel;
@@ -118,116 +111,26 @@ public class Assignment
     boolean has = hotel != null;
     return has;
   }
-  /* Code from template association_GetMany */
-  public Equipment getEquipment(int index)
+  /* Code from template association_GetOne */
+  public Visitor getMember()
   {
-    Equipment aEquipment = equipment.get(index);
-    return aEquipment;
+    return member;
+  }
+  /* Code from template association_GetOne */
+  public Visitor getGuide()
+  {
+    return guide;
   }
 
-  public List<Equipment> getEquipment()
+  public boolean hasGuide()
   {
-    List<Equipment> newEquipment = Collections.unmodifiableList(equipment);
-    return newEquipment;
-  }
-
-  public int numberOfEquipment()
-  {
-    int number = equipment.size();
-    return number;
-  }
-
-  public boolean hasEquipment()
-  {
-    boolean has = equipment.size() > 0;
+    boolean has = guide != null;
     return has;
-  }
-
-  public int indexOfEquipment(Equipment aEquipment)
-  {
-    int index = equipment.indexOf(aEquipment);
-    return index;
-  }
-  /* Code from template association_GetMany */
-  public EquipmentBundle getEquipmentBundle(int index)
-  {
-    EquipmentBundle aEquipmentBundle = equipmentBundles.get(index);
-    return aEquipmentBundle;
-  }
-
-  public List<EquipmentBundle> getEquipmentBundles()
-  {
-    List<EquipmentBundle> newEquipmentBundles = Collections.unmodifiableList(equipmentBundles);
-    return newEquipmentBundles;
-  }
-
-  public int numberOfEquipmentBundles()
-  {
-    int number = equipmentBundles.size();
-    return number;
-  }
-
-  public boolean hasEquipmentBundles()
-  {
-    boolean has = equipmentBundles.size() > 0;
-    return has;
-  }
-
-  public int indexOfEquipmentBundle(EquipmentBundle aEquipmentBundle)
-  {
-    int index = equipmentBundles.indexOf(aEquipmentBundle);
-    return index;
   }
   /* Code from template association_GetOne */
   public ClimbingSeason getClimbingSeason()
   {
     return climbingSeason;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setMember(Member aMember)
-  {
-    boolean wasSet = false;
-    if (aMember == null)
-    {
-      return wasSet;
-    }
-
-    Member existingMember = member;
-    member = aMember;
-    if (existingMember != null && !existingMember.equals(aMember))
-    {
-      existingMember.removeAssignment(this);
-    }
-    member.addAssignment(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOptionalOneToOne */
-  public boolean setGuide(Guide aNewGuide)
-  {
-    boolean wasSet = false;
-    if (guide != null && !guide.equals(aNewGuide) && equals(guide.getAssignment()))
-    {
-      //Unable to setGuide, as existing guide would become an orphan
-      return wasSet;
-    }
-
-    guide = aNewGuide;
-    Assignment anOldAssignment = aNewGuide != null ? aNewGuide.getAssignment() : null;
-
-    if (!this.equals(anOldAssignment))
-    {
-      if (anOldAssignment != null)
-      {
-        anOldAssignment.guide = null;
-      }
-      if (guide != null)
-      {
-        guide.setAssignment(this);
-      }
-    }
-    wasSet = true;
-    return wasSet;
   }
   /* Code from template association_SetOptionalOneToOne */
   public boolean setHotel(Hotel aNewHotel)
@@ -256,149 +159,38 @@ public class Assignment
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfEquipment()
+  /* Code from template association_SetOptionalOneToOptionalOne */
+  public boolean setGuide(Visitor aNewGuide)
   {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public Equipment addEquipment(String aName, String aDescription, double aWeight, int aPrice, ClimbingSeason aClimbingSeason, Request aRequest)
-  {
-    return new Equipment(aName, aDescription, aWeight, aPrice, aClimbingSeason, aRequest, this);
-  }
+    boolean wasSet = false;
+    if (aNewGuide == null)
+    {
+      Visitor existingGuide = guide;
+      guide = null;
+      
+      if (existingGuide != null && existingGuide.getGuideAssignment() != null)
+      {
+        existingGuide.setGuideAssignment(null);
+      }
+      wasSet = true;
+      return wasSet;
+    }
 
-  public boolean addEquipment(Equipment aEquipment)
-  {
-    boolean wasAdded = false;
-    if (equipment.contains(aEquipment)) { return false; }
-    Assignment existingAssignment = aEquipment.getAssignment();
-    boolean isNewAssignment = existingAssignment != null && !this.equals(existingAssignment);
-    if (isNewAssignment)
+    Visitor currentGuide = getGuide();
+    if (currentGuide != null && !currentGuide.equals(aNewGuide))
     {
-      aEquipment.setAssignment(this);
+      currentGuide.setGuideAssignment(null);
     }
-    else
-    {
-      equipment.add(aEquipment);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
 
-  public boolean removeEquipment(Equipment aEquipment)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aEquipment, as it must always have a assignment
-    if (!this.equals(aEquipment.getAssignment()))
-    {
-      equipment.remove(aEquipment);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addEquipmentAt(Equipment aEquipment, int index)
-  {  
-    boolean wasAdded = false;
-    if(addEquipment(aEquipment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfEquipment()) { index = numberOfEquipment() - 1; }
-      equipment.remove(aEquipment);
-      equipment.add(index, aEquipment);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
+    guide = aNewGuide;
+    Assignment existingGuideAssignment = aNewGuide.getGuideAssignment();
 
-  public boolean addOrMoveEquipmentAt(Equipment aEquipment, int index)
-  {
-    boolean wasAdded = false;
-    if(equipment.contains(aEquipment))
+    if (!equals(existingGuideAssignment))
     {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfEquipment()) { index = numberOfEquipment() - 1; }
-      equipment.remove(aEquipment);
-      equipment.add(index, aEquipment);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addEquipmentAt(aEquipment, index);
+      aNewGuide.setGuideAssignment(this);
     }
-    return wasAdded;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfEquipmentBundles()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public EquipmentBundle addEquipmentBundle(int aDiscount, ClimbingSeason aClimbingSeason, Request aRequest)
-  {
-    return new EquipmentBundle(aDiscount, aClimbingSeason, aRequest, this);
-  }
-
-  public boolean addEquipmentBundle(EquipmentBundle aEquipmentBundle)
-  {
-    boolean wasAdded = false;
-    if (equipmentBundles.contains(aEquipmentBundle)) { return false; }
-    Assignment existingAssignment = aEquipmentBundle.getAssignment();
-    boolean isNewAssignment = existingAssignment != null && !this.equals(existingAssignment);
-    if (isNewAssignment)
-    {
-      aEquipmentBundle.setAssignment(this);
-    }
-    else
-    {
-      equipmentBundles.add(aEquipmentBundle);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeEquipmentBundle(EquipmentBundle aEquipmentBundle)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aEquipmentBundle, as it must always have a assignment
-    if (!this.equals(aEquipmentBundle.getAssignment()))
-    {
-      equipmentBundles.remove(aEquipmentBundle);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addEquipmentBundleAt(EquipmentBundle aEquipmentBundle, int index)
-  {  
-    boolean wasAdded = false;
-    if(addEquipmentBundle(aEquipmentBundle))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfEquipmentBundles()) { index = numberOfEquipmentBundles() - 1; }
-      equipmentBundles.remove(aEquipmentBundle);
-      equipmentBundles.add(index, aEquipmentBundle);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveEquipmentBundleAt(EquipmentBundle aEquipmentBundle, int index)
-  {
-    boolean wasAdded = false;
-    if(equipmentBundles.contains(aEquipmentBundle))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfEquipmentBundles()) { index = numberOfEquipmentBundles() - 1; }
-      equipmentBundles.remove(aEquipmentBundle);
-      equipmentBundles.add(index, aEquipmentBundle);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addEquipmentBundleAt(aEquipmentBundle, index);
-    }
-    return wasAdded;
+    wasSet = true;
+    return wasSet;
   }
   /* Code from template association_SetOneToMany */
   public boolean setClimbingSeason(ClimbingSeason aClimbingSeason)
@@ -422,33 +214,21 @@ public class Assignment
 
   public void delete()
   {
-    Member placeholderMember = member;
-    this.member = null;
-    if(placeholderMember != null)
-    {
-      placeholderMember.removeAssignment(this);
-    }
-    Guide existingGuide = guide;
-    guide = null;
-    if (existingGuide != null)
-    {
-      existingGuide.delete();
-    }
     Hotel existingHotel = hotel;
     hotel = null;
     if (existingHotel != null)
     {
       existingHotel.delete();
     }
-    for(int i=equipment.size(); i > 0; i--)
+    Visitor existingMember = member;
+    member = null;
+    if (existingMember != null)
     {
-      Equipment aEquipment = equipment.get(i - 1);
-      aEquipment.delete();
+      existingMember.delete();
     }
-    for(int i=equipmentBundles.size(); i > 0; i--)
+    if (guide != null)
     {
-      EquipmentBundle aEquipmentBundle = equipmentBundles.get(i - 1);
-      aEquipmentBundle.delete();
+      guide.setGuideAssignment(null);
     }
     ClimbingSeason placeholderClimbingSeason = climbingSeason;
     this.climbingSeason = null;
@@ -465,9 +245,9 @@ public class Assignment
             "startWeek" + ":" + getStartWeek()+ "," +
             "duration" + ":" + getDuration()+ "," +
             "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "hotel = "+(getHotel()!=null?Integer.toHexString(System.identityHashCode(getHotel())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "member = "+(getMember()!=null?Integer.toHexString(System.identityHashCode(getMember())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "guide = "+(getGuide()!=null?Integer.toHexString(System.identityHashCode(getGuide())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "hotel = "+(getHotel()!=null?Integer.toHexString(System.identityHashCode(getHotel())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "climbingSeason = "+(getClimbingSeason()!=null?Integer.toHexString(System.identityHashCode(getClimbingSeason())):"null");
   }
 }

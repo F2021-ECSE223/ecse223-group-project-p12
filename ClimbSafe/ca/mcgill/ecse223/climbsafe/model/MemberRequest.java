@@ -4,71 +4,79 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 65 "../../../../../../model.ump"
-// line 192 "../../../../../../model.ump"
-public class Request
+// line 49 "../../../../../../model.ump"
+// line 159 "../../../../../../model.ump"
+public class MemberRequest
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
-  //Request Attributes
-  private int duration;
+  //MemberRequest Attributes
+  private boolean needsHotel;
+  private boolean needsGuide;
 
-  //Request Associations
-  private Member member;
-  private Hotel hotel;
+  //MemberRequest Associations
   private List<Equipment> equipment;
   private List<EquipmentBundle> equipmentBundles;
+  private Visitor visitor;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Request(int aDuration, Member aMember)
+  public MemberRequest(boolean aNeedsHotel, boolean aNeedsGuide, Visitor aVisitor)
   {
-    duration = aDuration;
-    boolean didAddMember = setMember(aMember);
-    if (!didAddMember)
-    {
-      throw new RuntimeException("Unable to create request due to member. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
+    needsHotel = aNeedsHotel;
+    needsGuide = aNeedsGuide;
     equipment = new ArrayList<Equipment>();
     equipmentBundles = new ArrayList<EquipmentBundle>();
+    boolean didAddVisitor = setVisitor(aVisitor);
+    if (!didAddVisitor)
+    {
+      throw new RuntimeException("Unable to create memberRequest due to visitor. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
   }
 
   //------------------------
   // INTERFACE
   //------------------------
 
-  public boolean setDuration(int aDuration)
+  public boolean setNeedsHotel(boolean aNeedsHotel)
   {
     boolean wasSet = false;
-    duration = aDuration;
+    needsHotel = aNeedsHotel;
     wasSet = true;
     return wasSet;
   }
 
-  public int getDuration()
+  public boolean setNeedsGuide(boolean aNeedsGuide)
   {
-    return duration;
-  }
-  /* Code from template association_GetOne */
-  public Member getMember()
-  {
-    return member;
-  }
-  /* Code from template association_GetOne */
-  public Hotel getHotel()
-  {
-    return hotel;
+    boolean wasSet = false;
+    needsGuide = aNeedsGuide;
+    wasSet = true;
+    return wasSet;
   }
 
-  public boolean hasHotel()
+  public boolean getNeedsHotel()
   {
-    boolean has = hotel != null;
-    return has;
+    return needsHotel;
+  }
+
+  public boolean getNeedsGuide()
+  {
+    return needsGuide;
+  }
+  /* Code from template attribute_IsBoolean */
+  public boolean isNeedsHotel()
+  {
+    return needsHotel;
+  }
+  /* Code from template attribute_IsBoolean */
+  public boolean isNeedsGuide()
+  {
+    return needsGuide;
   }
   /* Code from template association_GetMany */
   public Equipment getEquipment(int index)
@@ -130,60 +138,10 @@ public class Request
     int index = equipmentBundles.indexOf(aEquipmentBundle);
     return index;
   }
-  /* Code from template association_SetOneToOptionalOne */
-  public boolean setMember(Member aNewMember)
+  /* Code from template association_GetOne */
+  public Visitor getVisitor()
   {
-    boolean wasSet = false;
-    if (aNewMember == null)
-    {
-      //Unable to setMember to null, as request must always be associated to a member
-      return wasSet;
-    }
-    
-    Request existingRequest = aNewMember.getRequest();
-    if (existingRequest != null && !equals(existingRequest))
-    {
-      //Unable to setMember, the current member already has a request, which would be orphaned if it were re-assigned
-      return wasSet;
-    }
-    
-    Member anOldMember = member;
-    member = aNewMember;
-    member.setRequest(this);
-
-    if (anOldMember != null)
-    {
-      anOldMember.setRequest(null);
-    }
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOptionalOneToOne */
-  public boolean setHotel(Hotel aNewHotel)
-  {
-    boolean wasSet = false;
-    if (hotel != null && !hotel.equals(aNewHotel) && equals(hotel.getRequest()))
-    {
-      //Unable to setHotel, as existing hotel would become an orphan
-      return wasSet;
-    }
-
-    hotel = aNewHotel;
-    Request anOldRequest = aNewHotel != null ? aNewHotel.getRequest() : null;
-
-    if (!this.equals(anOldRequest))
-    {
-      if (anOldRequest != null)
-      {
-        anOldRequest.hotel = null;
-      }
-      if (hotel != null)
-      {
-        hotel.setRequest(this);
-      }
-    }
-    wasSet = true;
-    return wasSet;
+    return visitor;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfEquipment()
@@ -191,20 +149,20 @@ public class Request
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Equipment addEquipment(String aName, String aDescription, double aWeight, int aPrice, ClimbingSeason aClimbingSeason, Assignment aAssignment)
+  public Equipment addEquipment(String aName, String aDescription, double aWeight, int aPrice, NMC aNMC)
   {
-    return new Equipment(aName, aDescription, aWeight, aPrice, aClimbingSeason, this, aAssignment);
+    return new Equipment(aName, aDescription, aWeight, aPrice, aNMC, this);
   }
 
   public boolean addEquipment(Equipment aEquipment)
   {
     boolean wasAdded = false;
     if (equipment.contains(aEquipment)) { return false; }
-    Request existingRequest = aEquipment.getRequest();
-    boolean isNewRequest = existingRequest != null && !this.equals(existingRequest);
-    if (isNewRequest)
+    MemberRequest existingMemberRequest = aEquipment.getMemberRequest();
+    boolean isNewMemberRequest = existingMemberRequest != null && !this.equals(existingMemberRequest);
+    if (isNewMemberRequest)
     {
-      aEquipment.setRequest(this);
+      aEquipment.setMemberRequest(this);
     }
     else
     {
@@ -217,8 +175,8 @@ public class Request
   public boolean removeEquipment(Equipment aEquipment)
   {
     boolean wasRemoved = false;
-    //Unable to remove aEquipment, as it must always have a request
-    if (!this.equals(aEquipment.getRequest()))
+    //Unable to remove aEquipment, as it must always have a memberRequest
+    if (!this.equals(aEquipment.getMemberRequest()))
     {
       equipment.remove(aEquipment);
       wasRemoved = true;
@@ -263,20 +221,20 @@ public class Request
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public EquipmentBundle addEquipmentBundle(int aDiscount, ClimbingSeason aClimbingSeason, Assignment aAssignment)
+  public EquipmentBundle addEquipmentBundle(int aDiscount, NMC aNMC)
   {
-    return new EquipmentBundle(aDiscount, aClimbingSeason, this, aAssignment);
+    return new EquipmentBundle(aDiscount, aNMC, this);
   }
 
   public boolean addEquipmentBundle(EquipmentBundle aEquipmentBundle)
   {
     boolean wasAdded = false;
     if (equipmentBundles.contains(aEquipmentBundle)) { return false; }
-    Request existingRequest = aEquipmentBundle.getRequest();
-    boolean isNewRequest = existingRequest != null && !this.equals(existingRequest);
-    if (isNewRequest)
+    MemberRequest existingMemberRequest = aEquipmentBundle.getMemberRequest();
+    boolean isNewMemberRequest = existingMemberRequest != null && !this.equals(existingMemberRequest);
+    if (isNewMemberRequest)
     {
-      aEquipmentBundle.setRequest(this);
+      aEquipmentBundle.setMemberRequest(this);
     }
     else
     {
@@ -289,8 +247,8 @@ public class Request
   public boolean removeEquipmentBundle(EquipmentBundle aEquipmentBundle)
   {
     boolean wasRemoved = false;
-    //Unable to remove aEquipmentBundle, as it must always have a request
-    if (!this.equals(aEquipmentBundle.getRequest()))
+    //Unable to remove aEquipmentBundle, as it must always have a memberRequest
+    if (!this.equals(aEquipmentBundle.getMemberRequest()))
     {
       equipmentBundles.remove(aEquipmentBundle);
       wasRemoved = true;
@@ -329,21 +287,37 @@ public class Request
     }
     return wasAdded;
   }
+  /* Code from template association_SetOneToOptionalOne */
+  public boolean setVisitor(Visitor aNewVisitor)
+  {
+    boolean wasSet = false;
+    if (aNewVisitor == null)
+    {
+      //Unable to setVisitor to null, as memberRequest must always be associated to a visitor
+      return wasSet;
+    }
+    
+    MemberRequest existingMemberRequest = aNewVisitor.getMemberRequest();
+    if (existingMemberRequest != null && !equals(existingMemberRequest))
+    {
+      //Unable to setVisitor, the current visitor already has a memberRequest, which would be orphaned if it were re-assigned
+      return wasSet;
+    }
+    
+    Visitor anOldVisitor = visitor;
+    visitor = aNewVisitor;
+    visitor.setMemberRequest(this);
+
+    if (anOldVisitor != null)
+    {
+      anOldVisitor.setMemberRequest(null);
+    }
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
-    Member existingMember = member;
-    member = null;
-    if (existingMember != null)
-    {
-      existingMember.setRequest(null);
-    }
-    Hotel existingHotel = hotel;
-    hotel = null;
-    if (existingHotel != null)
-    {
-      existingHotel.delete();
-    }
     for(int i=equipment.size(); i > 0; i--)
     {
       Equipment aEquipment = equipment.get(i - 1);
@@ -354,14 +328,20 @@ public class Request
       EquipmentBundle aEquipmentBundle = equipmentBundles.get(i - 1);
       aEquipmentBundle.delete();
     }
+    Visitor existingVisitor = visitor;
+    visitor = null;
+    if (existingVisitor != null)
+    {
+      existingVisitor.setMemberRequest(null);
+    }
   }
 
 
   public String toString()
   {
     return super.toString() + "["+
-            "duration" + ":" + getDuration()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "member = "+(getMember()!=null?Integer.toHexString(System.identityHashCode(getMember())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "hotel = "+(getHotel()!=null?Integer.toHexString(System.identityHashCode(getHotel())):"null");
+            "needsHotel" + ":" + getNeedsHotel()+ "," +
+            "needsGuide" + ":" + getNeedsGuide()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "visitor = "+(getVisitor()!=null?Integer.toHexString(System.identityHashCode(getVisitor())):"null");
   }
 }

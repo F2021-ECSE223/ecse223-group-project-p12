@@ -4,9 +4,8 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 22 "../../../../../../model.ump"
-// line 99 "../../../../../../model.ump"
-// line 136 "../../../../../../model.ump"
+// line 29 "../../../../../../model.ump"
+// line 118 "../../../../../../model.ump"
 public class Equipment
 {
 
@@ -21,36 +20,30 @@ public class Equipment
   private int price;
 
   //Equipment Associations
-  private ClimbingSeason climbingSeason;
+  private NMC nMC;
   private List<EquipmentBundle> equipmentBundles;
-  private Request request;
-  private Assignment assignment;
+  private MemberRequest memberRequest;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Equipment(String aName, String aDescription, double aWeight, int aPrice, ClimbingSeason aClimbingSeason, Request aRequest, Assignment aAssignment)
+  public Equipment(String aName, String aDescription, double aWeight, int aPrice, NMC aNMC, MemberRequest aMemberRequest)
   {
     name = aName;
     description = aDescription;
     weight = aWeight;
     price = aPrice;
-    boolean didAddClimbingSeason = setClimbingSeason(aClimbingSeason);
-    if (!didAddClimbingSeason)
+    boolean didAddNMC = setNMC(aNMC);
+    if (!didAddNMC)
     {
-      throw new RuntimeException("Unable to create equipment due to climbingSeason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create equipment due to nMC. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     equipmentBundles = new ArrayList<EquipmentBundle>();
-    boolean didAddRequest = setRequest(aRequest);
-    if (!didAddRequest)
+    boolean didAddMemberRequest = setMemberRequest(aMemberRequest);
+    if (!didAddMemberRequest)
     {
-      throw new RuntimeException("Unable to create equipment due to request. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    boolean didAddAssignment = setAssignment(aAssignment);
-    if (!didAddAssignment)
-    {
-      throw new RuntimeException("Unable to create equipment due to assignment. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create equipment due to memberRequest. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -110,9 +103,9 @@ public class Equipment
     return price;
   }
   /* Code from template association_GetOne */
-  public ClimbingSeason getClimbingSeason()
+  public NMC getNMC()
   {
-    return climbingSeason;
+    return nMC;
   }
   /* Code from template association_GetMany */
   public EquipmentBundle getEquipmentBundle(int index)
@@ -145,31 +138,26 @@ public class Equipment
     return index;
   }
   /* Code from template association_GetOne */
-  public Request getRequest()
+  public MemberRequest getMemberRequest()
   {
-    return request;
-  }
-  /* Code from template association_GetOne */
-  public Assignment getAssignment()
-  {
-    return assignment;
+    return memberRequest;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setClimbingSeason(ClimbingSeason aClimbingSeason)
+  public boolean setNMC(NMC aNMC)
   {
     boolean wasSet = false;
-    if (aClimbingSeason == null)
+    if (aNMC == null)
     {
       return wasSet;
     }
 
-    ClimbingSeason existingClimbingSeason = climbingSeason;
-    climbingSeason = aClimbingSeason;
-    if (existingClimbingSeason != null && !existingClimbingSeason.equals(aClimbingSeason))
+    NMC existingNMC = nMC;
+    nMC = aNMC;
+    if (existingNMC != null && !existingNMC.equals(aNMC))
     {
-      existingClimbingSeason.removeEquipment(this);
+      existingNMC.removeEquipment(this);
     }
-    climbingSeason.addEquipment(this);
+    nMC.addEquipment(this);
     wasSet = true;
     return wasSet;
   }
@@ -256,51 +244,32 @@ public class Equipment
     return wasAdded;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setRequest(Request aRequest)
+  public boolean setMemberRequest(MemberRequest aMemberRequest)
   {
     boolean wasSet = false;
-    if (aRequest == null)
+    if (aMemberRequest == null)
     {
       return wasSet;
     }
 
-    Request existingRequest = request;
-    request = aRequest;
-    if (existingRequest != null && !existingRequest.equals(aRequest))
+    MemberRequest existingMemberRequest = memberRequest;
+    memberRequest = aMemberRequest;
+    if (existingMemberRequest != null && !existingMemberRequest.equals(aMemberRequest))
     {
-      existingRequest.removeEquipment(this);
+      existingMemberRequest.removeEquipment(this);
     }
-    request.addEquipment(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setAssignment(Assignment aAssignment)
-  {
-    boolean wasSet = false;
-    if (aAssignment == null)
-    {
-      return wasSet;
-    }
-
-    Assignment existingAssignment = assignment;
-    assignment = aAssignment;
-    if (existingAssignment != null && !existingAssignment.equals(aAssignment))
-    {
-      existingAssignment.removeEquipment(this);
-    }
-    assignment.addEquipment(this);
+    memberRequest.addEquipment(this);
     wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    ClimbingSeason placeholderClimbingSeason = climbingSeason;
-    this.climbingSeason = null;
-    if(placeholderClimbingSeason != null)
+    NMC placeholderNMC = nMC;
+    this.nMC = null;
+    if(placeholderNMC != null)
     {
-      placeholderClimbingSeason.removeEquipment(this);
+      placeholderNMC.removeEquipment(this);
     }
     ArrayList<EquipmentBundle> copyOfEquipmentBundles = new ArrayList<EquipmentBundle>(equipmentBundles);
     equipmentBundles.clear();
@@ -308,17 +277,11 @@ public class Equipment
     {
       aEquipmentBundle.removeEquipment(this);
     }
-    Request placeholderRequest = request;
-    this.request = null;
-    if(placeholderRequest != null)
+    MemberRequest placeholderMemberRequest = memberRequest;
+    this.memberRequest = null;
+    if(placeholderMemberRequest != null)
     {
-      placeholderRequest.removeEquipment(this);
-    }
-    Assignment placeholderAssignment = assignment;
-    this.assignment = null;
-    if(placeholderAssignment != null)
-    {
-      placeholderAssignment.removeEquipment(this);
+      placeholderMemberRequest.removeEquipment(this);
     }
   }
 
@@ -330,8 +293,7 @@ public class Equipment
             "description" + ":" + getDescription()+ "," +
             "weight" + ":" + getWeight()+ "," +
             "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "climbingSeason = "+(getClimbingSeason()!=null?Integer.toHexString(System.identityHashCode(getClimbingSeason())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "request = "+(getRequest()!=null?Integer.toHexString(System.identityHashCode(getRequest())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "assignment = "+(getAssignment()!=null?Integer.toHexString(System.identityHashCode(getAssignment())):"null");
+            "  " + "nMC = "+(getNMC()!=null?Integer.toHexString(System.identityHashCode(getNMC())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "memberRequest = "+(getMemberRequest()!=null?Integer.toHexString(System.identityHashCode(getMemberRequest())):"null");
   }
 }

@@ -3,9 +3,8 @@
 
 package ca.mcgill.ecse223.climbsafe.model;
 
-// line 58 "../../../../../../model.ump"
-// line 131 "../../../../../../model.ump"
-// line 166 "../../../../../../model.ump"
+// line 62 "../../../../../../model.ump"
+// line 134 "../../../../../../model.ump"
 public class Hotel
 {
 
@@ -21,14 +20,13 @@ public class Hotel
 
   //Hotel Associations
   private NMC nMC;
-  private Request request;
   private Assignment assignment;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Hotel(String aName, String aAddress, int aStars, int aPricePerNight, NMC aNMC, Request aRequest, Assignment aAssignment)
+  public Hotel(String aName, String aAddress, int aStars, int aPricePerNight, NMC aNMC, Assignment aAssignment)
   {
     name = aName;
     address = aAddress;
@@ -38,11 +36,6 @@ public class Hotel
     if (!didAddNMC)
     {
       throw new RuntimeException("Unable to create hotel due to nMC. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    boolean didAddRequest = setRequest(aRequest);
-    if (!didAddRequest)
-    {
-      throw new RuntimeException("Unable to create hotel due to request. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddAssignment = setAssignment(aAssignment);
     if (!didAddAssignment)
@@ -112,68 +105,26 @@ public class Hotel
     return nMC;
   }
   /* Code from template association_GetOne */
-  public Request getRequest()
-  {
-    return request;
-  }
-  /* Code from template association_GetOne */
   public Assignment getAssignment()
   {
     return assignment;
   }
-  /* Code from template association_SetOneToOptionalOne */
-  public boolean setNMC(NMC aNewNMC)
+  /* Code from template association_SetOneToMany */
+  public boolean setNMC(NMC aNMC)
   {
     boolean wasSet = false;
-    if (aNewNMC == null)
+    if (aNMC == null)
     {
-      //Unable to setNMC to null, as hotel must always be associated to a nMC
       return wasSet;
     }
-    
-    Hotel existingHotel = aNewNMC.getHotel();
-    if (existingHotel != null && !equals(existingHotel))
-    {
-      //Unable to setNMC, the current nMC already has a hotel, which would be orphaned if it were re-assigned
-      return wasSet;
-    }
-    
-    NMC anOldNMC = nMC;
-    nMC = aNewNMC;
-    nMC.setHotel(this);
 
-    if (anOldNMC != null)
+    NMC existingNMC = nMC;
+    nMC = aNMC;
+    if (existingNMC != null && !existingNMC.equals(aNMC))
     {
-      anOldNMC.setHotel(null);
+      existingNMC.removeHotel(this);
     }
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOneToOptionalOne */
-  public boolean setRequest(Request aNewRequest)
-  {
-    boolean wasSet = false;
-    if (aNewRequest == null)
-    {
-      //Unable to setRequest to null, as hotel must always be associated to a request
-      return wasSet;
-    }
-    
-    Hotel existingHotel = aNewRequest.getHotel();
-    if (existingHotel != null && !equals(existingHotel))
-    {
-      //Unable to setRequest, the current request already has a hotel, which would be orphaned if it were re-assigned
-      return wasSet;
-    }
-    
-    Request anOldRequest = request;
-    request = aNewRequest;
-    request.setHotel(this);
-
-    if (anOldRequest != null)
-    {
-      anOldRequest.setHotel(null);
-    }
+    nMC.addHotel(this);
     wasSet = true;
     return wasSet;
   }
@@ -208,17 +159,11 @@ public class Hotel
 
   public void delete()
   {
-    NMC existingNMC = nMC;
-    nMC = null;
-    if (existingNMC != null)
+    NMC placeholderNMC = nMC;
+    this.nMC = null;
+    if(placeholderNMC != null)
     {
-      existingNMC.setHotel(null);
-    }
-    Request existingRequest = request;
-    request = null;
-    if (existingRequest != null)
-    {
-      existingRequest.setHotel(null);
+      placeholderNMC.removeHotel(this);
     }
     Assignment existingAssignment = assignment;
     assignment = null;
@@ -237,7 +182,6 @@ public class Hotel
             "stars" + ":" + getStars()+ "," +
             "pricePerNight" + ":" + getPricePerNight()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "nMC = "+(getNMC()!=null?Integer.toHexString(System.identityHashCode(getNMC())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "request = "+(getRequest()!=null?Integer.toHexString(System.identityHashCode(getRequest())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "assignment = "+(getAssignment()!=null?Integer.toHexString(System.identityHashCode(getAssignment())):"null");
   }
 }

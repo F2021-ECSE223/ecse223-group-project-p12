@@ -2,19 +2,11 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse223.climbsafe.model;
-import java.sql.Date;
 
-// line 51 "../../../../../../model.ump"
-// line 109 "../../../../../../model.ump"
-// line 161 "../../../../../../model.ump"
+// line 56 "../../../../../../model.ump"
+// line 129 "../../../../../../model.ump"
 public class Administrator
 {
-
-  //------------------------
-  // STATIC VARIABLES
-  //------------------------
-
-  private static Administrator theInstance = null;
 
   //------------------------
   // MEMBER VARIABLES
@@ -25,25 +17,28 @@ public class Administrator
   private String password;
 
   //Administrator Associations
-  private ClimbingSeason climbingSeason;
+  private NMC nMC;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  private Administrator()
+  public Administrator(NMC aNMC)
   {
     username = "admin@nmc.nt";
     password = "admin";
+    if (aNMC == null || aNMC.getAdministrator() != null)
+    {
+      throw new RuntimeException("Unable to create Administrator due to aNMC. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    nMC = aNMC;
   }
 
-  public static Administrator getInstance()
+  public Administrator(int aGuideWeeklyRateForNMC, ClimbSafe aClimbSafeForNMC)
   {
-    if(theInstance == null)
-    {
-      theInstance = new Administrator();
-    }
-    return theInstance;
+    username = "admin@nmc.nt";
+    password = "admin";
+    nMC = new NMC(aGuideWeeklyRateForNMC, this, aClimbSafeForNMC);
   }
 
   //------------------------
@@ -68,52 +63,18 @@ public class Administrator
     return password;
   }
   /* Code from template association_GetOne */
-  public ClimbingSeason getClimbingSeason()
+  public NMC getNMC()
   {
-    return climbingSeason;
-  }
-
-  public boolean hasClimbingSeason()
-  {
-    boolean has = climbingSeason != null;
-    return has;
-  }
-  /* Code from template association_SetOptionalOneToOne */
-  public boolean setClimbingSeason(ClimbingSeason aNewClimbingSeason)
-  {
-    boolean wasSet = false;
-    if (climbingSeason != null && !climbingSeason.equals(aNewClimbingSeason) && equals(climbingSeason.getAdministrator()))
-    {
-      //Unable to setClimbingSeason, as existing climbingSeason would become an orphan
-      return wasSet;
-    }
-
-    climbingSeason = aNewClimbingSeason;
-    Administrator anOldAdministrator = aNewClimbingSeason != null ? aNewClimbingSeason.getAdministrator() : null;
-
-    if (!this.equals(anOldAdministrator))
-    {
-      if (anOldAdministrator != null)
-      {
-        anOldAdministrator.climbingSeason = null;
-      }
-      if (climbingSeason != null)
-      {
-        climbingSeason.setAdministrator(this);
-      }
-    }
-    wasSet = true;
-    return wasSet;
+    return nMC;
   }
 
   public void delete()
   {
-    ClimbingSeason existingClimbingSeason = climbingSeason;
-    climbingSeason = null;
-    if (existingClimbingSeason != null)
+    NMC existingNMC = nMC;
+    nMC = null;
+    if (existingNMC != null)
     {
-      existingClimbingSeason.delete();
-      existingClimbingSeason.setAdministrator(null);
+      existingNMC.delete();
     }
   }
 
@@ -123,6 +84,6 @@ public class Administrator
     return super.toString() + "["+
             "username" + ":" + getUsername()+ "," +
             "password" + ":" + getPassword()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "climbingSeason = "+(getClimbingSeason()!=null?Integer.toHexString(System.identityHashCode(getClimbingSeason())):"null");
+            "  " + "nMC = "+(getNMC()!=null?Integer.toHexString(System.identityHashCode(getNMC())):"null");
   }
 }
