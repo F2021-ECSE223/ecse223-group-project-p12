@@ -3,8 +3,8 @@
 
 package ca.mcgill.ecse223.climbsafe.model;
 
-// line 56 "../../../../../../model.ump"
-// line 129 "../../../../../../model.ump"
+// line 52 "../../../../../../model.ump"
+// line 122 "../../../../../../model.ump"
 public class Administrator
 {
 
@@ -17,28 +17,28 @@ public class Administrator
   private String password;
 
   //Administrator Associations
-  private NMC nMC;
+  private ClimbSafe climbSafe;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Administrator(NMC aNMC)
+  public Administrator(ClimbSafe aClimbSafe)
   {
     username = "admin@nmc.nt";
     password = "admin";
-    if (aNMC == null || aNMC.getAdministrator() != null)
+    if (aClimbSafe == null || aClimbSafe.getAdministrator() != null)
     {
-      throw new RuntimeException("Unable to create Administrator due to aNMC. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create Administrator due to aClimbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    nMC = aNMC;
+    climbSafe = aClimbSafe;
   }
 
-  public Administrator(int aGuideWeeklyRateForNMC, ClimbSafe aClimbSafeForNMC)
+  public Administrator()
   {
     username = "admin@nmc.nt";
     password = "admin";
-    nMC = new NMC(aGuideWeeklyRateForNMC, this, aClimbSafeForNMC);
+    climbSafe = new ClimbSafe(this);
   }
 
   //------------------------
@@ -63,18 +63,18 @@ public class Administrator
     return password;
   }
   /* Code from template association_GetOne */
-  public NMC getNMC()
+  public ClimbSafe getClimbSafe()
   {
-    return nMC;
+    return climbSafe;
   }
 
   public void delete()
   {
-    NMC existingNMC = nMC;
-    nMC = null;
-    if (existingNMC != null)
+    ClimbSafe existingClimbSafe = climbSafe;
+    climbSafe = null;
+    if (existingClimbSafe != null)
     {
-      existingNMC.delete();
+      existingClimbSafe.delete();
     }
   }
 
@@ -84,6 +84,6 @@ public class Administrator
     return super.toString() + "["+
             "username" + ":" + getUsername()+ "," +
             "password" + ":" + getPassword()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "nMC = "+(getNMC()!=null?Integer.toHexString(System.identityHashCode(getNMC())):"null");
+            "  " + "climbSafe = "+(getClimbSafe()!=null?Integer.toHexString(System.identityHashCode(getClimbSafe())):"null");
   }
 }

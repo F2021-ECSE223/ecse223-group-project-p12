@@ -4,10 +4,10 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 41 "../../../../../../model.ump"
-// line 151 "../../../../../../model.ump"
-// line 174 "../../../../../../model.ump"
-// line 180 "../../../../../../model.ump"
+// line 37 "../../../../../../model.ump"
+// line 144 "../../../../../../model.ump"
+// line 167 "../../../../../../model.ump"
+// line 173 "../../../../../../model.ump"
 public class Visitor
 {
 
@@ -30,7 +30,7 @@ public class Visitor
   //Visitor Associations
   private MemberRequest memberRequest;
   private ClimbingSeason memberSeason;
-  private ClimbingSeason guideSseason;
+  private ClimbingSeason guideSeason;
   private Assignment memberAssignment;
   private List<Assignment> guideAssignment;
 
@@ -38,7 +38,7 @@ public class Visitor
   // CONSTRUCTOR
   //------------------------
 
-  public Visitor(String aUsername, String aName, String aPassword, int aEmergencyContact, ClimbingSeason aMemberSeason, ClimbingSeason aGuideSseason, Assignment aMemberAssignment)
+  public Visitor(String aUsername, String aName, String aPassword, int aEmergencyContact, ClimbingSeason aMemberSeason, ClimbingSeason aGuideSeason, Assignment aMemberAssignment)
   {
     name = aName;
     password = aPassword;
@@ -52,10 +52,10 @@ public class Visitor
     {
       throw new RuntimeException("Unable to create member due to memberSeason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    boolean didAddGuideSseason = setGuideSseason(aGuideSseason);
-    if (!didAddGuideSseason)
+    boolean didAddGuideSeason = setGuideSeason(aGuideSeason);
+    if (!didAddGuideSeason)
     {
-      throw new RuntimeException("Unable to create guide due to guideSseason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create guide due to guideSeason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     if (aMemberAssignment == null || aMemberAssignment.getMember() != null)
     {
@@ -65,7 +65,7 @@ public class Visitor
     guideAssignment = new ArrayList<Assignment>();
   }
 
-  public Visitor(String aUsername, String aName, String aPassword, int aEmergencyContact, ClimbingSeason aMemberSeason, ClimbingSeason aGuideSseason, int aStartWeekForMemberAssignment, int aDurationForMemberAssignment, int aPriceForMemberAssignment, ClimbingSeason aClimbingSeasonForMemberAssignment)
+  public Visitor(String aUsername, String aName, String aPassword, int aEmergencyContact, ClimbingSeason aMemberSeason, ClimbingSeason aGuideSeason, int aStartWeekForMemberAssignment, int aDurationForMemberAssignment, int aPriceForMemberAssignment, ClimbingSeason aClimbingSeasonForMemberAssignment)
   {
     if (!setUsername(aUsername))
     {
@@ -79,10 +79,10 @@ public class Visitor
     {
       throw new RuntimeException("Unable to create member due to memberSeason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    boolean didAddGuideSseason = setGuideSseason(aGuideSseason);
-    if (!didAddGuideSseason)
+    boolean didAddGuideSeason = setGuideSeason(aGuideSeason);
+    if (!didAddGuideSeason)
     {
-      throw new RuntimeException("Unable to create guide due to guideSseason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create guide due to guideSeason. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     memberAssignment = new Assignment(aStartWeekForMemberAssignment, aDurationForMemberAssignment, aPriceForMemberAssignment, this, aClimbingSeasonForMemberAssignment);
     guideAssignment = new ArrayList<Assignment>();
@@ -162,9 +162,9 @@ public class Visitor
     return memberSeason;
   }
   /* Code from template association_GetOne */
-  public ClimbingSeason getGuideSseason()
+  public ClimbingSeason getGuideSeason()
   {
-    return guideSseason;
+    return guideSeason;
   }
   /* Code from template association_GetOne */
   public Assignment getMemberAssignment()
@@ -248,21 +248,21 @@ public class Visitor
     return wasSet;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setGuideSseason(ClimbingSeason aGuideSseason)
+  public boolean setGuideSeason(ClimbingSeason aGuideSeason)
   {
     boolean wasSet = false;
-    if (aGuideSseason == null)
+    if (aGuideSeason == null)
     {
       return wasSet;
     }
 
-    ClimbingSeason existingGuideSseason = guideSseason;
-    guideSseason = aGuideSseason;
-    if (existingGuideSseason != null && !existingGuideSseason.equals(aGuideSseason))
+    ClimbingSeason existingGuideSeason = guideSeason;
+    guideSeason = aGuideSeason;
+    if (existingGuideSeason != null && !existingGuideSeason.equals(aGuideSeason))
     {
-      existingGuideSseason.removeGuide(this);
+      existingGuideSeason.removeGuide(this);
     }
-    guideSseason.addGuide(this);
+    guideSeason.addGuide(this);
     wasSet = true;
     return wasSet;
   }
@@ -354,11 +354,11 @@ public class Visitor
     {
       placeholderMemberSeason.removeMember(this);
     }
-    ClimbingSeason placeholderGuideSseason = guideSseason;
-    this.guideSseason = null;
-    if(placeholderGuideSseason != null)
+    ClimbingSeason placeholderGuideSeason = guideSeason;
+    this.guideSeason = null;
+    if(placeholderGuideSeason != null)
     {
-      placeholderGuideSseason.removeGuide(this);
+      placeholderGuideSeason.removeGuide(this);
     }
     Assignment existingMemberAssignment = memberAssignment;
     memberAssignment = null;
@@ -382,7 +382,7 @@ public class Visitor
             "emergencyContact" + ":" + getEmergencyContact()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "memberRequest = "+(getMemberRequest()!=null?Integer.toHexString(System.identityHashCode(getMemberRequest())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "memberSeason = "+(getMemberSeason()!=null?Integer.toHexString(System.identityHashCode(getMemberSeason())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "guideSseason = "+(getGuideSseason()!=null?Integer.toHexString(System.identityHashCode(getGuideSseason())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "guideSeason = "+(getGuideSeason()!=null?Integer.toHexString(System.identityHashCode(getGuideSeason())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "memberAssignment = "+(getMemberAssignment()!=null?Integer.toHexString(System.identityHashCode(getMemberAssignment())):"null");
   }
 }

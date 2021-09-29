@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 69 "../../../../../../model.ump"
-// line 139 "../../../../../../model.ump"
+// line 63 "../../../../../../model.ump"
+// line 132 "../../../../../../model.ump"
 public class Assignment
 {
 
@@ -45,12 +45,12 @@ public class Assignment
     }
   }
 
-  public Assignment(int aStartWeek, int aDuration, int aPrice, String aUsernameForMember, String aNameForMember, String aPasswordForMember, int aEmergencyContactForMember, ClimbingSeason aMemberSeasonForMember, ClimbingSeason aGuideSseasonForMember, ClimbingSeason aClimbingSeason)
+  public Assignment(int aStartWeek, int aDuration, int aPrice, String aUsernameForMember, String aNameForMember, String aPasswordForMember, int aEmergencyContactForMember, ClimbingSeason aMemberSeasonForMember, ClimbingSeason aGuideSeasonForMember, ClimbingSeason aClimbingSeason)
   {
     startWeek = aStartWeek;
     duration = aDuration;
     price = aPrice;
-    member = new Visitor(aUsernameForMember, aNameForMember, aPasswordForMember, aEmergencyContactForMember, aMemberSeasonForMember, aGuideSseasonForMember, this);
+    member = new Visitor(aUsernameForMember, aNameForMember, aPasswordForMember, aEmergencyContactForMember, aMemberSeasonForMember, aGuideSeasonForMember, this);
     boolean didAddClimbingSeason = setClimbingSeason(aClimbingSeason);
     if (!didAddClimbingSeason)
     {

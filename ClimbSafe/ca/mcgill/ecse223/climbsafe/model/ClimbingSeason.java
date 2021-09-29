@@ -5,8 +5,8 @@ package ca.mcgill.ecse223.climbsafe.model;
 import java.sql.Date;
 import java.util.*;
 
-// line 21 "../../../../../../model.ump"
-// line 97 "../../../../../../model.ump"
+// line 17 "../../../../../../model.ump"
+// line 86 "../../../../../../model.ump"
 public class ClimbingSeason
 {
 
@@ -22,23 +22,23 @@ public class ClimbingSeason
   private List<Assignment> assignments;
   private List<Visitor> member;
   private List<Visitor> guide;
-  private NMC nMC;
+  private ClimbSafe climbSafe;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public ClimbingSeason(Date aStartDate, Date aEndDate, NMC aNMC)
+  public ClimbingSeason(Date aStartDate, Date aEndDate, ClimbSafe aClimbSafe)
   {
     startDate = aStartDate;
     endDate = aEndDate;
     assignments = new ArrayList<Assignment>();
     member = new ArrayList<Visitor>();
     guide = new ArrayList<Visitor>();
-    boolean didAddNMC = setNMC(aNMC);
-    if (!didAddNMC)
+    boolean didAddClimbSafe = setClimbSafe(aClimbSafe);
+    if (!didAddClimbSafe)
     {
-      throw new RuntimeException("Unable to create climbingSeason due to nMC. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create climbingSeason due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -162,9 +162,9 @@ public class ClimbingSeason
     return index;
   }
   /* Code from template association_GetOne */
-  public NMC getNMC()
+  public ClimbSafe getClimbSafe()
   {
-    return nMC;
+    return climbSafe;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfAssignments()
@@ -244,9 +244,9 @@ public class ClimbingSeason
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Visitor addMember(String aUsername, String aName, String aPassword, int aEmergencyContact, ClimbingSeason aGuideSseason, Assignment aMemberAssignment)
+  public Visitor addMember(String aUsername, String aName, String aPassword, int aEmergencyContact, ClimbingSeason aGuideSeason, Assignment aMemberAssignment)
   {
-    return new Visitor(aUsername, aName, aPassword, aEmergencyContact, this, aGuideSseason, aMemberAssignment);
+    return new Visitor(aUsername, aName, aPassword, aEmergencyContact, this, aGuideSeason, aMemberAssignment);
   }
 
   public boolean addMember(Visitor aMember)
@@ -325,11 +325,11 @@ public class ClimbingSeason
   {
     boolean wasAdded = false;
     if (guide.contains(aGuide)) { return false; }
-    ClimbingSeason existingGuideSseason = aGuide.getGuideSseason();
-    boolean isNewGuideSseason = existingGuideSseason != null && !this.equals(existingGuideSseason);
-    if (isNewGuideSseason)
+    ClimbingSeason existingGuideSeason = aGuide.getGuideSeason();
+    boolean isNewGuideSeason = existingGuideSeason != null && !this.equals(existingGuideSeason);
+    if (isNewGuideSeason)
     {
-      aGuide.setGuideSseason(this);
+      aGuide.setGuideSeason(this);
     }
     else
     {
@@ -342,8 +342,8 @@ public class ClimbingSeason
   public boolean removeGuide(Visitor aGuide)
   {
     boolean wasRemoved = false;
-    //Unable to remove aGuide, as it must always have a guideSseason
-    if (!this.equals(aGuide.getGuideSseason()))
+    //Unable to remove aGuide, as it must always have a guideSeason
+    if (!this.equals(aGuide.getGuideSeason()))
     {
       guide.remove(aGuide);
       wasRemoved = true;
@@ -383,29 +383,29 @@ public class ClimbingSeason
     return wasAdded;
   }
   /* Code from template association_SetOneToOptionalOne */
-  public boolean setNMC(NMC aNewNMC)
+  public boolean setClimbSafe(ClimbSafe aNewClimbSafe)
   {
     boolean wasSet = false;
-    if (aNewNMC == null)
+    if (aNewClimbSafe == null)
     {
-      //Unable to setNMC to null, as climbingSeason must always be associated to a nMC
+      //Unable to setClimbSafe to null, as climbingSeason must always be associated to a climbSafe
       return wasSet;
     }
     
-    ClimbingSeason existingClimbingSeason = aNewNMC.getClimbingSeason();
+    ClimbingSeason existingClimbingSeason = aNewClimbSafe.getClimbingSeason();
     if (existingClimbingSeason != null && !equals(existingClimbingSeason))
     {
-      //Unable to setNMC, the current nMC already has a climbingSeason, which would be orphaned if it were re-assigned
+      //Unable to setClimbSafe, the current climbSafe already has a climbingSeason, which would be orphaned if it were re-assigned
       return wasSet;
     }
     
-    NMC anOldNMC = nMC;
-    nMC = aNewNMC;
-    nMC.setClimbingSeason(this);
+    ClimbSafe anOldClimbSafe = climbSafe;
+    climbSafe = aNewClimbSafe;
+    climbSafe.setClimbingSeason(this);
 
-    if (anOldNMC != null)
+    if (anOldClimbSafe != null)
     {
-      anOldNMC.setClimbingSeason(null);
+      anOldClimbSafe.setClimbingSeason(null);
     }
     wasSet = true;
     return wasSet;
@@ -434,11 +434,11 @@ public class ClimbingSeason
       guide.remove(aGuide);
     }
     
-    NMC existingNMC = nMC;
-    nMC = null;
-    if (existingNMC != null)
+    ClimbSafe existingClimbSafe = climbSafe;
+    climbSafe = null;
+    if (existingClimbSafe != null)
     {
-      existingNMC.setClimbingSeason(null);
+      existingClimbSafe.setClimbingSeason(null);
     }
   }
 
@@ -448,6 +448,6 @@ public class ClimbingSeason
     return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "endDate" + "=" + (getEndDate() != null ? !getEndDate().equals(this)  ? getEndDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "nMC = "+(getNMC()!=null?Integer.toHexString(System.identityHashCode(getNMC())):"null");
+            "  " + "climbSafe = "+(getClimbSafe()!=null?Integer.toHexString(System.identityHashCode(getClimbSafe())):"null");
   }
 }

@@ -1,20 +1,16 @@
 namespace ca.mcgill.ecse223.climbsafe.model;
 
-class ClimbSafe{
-  1 <@>- 1 NMC;
-}
-
 enum Stars{
   One, Two, Three, Four, Five
 }
 
-class NMC{
+class ClimbSafe{
   1 <@>- * Equipment;
   1 <@>- * EquipmentBundle;
   1 <@>- 0..1 ClimbingSeason;
   1 <@>- * Hotel;
   1 <@>- 1 Administrator;
-  Integer guideWeeklyRate;
+  lazy Integer guideWeeklyRate;
 }
 
 class ClimbingSeason{
@@ -22,7 +18,7 @@ class ClimbingSeason{
   Date endDate;
   1 <@>- * Assignment;
   1 memberSeason <@>- * Visitor member;
-  1 guideSseason <@>- * Visitor guide;
+  1 guideSeason <@>- * Visitor guide;
 }
 
 class Equipment{
@@ -33,7 +29,7 @@ class Equipment{
 }
 
 class EquipmentBundle{
- * -- * Equipment;
+ * -- 2..* Equipment;
   Integer discount;
 }
 
@@ -53,7 +49,6 @@ class MemberRequest{
 }
 
 class Administrator{
-  
   immutable username="admin@nmc.nt";
   password="admin";
 }
@@ -61,8 +56,7 @@ class Administrator{
 class Hotel{
   name;
   address;
-  Integer stars;
-  Integer pricePerNight;
+  Stars stars;
 }
 
 class Assignment{
@@ -83,15 +77,10 @@ class ClimbSafe
 {
   position.association ClimbSafe__User 110,10 0,10;
   position.association ClimbSafe__Hotel 110,24 0,10;
-  position.association ClimbSafe__NMC 14,43 2,0;
-  position.association ClimbSafe__ClimbingSeason 110,19 0,10;
+  position.association ClimbSafe__ClimbingSeason 168,59 0,10;
   position 43 22 109 42.5208;
 }
 
-class ClimbSafe
-{
-  position 43 22 109 42.5208;
-}
 
 class ClimbingSeason
 {
@@ -101,9 +90,10 @@ class ClimbingSeason
   position.association ClimbingSeason__Visitor:guide 131,29 0,30;
   position.association ClimbingSeason:memberSeason__Visitor:member 131,44 0,10;
   position.association ClimbingSeason:guideSseason__Visitor:guide 80,78 0,74;
+  position.association ClimbingSeason:guideSeason__Visitor:guide 131,31 0,30;
 }
 
-class NMC
+class ClimbSafe
 {
   position 42 160 199.958 59.5208;
   position.association Assignment__NMC 199,9 0,10;
@@ -112,6 +102,9 @@ class NMC
   position.association Equipment__NMC 52,60 4,0;
   position.association Hotel__NMC 196,0 0,106;
   position.association EquipmentBundle__NMC 0,53 2,0;
+  position.association ClimbSafe__Equipment 12,59 0,10;
+  position.association ClimbSafe__EquipmentBundle 0,10 1,0;
+  position.association Administrator__ClimbSafe 11,0 0,10;
 }
 
 class Equipment
@@ -144,13 +137,13 @@ class Assignment
   position.association Assignment__EquipmentBundle 0,10 34,0;
   position.association Assignment__Hotel 143,0 166,110;
   position.association Assignment:memberAssignment__Visitor:member 0,86 64,0;
-  position.association Assignment:guideAssignment__Visitor:guide 152,86 204,0;
+  position.association Assignment:guideAssignment__Visitor:guide 127,118 177,0;
 }
 
 class Visitor
 {
   position 555 426 209.688 110.521;
-  position.association MemberRequest__Visitor 0,110 159,8;
+  position.association MemberRequest__Visitor 0,110 167,8;
 }
 
 namespace -;
@@ -158,9 +151,9 @@ namespace -;
 class MemberRequest
 {
   position 300 529 166.771 76.5208;
-  position.association Equipment__MemberRequest 59,0 141,81;
+  position.association Equipment__MemberRequest 59,0 149,82;
   position.association EquipmentBundle__MemberRequest 0,34 142,25;
-}//$?[End_of_model]$?
+}
 
 namespace -;
 
@@ -172,11 +165,11 @@ class EquipmentBundle
 
 class Visitor
 {
-  position.association MemberRequest__Visitor 0,110 159,8;
+  position.association MemberRequest__Visitor 0,110 167,8;
   position 555 426 209.688 110.521;
 }
 
 class Visitor
 {
   position 555 426 209.688 110.521;
-}
+}//$?[End_of_model]$?

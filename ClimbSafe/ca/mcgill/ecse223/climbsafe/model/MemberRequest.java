@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 49 "../../../../../../model.ump"
-// line 159 "../../../../../../model.ump"
+// line 45 "../../../../../../model.ump"
+// line 152 "../../../../../../model.ump"
 public class MemberRequest
 {
 
@@ -149,9 +149,9 @@ public class MemberRequest
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Equipment addEquipment(String aName, String aDescription, double aWeight, int aPrice, NMC aNMC)
+  public Equipment addEquipment(String aName, String aDescription, double aWeight, int aPrice, ClimbSafe aClimbSafe)
   {
-    return new Equipment(aName, aDescription, aWeight, aPrice, aNMC, this);
+    return new Equipment(aName, aDescription, aWeight, aPrice, aClimbSafe, this);
   }
 
   public boolean addEquipment(Equipment aEquipment)
@@ -221,9 +221,9 @@ public class MemberRequest
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public EquipmentBundle addEquipmentBundle(int aDiscount, NMC aNMC)
+  public EquipmentBundle addEquipmentBundle(int aDiscount, ClimbSafe aClimbSafe, Equipment... allEquipment)
   {
-    return new EquipmentBundle(aDiscount, aNMC, this);
+    return new EquipmentBundle(aDiscount, aClimbSafe, this, allEquipment);
   }
 
   public boolean addEquipmentBundle(EquipmentBundle aEquipmentBundle)

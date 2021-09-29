@@ -3,10 +3,16 @@
 
 package ca.mcgill.ecse223.climbsafe.model;
 
-// line 62 "../../../../../../model.ump"
-// line 134 "../../../../../../model.ump"
+// line 57 "../../../../../../model.ump"
+// line 127 "../../../../../../model.ump"
 public class Hotel
 {
+
+  //------------------------
+  // ENUMERATIONS
+  //------------------------
+
+  public enum Stars { One, Two, Three, Four, Five }
 
   //------------------------
   // MEMBER VARIABLES
@@ -15,27 +21,25 @@ public class Hotel
   //Hotel Attributes
   private String name;
   private String address;
-  private int stars;
-  private int pricePerNight;
+  private Stars stars;
 
   //Hotel Associations
-  private NMC nMC;
+  private ClimbSafe climbSafe;
   private Assignment assignment;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Hotel(String aName, String aAddress, int aStars, int aPricePerNight, NMC aNMC, Assignment aAssignment)
+  public Hotel(String aName, String aAddress, Stars aStars, ClimbSafe aClimbSafe, Assignment aAssignment)
   {
     name = aName;
     address = aAddress;
     stars = aStars;
-    pricePerNight = aPricePerNight;
-    boolean didAddNMC = setNMC(aNMC);
-    if (!didAddNMC)
+    boolean didAddClimbSafe = setClimbSafe(aClimbSafe);
+    if (!didAddClimbSafe)
     {
-      throw new RuntimeException("Unable to create hotel due to nMC. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create hotel due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddAssignment = setAssignment(aAssignment);
     if (!didAddAssignment)
@@ -64,18 +68,10 @@ public class Hotel
     return wasSet;
   }
 
-  public boolean setStars(int aStars)
+  public boolean setStars(Stars aStars)
   {
     boolean wasSet = false;
     stars = aStars;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setPricePerNight(int aPricePerNight)
-  {
-    boolean wasSet = false;
-    pricePerNight = aPricePerNight;
     wasSet = true;
     return wasSet;
   }
@@ -90,19 +86,14 @@ public class Hotel
     return address;
   }
 
-  public int getStars()
+  public Stars getStars()
   {
     return stars;
   }
-
-  public int getPricePerNight()
-  {
-    return pricePerNight;
-  }
   /* Code from template association_GetOne */
-  public NMC getNMC()
+  public ClimbSafe getClimbSafe()
   {
-    return nMC;
+    return climbSafe;
   }
   /* Code from template association_GetOne */
   public Assignment getAssignment()
@@ -110,21 +101,21 @@ public class Hotel
     return assignment;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setNMC(NMC aNMC)
+  public boolean setClimbSafe(ClimbSafe aClimbSafe)
   {
     boolean wasSet = false;
-    if (aNMC == null)
+    if (aClimbSafe == null)
     {
       return wasSet;
     }
 
-    NMC existingNMC = nMC;
-    nMC = aNMC;
-    if (existingNMC != null && !existingNMC.equals(aNMC))
+    ClimbSafe existingClimbSafe = climbSafe;
+    climbSafe = aClimbSafe;
+    if (existingClimbSafe != null && !existingClimbSafe.equals(aClimbSafe))
     {
-      existingNMC.removeHotel(this);
+      existingClimbSafe.removeHotel(this);
     }
-    nMC.addHotel(this);
+    climbSafe.addHotel(this);
     wasSet = true;
     return wasSet;
   }
@@ -159,11 +150,11 @@ public class Hotel
 
   public void delete()
   {
-    NMC placeholderNMC = nMC;
-    this.nMC = null;
-    if(placeholderNMC != null)
+    ClimbSafe placeholderClimbSafe = climbSafe;
+    this.climbSafe = null;
+    if(placeholderClimbSafe != null)
     {
-      placeholderNMC.removeHotel(this);
+      placeholderClimbSafe.removeHotel(this);
     }
     Assignment existingAssignment = assignment;
     assignment = null;
@@ -178,10 +169,9 @@ public class Hotel
   {
     return super.toString() + "["+
             "name" + ":" + getName()+ "," +
-            "address" + ":" + getAddress()+ "," +
-            "stars" + ":" + getStars()+ "," +
-            "pricePerNight" + ":" + getPricePerNight()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "nMC = "+(getNMC()!=null?Integer.toHexString(System.identityHashCode(getNMC())):"null") + System.getProperties().getProperty("line.separator") +
+            "address" + ":" + getAddress()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "stars" + "=" + (getStars() != null ? !getStars().equals(this)  ? getStars().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "climbSafe = "+(getClimbSafe()!=null?Integer.toHexString(System.identityHashCode(getClimbSafe())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "assignment = "+(getAssignment()!=null?Integer.toHexString(System.identityHashCode(getAssignment())):"null");
   }
 }

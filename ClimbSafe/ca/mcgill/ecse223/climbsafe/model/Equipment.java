@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.climbsafe.model;
 import java.util.*;
 
-// line 29 "../../../../../../model.ump"
-// line 118 "../../../../../../model.ump"
+// line 25 "../../../../../../model.ump"
+// line 111 "../../../../../../model.ump"
 public class Equipment
 {
 
@@ -20,7 +20,7 @@ public class Equipment
   private int price;
 
   //Equipment Associations
-  private NMC nMC;
+  private ClimbSafe climbSafe;
   private List<EquipmentBundle> equipmentBundles;
   private MemberRequest memberRequest;
 
@@ -28,16 +28,16 @@ public class Equipment
   // CONSTRUCTOR
   //------------------------
 
-  public Equipment(String aName, String aDescription, double aWeight, int aPrice, NMC aNMC, MemberRequest aMemberRequest)
+  public Equipment(String aName, String aDescription, double aWeight, int aPrice, ClimbSafe aClimbSafe, MemberRequest aMemberRequest)
   {
     name = aName;
     description = aDescription;
     weight = aWeight;
     price = aPrice;
-    boolean didAddNMC = setNMC(aNMC);
-    if (!didAddNMC)
+    boolean didAddClimbSafe = setClimbSafe(aClimbSafe);
+    if (!didAddClimbSafe)
     {
-      throw new RuntimeException("Unable to create equipment due to nMC. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create equipment due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     equipmentBundles = new ArrayList<EquipmentBundle>();
     boolean didAddMemberRequest = setMemberRequest(aMemberRequest);
@@ -103,9 +103,9 @@ public class Equipment
     return price;
   }
   /* Code from template association_GetOne */
-  public NMC getNMC()
+  public ClimbSafe getClimbSafe()
   {
-    return nMC;
+    return climbSafe;
   }
   /* Code from template association_GetMany */
   public EquipmentBundle getEquipmentBundle(int index)
@@ -143,21 +143,21 @@ public class Equipment
     return memberRequest;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setNMC(NMC aNMC)
+  public boolean setClimbSafe(ClimbSafe aClimbSafe)
   {
     boolean wasSet = false;
-    if (aNMC == null)
+    if (aClimbSafe == null)
     {
       return wasSet;
     }
 
-    NMC existingNMC = nMC;
-    nMC = aNMC;
-    if (existingNMC != null && !existingNMC.equals(aNMC))
+    ClimbSafe existingClimbSafe = climbSafe;
+    climbSafe = aClimbSafe;
+    if (existingClimbSafe != null && !existingClimbSafe.equals(aClimbSafe))
     {
-      existingNMC.removeEquipment(this);
+      existingClimbSafe.removeEquipment(this);
     }
-    nMC.addEquipment(this);
+    climbSafe.addEquipment(this);
     wasSet = true;
     return wasSet;
   }
@@ -265,17 +265,24 @@ public class Equipment
 
   public void delete()
   {
-    NMC placeholderNMC = nMC;
-    this.nMC = null;
-    if(placeholderNMC != null)
+    ClimbSafe placeholderClimbSafe = climbSafe;
+    this.climbSafe = null;
+    if(placeholderClimbSafe != null)
     {
-      placeholderNMC.removeEquipment(this);
+      placeholderClimbSafe.removeEquipment(this);
     }
     ArrayList<EquipmentBundle> copyOfEquipmentBundles = new ArrayList<EquipmentBundle>(equipmentBundles);
     equipmentBundles.clear();
     for(EquipmentBundle aEquipmentBundle : copyOfEquipmentBundles)
     {
-      aEquipmentBundle.removeEquipment(this);
+      if (aEquipmentBundle.numberOfEquipment() <= EquipmentBundle.minimumNumberOfEquipment())
+      {
+        aEquipmentBundle.delete();
+      }
+      else
+      {
+        aEquipmentBundle.removeEquipment(this);
+      }
     }
     MemberRequest placeholderMemberRequest = memberRequest;
     this.memberRequest = null;
@@ -293,7 +300,7 @@ public class Equipment
             "description" + ":" + getDescription()+ "," +
             "weight" + ":" + getWeight()+ "," +
             "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "nMC = "+(getNMC()!=null?Integer.toHexString(System.identityHashCode(getNMC())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "climbSafe = "+(getClimbSafe()!=null?Integer.toHexString(System.identityHashCode(getClimbSafe())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "memberRequest = "+(getMemberRequest()!=null?Integer.toHexString(System.identityHashCode(getMemberRequest())):"null");
   }
 }
