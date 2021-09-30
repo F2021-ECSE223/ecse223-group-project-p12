@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse223.climbsafe.model;
+import java.util.*;
 
 // line 57 "../../../../../../model.ump"
 // line 127 "../../../../../../model.ump"
@@ -25,13 +26,13 @@ public class Hotel
 
   //Hotel Associations
   private ClimbSafe climbSafe;
-  private Assignment assignment;
+  private List<Assignment> assignments;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Hotel(String aName, String aAddress, Stars aStars, ClimbSafe aClimbSafe, Assignment aAssignment)
+  public Hotel(String aName, String aAddress, Stars aStars, ClimbSafe aClimbSafe)
   {
     name = aName;
     address = aAddress;
@@ -41,11 +42,7 @@ public class Hotel
     {
       throw new RuntimeException("Unable to create hotel due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    boolean didAddAssignment = setAssignment(aAssignment);
-    if (!didAddAssignment)
-    {
-      throw new RuntimeException("Unable to create hotel due to assignment. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
+    assignments = new ArrayList<Assignment>();
   }
 
   //------------------------
@@ -95,10 +92,35 @@ public class Hotel
   {
     return climbSafe;
   }
-  /* Code from template association_GetOne */
-  public Assignment getAssignment()
+  /* Code from template association_GetMany */
+  public Assignment getAssignment(int index)
   {
-    return assignment;
+    Assignment aAssignment = assignments.get(index);
+    return aAssignment;
+  }
+
+  public List<Assignment> getAssignments()
+  {
+    List<Assignment> newAssignments = Collections.unmodifiableList(assignments);
+    return newAssignments;
+  }
+
+  public int numberOfAssignments()
+  {
+    int number = assignments.size();
+    return number;
+  }
+
+  public boolean hasAssignments()
+  {
+    boolean has = assignments.size() > 0;
+    return has;
+  }
+
+  public int indexOfAssignment(Assignment aAssignment)
+  {
+    int index = assignments.indexOf(aAssignment);
+    return index;
   }
   /* Code from template association_SetOneToMany */
   public boolean setClimbSafe(ClimbSafe aClimbSafe)
@@ -119,33 +141,76 @@ public class Hotel
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToOptionalOne */
-  public boolean setAssignment(Assignment aNewAssignment)
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfAssignments()
   {
-    boolean wasSet = false;
-    if (aNewAssignment == null)
+    return 0;
+  }
+  /* Code from template association_AddManyToOptionalOne */
+  public boolean addAssignment(Assignment aAssignment)
+  {
+    boolean wasAdded = false;
+    if (assignments.contains(aAssignment)) { return false; }
+    Hotel existingHotel = aAssignment.getHotel();
+    if (existingHotel == null)
     {
-      //Unable to setAssignment to null, as hotel must always be associated to a assignment
-      return wasSet;
+      aAssignment.setHotel(this);
     }
-    
-    Hotel existingHotel = aNewAssignment.getHotel();
-    if (existingHotel != null && !equals(existingHotel))
+    else if (!this.equals(existingHotel))
     {
-      //Unable to setAssignment, the current assignment already has a hotel, which would be orphaned if it were re-assigned
-      return wasSet;
+      existingHotel.removeAssignment(aAssignment);
+      addAssignment(aAssignment);
     }
-    
-    Assignment anOldAssignment = assignment;
-    assignment = aNewAssignment;
-    assignment.setHotel(this);
+    else
+    {
+      assignments.add(aAssignment);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
 
-    if (anOldAssignment != null)
+  public boolean removeAssignment(Assignment aAssignment)
+  {
+    boolean wasRemoved = false;
+    if (assignments.contains(aAssignment))
     {
-      anOldAssignment.setHotel(null);
+      assignments.remove(aAssignment);
+      aAssignment.setHotel(null);
+      wasRemoved = true;
     }
-    wasSet = true;
-    return wasSet;
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addAssignmentAt(Assignment aAssignment, int index)
+  {  
+    boolean wasAdded = false;
+    if(addAssignment(aAssignment))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfAssignments()) { index = numberOfAssignments() - 1; }
+      assignments.remove(aAssignment);
+      assignments.add(index, aAssignment);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveAssignmentAt(Assignment aAssignment, int index)
+  {
+    boolean wasAdded = false;
+    if(assignments.contains(aAssignment))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfAssignments()) { index = numberOfAssignments() - 1; }
+      assignments.remove(aAssignment);
+      assignments.add(index, aAssignment);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addAssignmentAt(aAssignment, index);
+    }
+    return wasAdded;
   }
 
   public void delete()
@@ -156,11 +221,9 @@ public class Hotel
     {
       placeholderClimbSafe.removeHotel(this);
     }
-    Assignment existingAssignment = assignment;
-    assignment = null;
-    if (existingAssignment != null)
+    while( !assignments.isEmpty() )
     {
-      existingAssignment.setHotel(null);
+      assignments.get(0).setHotel(null);
     }
   }
 
@@ -171,7 +234,6 @@ public class Hotel
             "name" + ":" + getName()+ "," +
             "address" + ":" + getAddress()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "stars" + "=" + (getStars() != null ? !getStars().equals(this)  ? getStars().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "climbSafe = "+(getClimbSafe()!=null?Integer.toHexString(System.identityHashCode(getClimbSafe())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "assignment = "+(getAssignment()!=null?Integer.toHexString(System.identityHashCode(getAssignment())):"null");
+            "  " + "climbSafe = "+(getClimbSafe()!=null?Integer.toHexString(System.identityHashCode(getClimbSafe())):"null");
   }
 }

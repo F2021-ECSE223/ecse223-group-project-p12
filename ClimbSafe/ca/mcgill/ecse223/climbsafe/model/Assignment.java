@@ -132,29 +132,19 @@ public class Assignment
   {
     return climbingSeason;
   }
-  /* Code from template association_SetOptionalOneToOne */
-  public boolean setHotel(Hotel aNewHotel)
+  /* Code from template association_SetOptionalOneToMany */
+  public boolean setHotel(Hotel aHotel)
   {
     boolean wasSet = false;
-    if (hotel != null && !hotel.equals(aNewHotel) && equals(hotel.getAssignment()))
+    Hotel existingHotel = hotel;
+    hotel = aHotel;
+    if (existingHotel != null && !existingHotel.equals(aHotel))
     {
-      //Unable to setHotel, as existing hotel would become an orphan
-      return wasSet;
+      existingHotel.removeAssignment(this);
     }
-
-    hotel = aNewHotel;
-    Assignment anOldAssignment = aNewHotel != null ? aNewHotel.getAssignment() : null;
-
-    if (!this.equals(anOldAssignment))
+    if (aHotel != null)
     {
-      if (anOldAssignment != null)
-      {
-        anOldAssignment.hotel = null;
-      }
-      if (hotel != null)
-      {
-        hotel.setAssignment(this);
-      }
+      aHotel.addAssignment(this);
     }
     wasSet = true;
     return wasSet;
@@ -198,11 +188,11 @@ public class Assignment
 
   public void delete()
   {
-    Hotel existingHotel = hotel;
-    hotel = null;
-    if (existingHotel != null)
+    if (hotel != null)
     {
-      existingHotel.delete();
+      Hotel placeholderHotel = hotel;
+      this.hotel = null;
+      placeholderHotel.removeAssignment(this);
     }
     Visitor existingMember = member;
     member = null;

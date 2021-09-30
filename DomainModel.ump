@@ -60,7 +60,7 @@ class Hotel{
 }
 
 class Assignment{
-  1 -- 0..1 Hotel;
+  * -- 0..1 Hotel;
   1 memberAssignment -- 1 Visitor member;
   0..* guideAssignment -- 0..1 Visitor guide;
   Integer startWeek;

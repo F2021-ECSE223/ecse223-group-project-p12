@@ -356,9 +356,9 @@ public class ClimbSafe
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Hotel addHotel(String aName, String aAddress, Stars aStars, Assignment aAssignment)
+  public Hotel addHotel(String aName, String aAddress, Stars aStars)
   {
-    return new Hotel(aName, aAddress, aStars, this, aAssignment);
+    return new Hotel(aName, aAddress, aStars, this);
   }
 
   public boolean addHotel(Hotel aHotel)
