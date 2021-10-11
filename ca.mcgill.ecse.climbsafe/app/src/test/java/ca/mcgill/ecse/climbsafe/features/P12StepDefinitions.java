@@ -10,45 +10,52 @@ import org.junit.Assert;
 
 import ca.mcgill.ecse.climbsafe.model.*;
 import ca.mcgill.ecse.climbsafe.controller.*;
+import ca.mcgill.ecse.climbsafe.application.*;
 
 public class P12StepDefinitions {
 
   private ClimbSafe climbSafe;
 
   @Given("the following ClimbSafe system exists: \\(p12)")
-  public void the_following_climb_safe_system_exists_p12(List<String> arguments) {
-    String[] ymd = arguments.get(0).split("-");
-    @SuppressWarnings("deprecation")
-    Date date = new Date(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]), Integer.parseInt(ymd[2]));
-    climbSafe = new ClimbSafe(date, Integer.parseInt(arguments.get(1)), Integer.parseInt(arguments.get(2)));
+  public void the_following_climb_safe_system_exists_p12( io.cucumber.datatable.DataTable dataTable ) {
+    
+	List<List<String>> exClimbSafe = dataTable.asLists(String.class);
+	climbSafe = ClimbSafeApplication.getClimbSafe();
+    climbSafe.setStartDate(Date.valueOf(exClimbSafe.get(1).get(0)));
+	climbSafe.setNrWeeks(Integer.parseInt(exClimbSafe.get(1).get(1)));
+	climbSafe.setPriceOfGuidePerWeek(Integer.parseInt(exClimbSafe.get(1).get(2)));
+	resetClimbSafe();
   }
 
   @Given("the following guides exist in the system: \\(p12)")
-  public void the_following_guides_exist_in_the_system_p12(List<String> arguments) {
-    if (climbSafe == null) throw new NullPointerException();
-    climbSafe.addGuide(arguments.get(0), arguments.get(1), arguments.get(2), arguments.get(3));
+  public void the_following_guides_exist_in_the_system_p12( io.cucumber.datatable.DataTable dataTable ) {
+    List<List<String>> guideList = dataTable.asLists(String.class);
+    for( int i = 1; i < guideList.size(); i++ ) {
+    	climbSafe.addGuide(guideList.get(i).get(0), guideList.get(i).get(1), 
+    			guideList.get(i).get(2), guideList.get(i).get(3));
+    }
   }
 
   @Given("the following members exist in the system: \\(p12)")
-  public void the_following_members_exist_in_the_system_p12(List<String> arguments) {
-    if (climbSafe == null) throw new NullPointerException();
-    climbSafe.addMember(arguments.get(0), arguments.get(1), arguments.get(2), arguments.get(3),
-            Integer.parseInt(arguments.get(4)), Boolean.parseBoolean(arguments.get(5)), Boolean.parseBoolean(arguments.get(6)));
+  public void the_following_members_exist_in_the_system_p12( io.cucumber.datatable.DataTable dataTable ) {
+    List<List<String>> memberList = dataTable.asLists(String.class);
+    for( int i = 1; i < memberList.size(); i++ ) {
+    	climbSafe.addMember(memberList.get(i).get(0), memberList.get(i).get(1), 
+    			memberList.get(i).get(2), memberList.get(i).get(3), 
+    			Integer.parseInt(memberList.get(i).get(4)), 
+    			Boolean.parseBoolean(memberList.get(i).get(5)), 
+    			Boolean.parseBoolean(memberList.get(i).get(6)));
+    }
   }
 
   @When("the admin attempts to delete the guide account linked to the {string} \\(p12)")
   public void the_admin_attempts_to_delete_the_guide_account_linked_to_the_p12(String string){
-    Guide g = findGuideFromEmail(string);
-    if( g == null) {
-      return;
-    }
-    ClimbSafeFeatureSet1Controller.deleteGuide(g);
-
+    ClimbSafeFeatureSet1Controller.deleteGuide(string);
   }
 
   @Then("the guide account linked to the {string} shall not exist in the system \\(p12)")
   public void the_guide_account_linked_to_the_shall_not_exist_in_the_system_p12(String string) {
-    Assert.assertNull(findGuideFromEmail(string));
+    Assert.assertNull(ClimbSafeApplication.getClimbSafe().findGuideFromEmail(string));
   }
 
   @Then("the number of guides in the system is {string} \\(p12)")
@@ -58,31 +65,28 @@ public class P12StepDefinitions {
 
   @Then("the member account linked to the {string} shall exist in the system \\(p12)")
   public void the_member_account_linked_to_the_shall_exist_in_the_system_p12(String string) {
-    Assert.assertNotNull(findMemberFromEmail(string));
+    Assert.assertNotNull(ClimbSafeApplication.getClimbSafe().findMemberFromEmail(string));
   }
 
   @Then("the number of guides in the system is {int} \\(p12)")
   public void the_number_of_guides_in_the_system_is_p12(Integer int1) {
     Assert.assertEquals(int1, Integer.valueOf(climbSafe.numberOfGuides()));
   }
-
-  private Guide findGuideFromEmail(String email){
-    List<Guide> guideList = climbSafe.getGuides();
-    for( Guide g : guideList ) {
-      if(g.getEmail().equals(email)) {
-        return g;
-      }
-    }
-    return null;
-  }
-
-  private Member findMemberFromEmail(String email){
-    List<Member> memberList = climbSafe.getMembers();
-    for( Member m : memberList ) {
-      if(m.getEmail().equals(email)) {
-        return m;
-      }
-    }
-    return null;
+  
+  // Reset the lists of objects used for this batch of test
+  private void resetClimbSafe() {
+	  int numberOfGuides = climbSafe.getGuides().size();
+	  int numberOfMembers = climbSafe.getMembers().size();
+	  int numberOfHotels = climbSafe.getHotels().size();
+	  
+	  for( int i = 0; i < numberOfGuides; i++) {
+		  climbSafe.getGuides().get(0).delete();
+	  }
+	  for( int i = 0; i < numberOfMembers; i++) {
+		  climbSafe.getMembers().get(0).delete();
+	  }
+	  for( int i = 0; i < numberOfHotels; i++) {
+		  climbSafe.getHotels().get(0).delete();
+	  }
   }
 }

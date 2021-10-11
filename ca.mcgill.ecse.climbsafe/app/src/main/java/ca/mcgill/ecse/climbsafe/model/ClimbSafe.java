@@ -1013,7 +1013,6 @@ public class ClimbSafe
     
   }
 
-
   public String toString()
   {
     return super.toString() + "["+
@@ -1021,5 +1020,38 @@ public class ClimbSafe
             "priceOfGuidePerWeek" + ":" + getPriceOfGuidePerWeek()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "adminstrator = "+(getAdminstrator()!=null?Integer.toHexString(System.identityHashCode(getAdminstrator())):"null");
+  }
+  
+  //line 19 "../../../../../../model.ump"
+   public Guide findGuideFromEmail(String email){
+    List<Guide> guideList = this.getGuides();
+    for( Guide g : guideList ) {
+      if(g.getEmail().equals(email)) {
+        return g;
+      }
+    }
+    return null;
+  }
+   
+  // line 29 "../../../../../../model.ump"
+   public Member findMemberFromEmail(String email){
+    List<Member> memberList = this.getMembers();
+    for( Member m : memberList ) {
+      if(m.getEmail().equals(email)) {
+        return m;
+      }
+    }
+    return null;
+  }
+   
+  // line 39 "../../../../../../model.ump"
+   public Hotel findHotelFromName(String name){
+    List<Hotel> hotelList = this.getHotels();
+    for( Hotel h : hotelList ) {
+      if(h.getName().equals(name)) {
+        return h;
+      }
+    }
+    return null;
   }
 }

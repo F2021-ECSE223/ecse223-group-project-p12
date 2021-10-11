@@ -13,6 +13,36 @@ class ClimbSafe {
   1 <@>- * BundleItem bundleItems;
   1 <@>- * Hotel hotels;
   1 <@>- * Assignment assignments;
+  
+  public Guide findGuideFromEmail(String email){
+    List<Guide> guideList = this.getGuides();
+    for( Guide g : guideList ) {
+      if(g.getEmail().equals(email)) {
+        return g;
+      }
+    }
+    return null;
+  }
+
+  public Member findMemberFromEmail(String email){
+    List<Member> memberList = this.getMembers();
+    for( Member m : memberList ) {
+      if(m.getEmail().equals(email)) {
+        return m;
+      }
+    }
+    return null;
+  }
+  
+  public Hotel findHotelFromName(String name){
+    List<Hotel> hotelList = this.getHotels();
+    for( Hotel h : hotelList ) {
+      if(h.getName().equals(name)) {
+        return h;
+      }
+    }
+    return null;
+  }
 }
 
 class User {
