@@ -15,6 +15,7 @@ import ca.mcgill.ecse.climbsafe.application.*;
 public class P12StepDefinitions {
 
   private ClimbSafe climbSafe;
+  String error;
 
   @Given("the following ClimbSafe system exists: \\(p12)")
   public void the_following_climb_safe_system_exists_p12( io.cucumber.datatable.DataTable dataTable ) {
@@ -50,12 +51,16 @@ public class P12StepDefinitions {
 
   @When("the admin attempts to delete the guide account linked to the {string} \\(p12)")
   public void the_admin_attempts_to_delete_the_guide_account_linked_to_the_p12(String string){
-    ClimbSafeFeatureSet1Controller.deleteGuide(string);
+    try {
+	  ClimbSafeFeatureSet1Controller.deleteGuide(string);
+    } catch( Exception e ) {
+    	error = e.getMessage();
+    }
   }
 
   @Then("the guide account linked to the {string} shall not exist in the system \\(p12)")
   public void the_guide_account_linked_to_the_shall_not_exist_in_the_system_p12(String string) {
-    Assert.assertNull(ClimbSafeApplication.getClimbSafe().findGuideFromEmail(string));
+    Assert.assertNull(findGuideFromEmail(string));
   }
 
   @Then("the number of guides in the system is {string} \\(p12)")
@@ -65,7 +70,7 @@ public class P12StepDefinitions {
 
   @Then("the member account linked to the {string} shall exist in the system \\(p12)")
   public void the_member_account_linked_to_the_shall_exist_in_the_system_p12(String string) {
-    Assert.assertNotNull(ClimbSafeApplication.getClimbSafe().findMemberFromEmail(string));
+    Assert.assertNotNull(findMemberFromEmail(string));
   }
 
   @Then("the number of guides in the system is {int} \\(p12)")
@@ -89,4 +94,34 @@ public class P12StepDefinitions {
 		  climbSafe.getHotels().get(0).delete();
 	  }
   }
+  
+  public Guide findGuideFromEmail(String email){
+	  List<Guide> guideList = ClimbSafeApplication.getClimbSafe().getGuides();
+	  for( Guide g : guideList ) {
+	    if(g.getEmail().equals(email)) {
+	      return g;
+	    }
+	  }
+	  return null;
+	}
+	
+  public Member findMemberFromEmail(String email){
+	  List<Member> memberList = ClimbSafeApplication.getClimbSafe().getMembers();
+	  for( Member m : memberList ) {
+	    if(m.getEmail().equals(email)) {
+	      return m;
+	    }
+	  }
+	  return null;
+	}
+	  
+  public Hotel findHotelFromName(String name){
+	  List<Hotel> hotelList = ClimbSafeApplication.getClimbSafe().getHotels();
+	  for( Hotel h : hotelList ) {
+	    if(h.getName().equals(name)) {
+	      return h;
+	    }
+	  }
+	  return null;
+	}
 }
