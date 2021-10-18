@@ -43,6 +43,24 @@ class ClimbSafe {
     }
     return null;
   }
+  public EquipmentBundle findEquipmentBundleFromName(String name){
+	List<EquipmentBundle> bundleList = this.getBundles();
+	for( EquipmentBundle eb : bundleList ) {
+      if(name.equals(eb.getName()) ) {
+	    return eb;
+	  }
+	}
+	return null;
+  }
+  public Equipment findEquipmentFromName(String name){
+    List<Equipment> equipment = this.getEquipment();
+    for( Equipment e : equipment ) {
+	  if(e.getName().equals(name) {
+		return e;
+	  }
+	}
+	return null;
+  }
 }
 
 class User {
