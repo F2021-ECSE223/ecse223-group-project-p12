@@ -43,6 +43,13 @@ class ClimbSafe {
     }
     return null;
   }
+
+    /**
+  * this method searches for equipment bundles in the bundleList in climbSafe
+  * 
+  * @param name Name of the bundle to look for
+  * @return bundle if found, returns null if not
+  */
   public EquipmentBundle findEquipmentBundleFromName(String name){
 	List<EquipmentBundle> bundleList = this.getBundles();
 	for( EquipmentBundle eb : bundleList ) {
@@ -52,6 +59,12 @@ class ClimbSafe {
 	}
 	return null;
   }
+  /**
+  * this method searches for an equipment  in the equipment list in climbSafe
+  * 
+  * @param name Name of the equipment to look for
+  * @return equipment if found, returns null if not
+  */
   public Equipment findEquipmentFromName(String name){
     List<Equipment> equipment = this.getEquipment();
     for( Equipment e : equipment ) {
