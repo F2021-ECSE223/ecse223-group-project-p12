@@ -14,6 +14,8 @@ public class ClimbSafeFeatureSet1Controller {
    * @param nrWeeks					Number of weeks for which the climbing season will last
    * @param priceOfGuidePerWeek		Price of the guides per weeks
    * @throws InvalidInputException  
+   * -> nrWeeks < 0
+   * -> priceOfGuidePerWeek < 0
    */
   public static void setup(Date startDate, int nrWeeks, int priceOfGuidePerWeek)
       throws InvalidInputException {

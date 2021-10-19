@@ -2,6 +2,9 @@ package ca.mcgill.ecse.climbsafe.controller;
 
 import java.util.List;
 
+public class ClimbSafeFeatureSet4Controller {
+
+
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.Equipment;
 

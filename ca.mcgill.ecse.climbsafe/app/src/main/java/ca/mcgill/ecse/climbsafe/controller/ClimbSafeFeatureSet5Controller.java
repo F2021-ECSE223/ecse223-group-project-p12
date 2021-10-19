@@ -8,12 +8,9 @@ import java.util.List;
  *
  * @author Habib Jarweh
  */
+public class ClimbSafeFeatureSet5Controller {
 
-class ClimbSafeFeatureSet5Controller {
-	
-static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();	
-
-
+	static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
 /**
  * This method adds an equipment bundle to the climb safe application.
  *
