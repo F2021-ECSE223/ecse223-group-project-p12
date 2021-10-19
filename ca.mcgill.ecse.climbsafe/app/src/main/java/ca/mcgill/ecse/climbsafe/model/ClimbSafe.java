@@ -1058,7 +1058,7 @@ public class ClimbSafe
    public EquipmentBundle findEquipmentBundleFromName(String name){
 		List<EquipmentBundle> bundleList = this.getBundles();
 		for( EquipmentBundle eb : bundleList ) {
-	      if(eb.getName().equals(name) {
+	      if(eb.getName().equals(name)) {
 		    return eb;
 		  }
 		}
@@ -1068,7 +1068,7 @@ public class ClimbSafe
    public Equipment findEquipmentFromName(String name){
 		List<Equipment> equipment = this.getEquipment();
 		for( Equipment e : equipment ) {
-	      if(e.getName().equals(name) {
+	      if(e.getName().equals(name)) {
 		    return e;
 		  }
 		}
