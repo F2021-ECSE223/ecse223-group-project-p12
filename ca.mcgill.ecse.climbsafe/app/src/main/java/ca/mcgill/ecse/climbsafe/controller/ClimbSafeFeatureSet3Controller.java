@@ -11,10 +11,11 @@ import ca.mcgill.ecse.climbsafe.model.Guide;
  * @author Chris Hatoum
  */
 
+
 public class ClimbSafeFeatureSet3Controller {
 	
 /**
- * 
+ * This method register the guide into the database
  * @param email
  * @param password
  * @param name
@@ -34,7 +35,14 @@ public class ClimbSafeFeatureSet3Controller {
   }
 
 
-
+/**
+ * This method updates the information of a given guide
+ * @param email
+ * @param newPassword
+ * @param newName
+ * @param newEmergencyContact
+ * @throws InvalidInputException
+ */
 public static void updateGuide(String email, String newPassword, String newName,
       String newEmergencyContact) throws InvalidInputException {
 
@@ -52,6 +60,11 @@ public static void updateGuide(String email, String newPassword, String newName,
     }
   }
 
+/**
+ * This method checks if the email provided is with accordance with the given constraints
+ * @param email
+ * @throws InvalidInputException
+ */
   public static void emailValid(String email) throws InvalidInputException {
 	  for(int i=0 ; i<email.length(); i++) {
 		  // Constraint for the email containing spaces
@@ -74,29 +87,36 @@ public static void updateGuide(String email, String newPassword, String newName,
 	  //Constraint for the input email of the guide being the one of the administrator
 	  if(email.equals("admin@nmc.nt")) throw new InvalidInputException("This email is reserved for administrators only");
   }
-  
-  
+
+/**
+ * This method checks if the password is valid given the constraints 
+ * @param password
+ * @throws InvalidInputException
+ */
   public static void passwordValid(String password) throws InvalidInputException{
-//    // password must not be empty or null
-//    password <> ""
-//    password <> null
+
 	  if (password == null) throw new InvalidInputException("The password cannot be null");
 	  if (password.equals("")) throw new InvalidInputException("The password cannot be empty");  
   }
-  
+
+ /**
+  * This method checks if the name is valid given the constraints
+  * @param name
+  * @throws InvalidInputException
+  */
 public static void nameValid(String name) throws InvalidInputException{
-//	for each NamedUser:
-//		   // name must not be empty or null
-//		   name <> ""
-//		   name <> null
+
 	if (name == null) throw new InvalidInputException("The name cannot be null");
 	if (name.equals("")) throw new InvalidInputException("The name cannot be empty");	 
   }
 
+/**
+ * This method checks if the emergency contact is valid given the constraints
+ * @param emergencyContact
+ * @throws InvalidInputException
+ */
 public static void emergencyContactValid(String emergencyContact) throws InvalidInputException{
-//	  // emergencyContact must not be empty or null
-//	   emergencyContact <> ""
-//	   emergencyContact <> null
+
 	
     if (emergencyContact == null) throw new InvalidInputException("The emergency contact cannot be null");
 	if (emergencyContact.equals("")) throw new InvalidInputException("The emergency contact cannot be empty");
