@@ -5,6 +5,9 @@ import java.util.List;
 import ca.mcgill.ecse.climbsafe.model.*;
 import ca.mcgill.ecse.climbsafe.application.*;
 
+public class ClimbSafeFeatureSet2Controller {
+
+
 
 public class ClimbSafeFeatureSet2Controller {
     static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
