@@ -5,25 +5,41 @@ import java.util.List;
 import ca.mcgill.ecse.climbsafe.model.*;
 import ca.mcgill.ecse.climbsafe.application.*;
 
-public class ClimbSafeFeatureSet2Controller {
-
-
+/**
+ * This class is responsible for the implementation of the features relating to the members.
+ * Namely, its purpose is to help with Registering members and Updating members.
+ *
+ * @author Theo Ghanem
+ */
 
 public class ClimbSafeFeatureSet2Controller {
     static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
 
+    /**
+     * This method is used to register the member into the Climb Safe database
+     * @param email    |string|  Member's email
+     * @param password |string| Member's password
+     * @param name	|string| Member's name
+     * @param emergencyContact |string| Member's emergency contact (phone number)
+     * @param nrWeeks |int| Number of weeks the member wants to climb for
+     * @param hotelRequired |Boolean| If the member requires a Hotel during his climbing weeks
+     * @param itemNames |List<String>| Name of the items the member needs for his climb
+     * @throws InvalidInputException  If certain constraints aren't respected, the method throws an InvalidInputException
+     * @author Theo Ghanem
+     */
 
     public static void registerMember(String email, String password, String name,
                                       String emergencyContact, int nrWeeks, boolean guideRequired, boolean hotelRequired,
                                       List<String> itemNames, List<Integer> itemQuantities) throws InvalidInputException {
 
+    	//makes sure all the constraints are respected.
         emailIsValid(email);
         passwordIsValid(password);
         userIsAdmin(email);
         nameIsValid(name);
         emergencyContactIsValid(emergencyContact);
         validNrWeeks(nrWeeks);
-        bookedItemIsValid(itemQuantities);
+        bookedItemQuanityIsValid(itemQuantities);
 
         Member newMember = new Member(email, password, name, emergencyContact, nrWeeks,guideRequired, hotelRequired, climbSafe);
 
@@ -31,38 +47,49 @@ public class ClimbSafeFeatureSet2Controller {
 
     }
 
-
+    /**
+     * This method is used to update an existing member into the Climb Safe database
+     * @param email    |string|  Member's email
+     * @param password |string| Member's new password
+     * @param name	|string| Member's new name
+     * @param emergencyContact |string| Member's new emergency contact (phone number)
+     * @param nrWeeks |int| New number of weeks the member wants to climb for
+     * @param hotelRequired |Boolean| If the member requires a Hotel during his climbing weeks
+     * @param itemNames |List<String>| New name of the items the member needs for his climb
+     * @throws InvalidInputException  If certain constraints aren't respected, the method throws an InvalidInputException
+     * @author Theo Ghanem
+     */
+    
     public static void updateMember(String email, String newPassword, String newName,
                                     String newEmergencyContact, int newNrWeeks, boolean newGuideRequired,
                                     boolean newHotelRequired, List<String> newItemNames, List<Integer> newItemQuantities)
             throws InvalidInputException {
 
+    	//makes sure all the constraints are respected.
         emailIsValid(email);
         passwordIsValid(newPassword);
         userIsAdmin(email);
         nameIsValid(newName);
         emergencyContactIsValid(newEmergencyContact);
         validNrWeeks(newNrWeeks);
-        bookedItemIsValid(newItemQuantities);
+		bookedItemQuanityIsValid(newItemQuantities);
 
         Member member = ClimbSafeApplication.getClimbSafe().findMemberFromEmail(email);
-        if( member != null ) {
+        if( member != null ) {	//make sure the member exits before updating it's information.
             member = new Member(email, newPassword, newName, newEmergencyContact, newNrWeeks,newGuideRequired, newHotelRequired, climbSafe);
         }
     }
 
-    //Constraints:
-    // email must not contain any spaces
-//    not password.contains(" ")
-//
-//    // email must contain some characters (anything is allowed except @), a @, some characters, a dot, and some characters
-//    // this is a simplified check sufficient for this application
-//   email.indexOf("@") > 0 // index starts at zero
-//           email.indexOf("@") = email.lastIndexOf("@")
-//           email.indexOf("@") < email.lastIndexOf(".") - 1
-//            email.lastIndexOf(".") < email.length() - 1
+    
+    /**
+     * Method for input validation. Makes sure all constraints are respected.
+     * If the constraints aren't respected it throws the according InvalidInputException.
+     * @param email |string|  Email inputted by the user.
+     * @throws InvalidInputException
+     * @author Theo Ghanem
+     */
 
-    public static String emailIsValid(String email) throws InvalidInputException {
+    public static void emailIsValid(String email) throws InvalidInputException {
         int countOfAt = 0;
         int lastIndexOfDot = 0;
         int indexOfAt = 0;
@@ -93,47 +120,75 @@ public class ClimbSafeFeatureSet2Controller {
             throw new InvalidInputException("There must not be a dot at the very end of the email");
         if (email.equals("admin@nmc.nt")) throw new InvalidInputException("The email entered is not allowed for members ");
 
-        return email;
     }
 
-    // password must not be empty or null
-    public static String passwordIsValid(String password) throws InvalidInputException {
+    /**
+     * Method for input validation. Makes sure all constraints are respected:
+     * @param password |string| Password inputted by the user.
+     * @throws InvalidInputException Password must not be empty or null
+     * @author Theo Ghanem
+     */
+
+    public static void passwordIsValid(String password) throws InvalidInputException {
         if (password.equals("")) throw new InvalidInputException("The password cannot be empty");
         if (password == null) throw new InvalidInputException("The password must not be null");
-        return password;
     }
 
-    //Is the user the Administrator ?
+    /**
+     * Method for that checks if the email inputted by the user is the Admin's email or not.
+     * @param email |string| Email inputted by the user.
+     * @author Theo Ghanem
+     */
+    
     public static void userIsAdmin(String email) {
         if (email.equals("admin@nmc.nt")) System.out.println("User is the Administrator");
     }
 
-    // name must not be empty or null
-    public static String nameIsValid(String name) throws InvalidInputException {
+    /**
+     * Method for input validation. Makes sure all constraints are respected:
+     * @param name |string| Name inputted by the user.
+     * @throws InvalidInputException Name must not be empty or null
+     * @author Theo Ghanem
+     */
+
+    public static void nameIsValid(String name) throws InvalidInputException {
         if (name.equals("")) throw new InvalidInputException("The name cannot be empty");
         if (name == null) throw new InvalidInputException("The name must not be null");
-        return name;
     }
 
-    // emergencyContact must not be empty or null
-    public static String emergencyContactIsValid(String emergencyContact) throws InvalidInputException {
+    /**
+     * Method for input validation. Makes sure all constraints are respected:
+     * @param emergencyContact |string| Emergency Contact's phone number inputted by the user.
+     * @throws InvalidInputException Emergency Contact must not be empty or null
+     * @author Theo Ghanem
+     */
+
+    public static void emergencyContactIsValid(String emergencyContact) throws InvalidInputException {
         if (emergencyContact.equals("")) throw new InvalidInputException("The emergency contact cannot be empty");
         if (emergencyContact == null) throw new InvalidInputException("The emergency contact must not be null");
-        return emergencyContact;
     }
 
-    // number of weeks must be greater than zero and less than or equal to the number of climbing weeks in the climbing season
-    public static int validNrWeeks(int nrWeeks) throws InvalidInputException {
+    /**
+     * Method for input validation. Makes sure all constraints are respected:
+     * @param nrWeeks |int| Number of weeks inputted by the user.
+     * @throws InvalidInputException Number of weeks must be greater than zero and less than or equal to the number of climbing weeks in the climbing season
+     * @author Theo Ghanem
+     */
+
+    public static void validNrWeeks(int nrWeeks) throws InvalidInputException {
         if (nrWeeks < 0 || nrWeeks > climbSafe.getNrWeeks()) throw new InvalidInputException("The number of weeks must be greater than zero and less than or equal to the number of climbing weeks in the climbing season");
-        return nrWeeks;
     }
 
-    //    for each BookedItem:
-    //    quantity must be greater than 0
-    public static List<Integer> bookedItemIsValid(List<Integer> quantity) throws InvalidInputException {
+    /**
+     * Method for input validation. Makes sure all constraints are respected:
+     * @param quantity |List<Integer>| Desired quantity of items inputted by the user.
+     * @throws InvalidInputException For each BookedItem: quantity must be greater than 0
+     * @author Theo Ghanem
+     */
+
+    public static void bookedItemQuanityIsValid(List<Integer> quantity) throws InvalidInputException {
         for(Integer q:quantity) {
             if (q<=0)  throw new InvalidInputException("The quantity of booked item must be greater than 0");
         }
-        return quantity;
     }
 }
