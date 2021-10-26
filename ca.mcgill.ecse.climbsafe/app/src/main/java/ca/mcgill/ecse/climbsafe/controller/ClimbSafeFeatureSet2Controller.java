@@ -44,6 +44,7 @@ public class ClimbSafeFeatureSet2Controller {
        
         Member newMember = new Member(email, password, name, emergencyContact, nrWeeks,guideRequired, hotelRequired, climbSafe);
         climbSafe.addMember(newMember);
+        climbSafe.getBookedItems();
     }
 
     	 
