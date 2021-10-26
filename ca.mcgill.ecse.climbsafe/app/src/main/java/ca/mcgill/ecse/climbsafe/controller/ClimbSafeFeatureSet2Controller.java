@@ -39,15 +39,16 @@ public class ClimbSafeFeatureSet2Controller {
         nameIsValid(name);
         emergencyContactIsValid(emergencyContact);
         validNrWeeks(nrWeeks);
+        itemNamesIsValid(itemNames);
         bookedItemQuanityIsValid(itemQuantities);
-
+       
         Member newMember = new Member(email, password, name, emergencyContact, nrWeeks,guideRequired, hotelRequired, climbSafe);
-
         climbSafe.addMember(newMember);
-
     }
 
-    /**
+    	 
+
+	/**
      * This method is used to update an existing member into the Climb Safe database
      * @param email    |string|  Member's email
      * @param password |string| Member's new password
@@ -65,19 +66,21 @@ public class ClimbSafeFeatureSet2Controller {
                                     boolean newHotelRequired, List<String> newItemNames, List<Integer> newItemQuantities)
             throws InvalidInputException {
 
+    	Member member = ClimbSafeApplication.getClimbSafe().findMemberFromEmail(email);
+    	if( member == null )throw new InvalidInputException("Member not found");
+    	
     	//makes sure all the constraints are respected.
-        emailIsValid(email);
         passwordIsValid(newPassword);
         userIsAdmin(email);
         nameIsValid(newName);
         emergencyContactIsValid(newEmergencyContact);
         validNrWeeks(newNrWeeks);
+        itemNamesIsValid(newItemNames);
 		bookedItemQuanityIsValid(newItemQuantities);
-
-        Member member = ClimbSafeApplication.getClimbSafe().findMemberFromEmail(email);
-        if( member != null ) {	//make sure the member exits before updating it's information.
-            member = new Member(email, newPassword, newName, newEmergencyContact, newNrWeeks,newGuideRequired, newHotelRequired, climbSafe);
-        }
+        
+        member.delete();
+        member = new Member(email, newPassword, newName, newEmergencyContact, newNrWeeks,newGuideRequired, newHotelRequired, climbSafe);
+        
     }
 
     
@@ -103,23 +106,17 @@ public class ClimbSafeFeatureSet2Controller {
             if (character == '@') {
                 indexOfAt = i;
                 countOfAt++;
-                if (countOfAt > 1)
-                    throw new InvalidInputException("There must not be multiple @ characters in the email");
-                if (i <= 0)
-                    throw new InvalidInputException("The @ character must not be placed at the beginning of the email");
+                if (countOfAt > 1) throw new InvalidInputException("There must not be multiple @ characters in the email");
+                if (i <= 0) throw new InvalidInputException("The @ character must not be placed at the beginning of the email");
             }
-            if (character != '@') {
-                counterOfNotAt++;
-            }
+            if (character != '@') counterOfNotAt++;
         }
-        if (counterOfNotAt == email.length())
-            throw new InvalidInputException("There must be an @ character in the email");
-        if (indexOfAt >= lastIndexOfDot - 1)
-            throw new InvalidInputException("The @ character must be before the last dot of the email");
-        if (lastIndexOfDot >= email.length() - 1)
-            throw new InvalidInputException("There must not be a dot at the very end of the email");
+        if (counterOfNotAt == email.length()) throw new InvalidInputException("There must be an @ character in the email");
+        if (indexOfAt >= lastIndexOfDot - 1) throw new InvalidInputException("The @ character must be before the last dot of the email");
+        if (lastIndexOfDot >= email.length() - 1) throw new InvalidInputException("There must not be a dot at the very end of the email");
         if (email.equals("admin@nmc.nt")) throw new InvalidInputException("The email entered is not allowed for members ");
-
+        if (ClimbSafeApplication.getClimbSafe().findGuideFromEmail(email) != null) throw new InvalidInputException("A guide with this email already exists");
+        if (ClimbSafeApplication.getClimbSafe().findMemberFromEmail(email) != null) throw new InvalidInputException("A member with this email already exists");
     }
 
     /**
@@ -176,9 +173,26 @@ public class ClimbSafeFeatureSet2Controller {
      */
 
     public static void validNrWeeks(int nrWeeks) throws InvalidInputException {
-        if (nrWeeks < 0 || nrWeeks > climbSafe.getNrWeeks()) throw new InvalidInputException("The number of weeks must be greater than zero and less than or equal to the number of climbing weeks in the climbing season");
+        if (nrWeeks <= 0 || nrWeeks > climbSafe.getNrWeeks()) throw new InvalidInputException("The number of weeks must be greater than zero and less than or equal to the number of climbing weeks in the climbing season");
     }
 
+    
+    /**
+     * Method for input validation. Makes sure all constraints are respected:
+     * @param itemNames |List<String>| Desired items inputted by the user.
+     * @throws InvalidInputException The items must be bookable.
+     * @author Theo Ghanem
+     */
+ 
+    private static void itemNamesIsValid(List<String> itemNames) throws InvalidInputException {
+    	String[] bookableItemsTEMP = {"rope","pickaxe","portable stove"}; //temporary
+    	 for(String i:itemNames) {
+    		 for(String b:bookableItemsTEMP ) {
+    			 if(i!=b) throw new InvalidInputException("Requested item not found");	
+    		 }
+    	 }
+    }
+    
     /**
      * Method for input validation. Makes sure all constraints are respected:
      * @param quantity |List<Integer>| Desired quantity of items inputted by the user.
