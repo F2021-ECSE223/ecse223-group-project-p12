@@ -119,14 +119,14 @@ public class ClimbSafeFeatureSet2Controller {
             if (character == '@') {
                 indexOfAt = i;
                 countOfAt++;
-                if (countOfAt > 1) throw new InvalidInputException("There must not be multiple @ characters in the email");
-                if (i <= 0) throw new InvalidInputException("The @ character must not be placed at the beginning of the email");
+                if (countOfAt > 1) throw new InvalidInputException("Invalid email");
+                if (i <= 0) throw new InvalidInputException("Invalid email");
             }
             if (character != '@') counterOfNotAt++;
         }
-        if (counterOfNotAt == email.length()) throw new InvalidInputException("There must be an @ character in the email");
-        if (indexOfAt >= lastIndexOfDot - 1) throw new InvalidInputException("The @ character must be before the last dot of the email");
-        if (lastIndexOfDot >= email.length() - 1) throw new InvalidInputException("There must not be a dot at the very end of the email");
+        if (counterOfNotAt == email.length()) throw new InvalidInputException("Invalid email");
+        if (indexOfAt >= lastIndexOfDot - 1) throw new InvalidInputException("Invalid email");
+        if (lastIndexOfDot >= email.length() - 1) throw new InvalidInputException("Invalid email");
         if (email.equals("admin@nmc.nt")) throw new InvalidInputException("The email entered is not allowed for members ");
         if (ClimbSafeApplication.getClimbSafe().findGuideFromEmail(email) != null) throw new InvalidInputException("A guide with this email already exists");
         if (ClimbSafeApplication.getClimbSafe().findMemberFromEmail(email) != null) throw new InvalidInputException("A member with this email already exists");
