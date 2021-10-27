@@ -2,9 +2,32 @@ package ca.mcgill.ecse.climbsafe.controller;
 
 import java.util.List;
 
-class ClimbSafeFeatureSet5Controller {
-	
-static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();	
+/**
+ * This class is responsible for the implementation of the features relating to the equipment bundle.
+ * Namely, its purpose is to help with the creation and updating of equipment bundles.
+ *
+ * @author Habib Jarweh
+ */
+public class ClimbSafeFeatureSet5Controller {
+
+	static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
+/**
+ * This method adds an equipment bundle to the climb safe application.
+ *
+ * @param name Name of the equipment bundle to add
+ * @param discount Discount of the equipment bundle to add (must be >= 0, <= 100 )
+ * @param equipmentNames List of the names of the equipments we want to add to the the bundle (must be
+ *  at least two names in the list of equipment names, can't have same name more than once, 
+ * and names have to be valid equipment items)
+ * @param equipmentQuantities List of the quantities of each equipment we want in our bundle ( quantity must be > 0)
+ * @throws InvalidInputException if 
+ * discount is less than 0 or more than 100
+ * if list size is less than 2
+ * if an equipment name is listed more than once
+ * if equipment name listed is not a valid equipment name
+ * if we don't have at least a quantity of 1 of every equipment name listed
+ * if equipment names list and equipment quantities list are not the same size
+ */
 
   public static void addEquipmentBundle(String name, int discount, List<String> equipmentNames, List<Integer> equipmentQuantities) 
 		  throws InvalidInputException {
@@ -56,7 +79,24 @@ static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
   }
 
   
-  
+ 
+  /**
+   * This method updates an existing equipment bundle.
+   *
+   * @param name Name of the equipment bundle to add
+   * @param discount Discount of the equipment bundle to add (must be >= 0, <= 100 )
+   * @param equipmentNames List of the names of the equipments we want to add to the the bundle (must be
+   *  at least two names in the list of equipment names, can't have same name more than once, 
+   * and names have to be valid equipment items)
+   * @param equipmentQuantities List of the quantities of each equipment we want in our bundle ( quantity must be > 0)
+   * @throws InvalidInputException if 
+   * discount is less than 0 or more than 100
+   * if list size is less than 2
+   * if an equipment name is listed more than once
+   * if equipment name listed is not a valid equipment name
+   * if we don't have at least a quantity of 1 of every equipment name listed
+   * if equipment names list and equipment quantities list are not the same size
+   */  
   public static void updateEquipmentBundle(String oldName, String newName, int newDiscount,
       List<String> newEquipmentNames, List<Integer> newEquipmentQuantities)
       throws InvalidInputException {

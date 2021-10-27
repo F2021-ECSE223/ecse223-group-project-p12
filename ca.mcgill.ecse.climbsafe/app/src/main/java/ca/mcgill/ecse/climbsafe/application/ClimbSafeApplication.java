@@ -4,27 +4,24 @@
 package ca.mcgill.ecse.climbsafe.application;
 
 import java.sql.Date;
-
-import ca.mcgill.ecse.climbsafe.model.*;
+import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
 
 public class ClimbSafeApplication {
-	
-	private static ClimbSafe climbSafe = null;
-	
-    public String getGreeting() {
-        return "Hello World!";
-    }
+  private static ClimbSafe climbSafe;
 
-    public static void main(String[] args) {
-        System.out.println(new ClimbSafeApplication().getGreeting());
+  public String getGreeting() {
+    return "Hello World!";
+  }
+
+  public static void main(String[] args) {
+    System.out.println(new ClimbSafeApplication().getGreeting());
+  }
+
+  public static ClimbSafe getClimbSafe() {
+    if (climbSafe == null) {
+      // these attributes are default, you should set them later with the setters
+      climbSafe = new ClimbSafe(new Date(0), 0, 0);
     }
-    
-    public static ClimbSafe getClimbSafe() {
-    	if( climbSafe == null ) {
-    		@SuppressWarnings("deprecation")
-			Date defaultDate = new Date(0, 0, 0);
-    		climbSafe = new ClimbSafe(defaultDate, 0, 0);
-    	}
-    	return climbSafe;
-    }
+    return climbSafe;
+  }
 }

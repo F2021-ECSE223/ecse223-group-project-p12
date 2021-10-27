@@ -4,7 +4,7 @@ class ClimbSafe {
   Date startDate;
   Integer nrWeeks;
   Integer priceOfGuidePerWeek;
-  1 <@>- 0..1 Administrator adminstrator;
+  1 <@>- 0..1 Administrator administrator;
   1 <@>- * Guide guides;
   1 <@>- * Member members;
   1 <@>- * BookedItem bookedItems;
@@ -14,6 +14,13 @@ class ClimbSafe {
   1 <@>- * Hotel hotels;
   1 <@>- * Assignment assignments;
   
+  /**
+   * Helper method used to find a guide of the climbsafe system from its email address
+   * 
+   * @author Cédric Barré
+   * @param email Email of the guide to find in the climbsafe system instance
+   * @return
+   */
   public Guide findGuideFromEmail(String email){
     List<Guide> guideList = this.getGuides();
     for( Guide g : guideList ) {
@@ -24,6 +31,13 @@ class ClimbSafe {
     return null;
   }
 
+  /**
+   * Helper method used to find a member of the climbsafe system from its email address
+   * 
+   * @author Cédric Barré
+   * @param email Email of the member to find in the climbsafe system instance
+   * @return
+   */
   public Member findMemberFromEmail(String email){
     List<Member> memberList = this.getMembers();
     for( Member m : memberList ) {
@@ -34,6 +48,13 @@ class ClimbSafe {
     return null;
   }
   
+  /**
+   * Helper method used to find a hotel of the climbsafe system from its name
+   * 
+   * @author Cédric Barré
+   * @param name Name of the hotel to find in the climbsafe system instance
+   * @return
+   */
   public Hotel findHotelFromName(String name){
     List<Hotel> hotelList = this.getHotels();
     for( Hotel h : hotelList ) {
@@ -43,19 +64,34 @@ class ClimbSafe {
     }
     return null;
   }
+
+  /**
+  * this method searches for equipment bundles in the bundleList in climbSafe
+  * 
+  * @author Habib Jarweh 
+  * @param name Name of the bundle to look for
+  * @return bundle if found, returns null if not
+  */
   public EquipmentBundle findEquipmentBundleFromName(String name){
 	List<EquipmentBundle> bundleList = this.getBundles();
 	for( EquipmentBundle eb : bundleList ) {
-      if(name.equals(eb.getName()) ) {
+      if(eb.getName().equals(name)) {
 	    return eb;
 	  }
 	}
 	return null;
   }
+  /**
+  * this method searches for an equipment  in the equipment list in climbSafe
+  * 
+  * @author Habib Jarweh
+  * @param name Name of the equipment to look for
+  * @return equipment if found, returns null if not
+  */
   public Equipment findEquipmentFromName(String name){
     List<Equipment> equipment = this.getEquipment();
     for( Equipment e : equipment ) {
-	  if(e.getName().equals(name) {
+	  if(e.getName().equals(name)) {
 		return e;
 	  }
 	}
