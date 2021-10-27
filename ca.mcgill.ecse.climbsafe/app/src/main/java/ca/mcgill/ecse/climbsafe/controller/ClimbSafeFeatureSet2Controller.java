@@ -43,8 +43,14 @@ public class ClimbSafeFeatureSet2Controller {
         bookedItemQuanityIsValid(itemQuantities);
        
         Member newMember = new Member(email, password, name, emergencyContact, nrWeeks,guideRequired, hotelRequired, climbSafe);
+
+        //Adds the ItemNames as BookableItems and then as a BookedItem associated with it's quantity
+    		for(int i=0; i<itemNames.size();i++) {
+    			BookableItem bookableItem = BookableItem.getWithName(itemNames.get(i));
+    			Integer quantity = itemQuantities.get(i);
+    			BookedItem bookedItem = new BookedItem(quantity, climbSafe, newMember, bookableItem);
+    		}
         climbSafe.addMember(newMember);
-        climbSafe.getBookedItems();
     }
 
     	 
@@ -82,6 +88,12 @@ public class ClimbSafeFeatureSet2Controller {
         member.delete();
         member = new Member(email, newPassword, newName, newEmergencyContact, newNrWeeks,newGuideRequired, newHotelRequired, climbSafe);
         
+        //Adds the newItemNames as BookableItems and then as a BookedItem associated with it's new quantity
+        for(int i=0; i<newItemNames.size();i++) {
+			BookableItem bookableItem = BookableItem.getWithName(newItemNames.get(i));
+			Integer quantity = newItemQuantities.get(i);
+			BookedItem bookedItem = new BookedItem(quantity, climbSafe, member, bookableItem);
+		}
     }
 
     
@@ -186,13 +198,11 @@ public class ClimbSafeFeatureSet2Controller {
      */
  
     private static void itemNamesIsValid(List<String> itemNames) throws InvalidInputException {
-    	String[] bookableItemsTEMP = {"rope","pickaxe","portable stove"}; //temporary
-    	 for(String i:itemNames) {
-    		 for(String b:bookableItemsTEMP ) {
-    			 if(i!=b) throw new InvalidInputException("Requested item not found");	
-    		 }
-    	 }
+    	for(String item:itemNames) {
+    		if(BookableItem.getWithName(item) == null) throw new InvalidInputException("Requested item not found");
+    	}
     }
+    
     
     /**
      * Method for input validation. Makes sure all constraints are respected:
