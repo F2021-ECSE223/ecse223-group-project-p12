@@ -19,8 +19,9 @@ public class ClimbSafeFeatureSet1Controller {
    */
   public static void setup(Date startDate, int nrWeeks, int priceOfGuidePerWeek)
       throws InvalidInputException {
-	  if( nrWeeks < 0 ) throw new InvalidInputException("Number of climbing weeks must be bigger than 0");
-	  if( priceOfGuidePerWeek < 0 ) throw new InvalidInputException("Price of guide per week must be bigger than 0");
+	  // No need to check date validity since creating a Date object already makes sure the date is valid
+	  if( nrWeeks < 0 ) throw new InvalidInputException("The number of climbing weeks must be greater than or equal to zero");
+	  if( priceOfGuidePerWeek < 0 ) throw new InvalidInputException("The price of guide per week must be greater than or equal to zero");
 	  ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
 	  climbSafe.setStartDate(startDate);
 	  climbSafe.setNrWeeks(nrWeeks);
