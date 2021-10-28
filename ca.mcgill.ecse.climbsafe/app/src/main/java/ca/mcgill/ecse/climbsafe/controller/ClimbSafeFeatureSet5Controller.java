@@ -43,7 +43,8 @@ static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
       discountIsValid(discount);
       namesAreValid(equipmentNames);
       quantitiesAreValid(equipmentQuantities);
-      bookableItemIsValid(climbSafe.getBundles(), climbSafe.getEquipment(), name);
+      bookableItemIsValid1(climbSafe.getEquipment(), name);
+      bookableItemIsValid2(climbSafe.getBundles(), name);
 	  
 	  //create new equipment bundle
 	  EquipmentBundle equipmentBundle = new EquipmentBundle(name, discount, climbSafe);
@@ -83,11 +84,16 @@ static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
 	  discountIsValid(newDiscount);
 	  namesAreValid(newEquipmentNames);
 	  quantitiesAreValid(newEquipmentQuantities);
-      bookableItemIsValid(climbSafe.getBundles(), climbSafe.getEquipment(), newName);
+      bookableItemIsValid1(climbSafe.getEquipment(), newName);
+      //if the bundle we want to update has the same name, then we don't check if there already
+      //exists a bundle with the name newName, since we know there does exist
+      if(!oldName.equals(newName)) {
+    	  bookableItemIsValid2(climbSafe.getBundles(), newName);  
+      }
 	  
 	  //finding old equipment bundle from oldName
       EquipmentBundle equipmentBundle = climbSafe.findEquipmentBundleFromName(oldName);
-      // constraint checks that there exists an equipment bundle with name oldName
+      // constraint checks that there does exist an equipment bundle with name oldName
       oldEquipmentBundleIsValid(equipmentBundle, oldName);
 
 	  //updating the equipment bundle
@@ -112,7 +118,7 @@ static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
    * @throws InvalidInputException if no name is inputed
    * @author Habib Jarweh
    */  
-public static void nameIsValid(String name) throws InvalidInputException {
+private static void nameIsValid(String name) throws InvalidInputException {
 	//makes sure name is not empty (or null)
 	if(name.isEmpty()) throw new InvalidInputException("Equipment bundle name cannot be empty");
 }
@@ -123,7 +129,7 @@ public static void nameIsValid(String name) throws InvalidInputException {
  * @throws InvalidInputException discount has to be between 0 and a 100, no more no less
  * @author Habib Jarweh
  */
-public static void discountIsValid(int discount) throws InvalidInputException {
+private static void discountIsValid(int discount) throws InvalidInputException {
 	/* discount constraints make sure the discount inputed is less than 100 (%) and more than 0 (%). */
 	if (discount<0) throw new InvalidInputException("Discount must be at least 0");
 	if (discount > 100) throw new InvalidInputException("Discount must be no more than 100");
@@ -136,7 +142,7 @@ public static void discountIsValid(int discount) throws InvalidInputException {
  * @throws InvalidInputException if the equipment name inputed is not a valid equipment
  * @author Habib Jarweh
  */
-public static void namesAreValid(List<String> equipmentNames) throws InvalidInputException {
+private static void namesAreValid(List<String> equipmentNames) throws InvalidInputException {
 	boolean found = false ;
 	
 	// equipment quantity constraints, first if statement makes sure size of equipmentNames is at least 2
@@ -168,7 +174,7 @@ public static void namesAreValid(List<String> equipmentNames) throws InvalidInpu
  * @throws InvalidInputException each quantity cannot be less than 0.
  * @author Habib Jarweh
  */
-public static void quantitiesAreValid(List<Integer> equipmentQuantities) throws InvalidInputException {
+private static void quantitiesAreValid(List<Integer> equipmentQuantities) throws InvalidInputException {
 	  // if statement (in the for loop) makes sure there is at least one of every equipment item selected
 	  for (Integer equipmentQuantity: equipmentQuantities) {
 		  if (equipmentQuantity <= 0) throw new InvalidInputException("Each bundle item must have quantity greater than or equal to 1 ");
@@ -177,20 +183,30 @@ public static void quantitiesAreValid(List<Integer> equipmentQuantities) throws 
 
 /**
  * Method for input validation. Makes sure all constraints are respected:
- * @param bundles |List<EquipmentBundle>| the list of equipment bundles in climbSafe is going to be inputed here.
  * @param equipments |List<Equipment>| the list of equipment in climbSafe is going to be inputed here.
  * @param name |String| name is going to be inputed in the parameter name, or newName in the case of updateEquipmentBundle
- * this method checks that there isn't already a bookable item with the name name
- * @throws InvalidInputException there already exists a bookable item with the name name
+ * this method checks that there isn't already an equipment item with the name name
+ * @throws InvalidInputException there already exists a bookable item or an equipment in this case with the name name
  * @author Habib Jarweh
  */
-public static void bookableItemIsValid(List<EquipmentBundle> bundles, List<Equipment> equipments, String name) throws InvalidInputException {
-	  for (EquipmentBundle equipmentbundle: bundles) {
-		  if ( equipmentbundle.getName().equals(name)) throw new InvalidInputException("A bookable item called "+ name + " already exists");
-	  }
+private static void bookableItemIsValid1(List<Equipment> equipments, String name) throws InvalidInputException {
 	  for (Equipment equipment: equipments) {
 		  if (equipment.getName().equals(name)) throw new InvalidInputException("A bookable item called "+ name + " already exists");
 	  }	
+}
+
+/**
+ * Method for input validation. Makes sure all constraints are respected:
+ * @param bundles |List<EquipmentBundle>| the list of equipment bundles in climbSafe is going to be inputed here.
+ * @param name |String| name is going to be inputed in the parameter name, or newName in the case of updateEquipmentBundle
+ * this method checks that there isn't already a bundle with the name name
+ * @throws InvalidInputException there already exists a bookable item or a bundle in this case with the name name
+ * @author Habib Jarweh
+ */
+private static void bookableItemIsValid2(List<EquipmentBundle> bundles, String name) throws InvalidInputException {
+	  for (EquipmentBundle equipmentbundle: bundles) {
+		  if ( equipmentbundle.getName().equals(name)) throw new InvalidInputException("A bookable item called "+ name + " already exists");
+	  }
 }
 
 /**
@@ -201,10 +217,9 @@ public static void bookableItemIsValid(List<EquipmentBundle> bundles, List<Equip
  * @throws InvalidInputException bundle with the name oldName does not exist
  * @author Habib Jarweh
  */
-public static void oldEquipmentBundleIsValid(EquipmentBundle equipmentbundle, String name) throws InvalidInputException {
+private static void oldEquipmentBundleIsValid(EquipmentBundle equipmentbundle, String name) throws InvalidInputException {
 	//finding old equipment bundle from oldName
 	  if (equipmentbundle == null) throw new InvalidInputException("Equipment bundle " + name + " does not exist");
 }
-
 
 }
