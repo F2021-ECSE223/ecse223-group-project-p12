@@ -114,7 +114,7 @@ public class ClimbSafeFeatureSet2Controller {
    * @author Theo Ghanem
    */
 
-  public static void emailIsValid(String email) throws InvalidInputException {
+  private static void emailIsValid(String email) throws InvalidInputException {
     int countOfAt = 0;
     int lastIndexOfDot = 0;
     int indexOfAt = 0;
@@ -162,7 +162,7 @@ public class ClimbSafeFeatureSet2Controller {
    * @author Theo Ghanem
    */
 
-  public static void passwordIsValid(String password) throws InvalidInputException {
+  private static void passwordIsValid(String password) throws InvalidInputException {
     if (password.equals(""))
       throw new InvalidInputException("The password cannot be empty");
     if (password == null)
@@ -176,7 +176,7 @@ public class ClimbSafeFeatureSet2Controller {
    * @author Theo Ghanem
    */
 
-  public static void userIsAdmin(String email) {
+  private static void userIsAdmin(String email) {
     if (email.equals("admin@nmc.nt"))
       System.out.println("User is the Administrator");
   }
@@ -189,7 +189,7 @@ public class ClimbSafeFeatureSet2Controller {
    * @author Theo Ghanem
    */
 
-  public static void nameIsValid(String name) throws InvalidInputException {
+  private static void nameIsValid(String name) throws InvalidInputException {
     if (name.equals(""))
       throw new InvalidInputException("The name cannot be empty");
     if (name == null)
@@ -204,7 +204,7 @@ public class ClimbSafeFeatureSet2Controller {
    * @author Theo Ghanem
    */
 
-  public static void emergencyContactIsValid(String emergencyContact) throws InvalidInputException {
+  private static void emergencyContactIsValid(String emergencyContact) throws InvalidInputException {
     if (emergencyContact.equals(""))
       throw new InvalidInputException("The emergency contact cannot be empty");
     if (emergencyContact == null)
@@ -220,7 +220,7 @@ public class ClimbSafeFeatureSet2Controller {
    * @author Theo Ghanem
    */
 
-  public static void validNrWeeks(int nrWeeks) throws InvalidInputException {
+  private static void validNrWeeks(int nrWeeks) throws InvalidInputException {
     if (nrWeeks <= 0 || nrWeeks > climbSafe.getNrWeeks())
       throw new InvalidInputException(
           "The number of weeks must be greater than zero and less than or equal to the number of climbing weeks in the climbing season");
@@ -251,7 +251,7 @@ public class ClimbSafeFeatureSet2Controller {
    * @author Theo Ghanem
    */
 
-  public static void bookedItemQuanityIsValid(List<Integer> quantity) throws InvalidInputException {
+  private static void bookedItemQuanityIsValid(List<Integer> quantity) throws InvalidInputException {
     for (Integer q : quantity) {
       if (q <= 0)
         throw new InvalidInputException("The quantity of booked item must be greater than 0");
