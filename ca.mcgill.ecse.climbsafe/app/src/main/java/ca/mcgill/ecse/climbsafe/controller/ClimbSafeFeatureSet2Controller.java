@@ -43,6 +43,13 @@ public class ClimbSafeFeatureSet2Controller {
         bookedItemQuanityIsValid(itemQuantities);
        
         Member newMember = new Member(email, password, name, emergencyContact, nrWeeks,guideRequired, hotelRequired, climbSafe);
+
+        //Adds the ItemNames as BookableItems and then as a BookedItem associated with it's quantity
+    		for(int i=0; i<itemNames.size();i++) {
+    			BookableItem bookableItem = BookableItem.getWithName(itemNames.get(i));
+    			Integer quantity = itemQuantities.get(i);
+    			BookedItem bookedItem = new BookedItem(quantity, climbSafe, newMember, bookableItem);
+    		}
         climbSafe.addMember(newMember);
     }
 
@@ -81,6 +88,12 @@ public class ClimbSafeFeatureSet2Controller {
         member.delete();
         member = new Member(email, newPassword, newName, newEmergencyContact, newNrWeeks,newGuideRequired, newHotelRequired, climbSafe);
         
+        //Adds the newItemNames as BookableItems and then as a BookedItem associated with it's new quantity
+        for(int i=0; i<newItemNames.size();i++) {
+			BookableItem bookableItem = BookableItem.getWithName(newItemNames.get(i));
+			Integer quantity = newItemQuantities.get(i);
+			BookedItem bookedItem = new BookedItem(quantity, climbSafe, member, bookableItem);
+		}
     }
 
     
@@ -106,14 +119,14 @@ public class ClimbSafeFeatureSet2Controller {
             if (character == '@') {
                 indexOfAt = i;
                 countOfAt++;
-                if (countOfAt > 1) throw new InvalidInputException("There must not be multiple @ characters in the email");
-                if (i <= 0) throw new InvalidInputException("The @ character must not be placed at the beginning of the email");
+                if (countOfAt > 1) throw new InvalidInputException("Invalid email");
+                if (i <= 0) throw new InvalidInputException("Invalid email");
             }
             if (character != '@') counterOfNotAt++;
         }
-        if (counterOfNotAt == email.length()) throw new InvalidInputException("There must be an @ character in the email");
-        if (indexOfAt >= lastIndexOfDot - 1) throw new InvalidInputException("The @ character must be before the last dot of the email");
-        if (lastIndexOfDot >= email.length() - 1) throw new InvalidInputException("There must not be a dot at the very end of the email");
+        if (counterOfNotAt == email.length()) throw new InvalidInputException("Invalid email");
+        if (indexOfAt >= lastIndexOfDot - 1) throw new InvalidInputException("Invalid email");
+        if (lastIndexOfDot >= email.length() - 1) throw new InvalidInputException("Invalid email");
         if (email.equals("admin@nmc.nt")) throw new InvalidInputException("The email entered is not allowed for members ");
         if (ClimbSafeApplication.getClimbSafe().findGuideFromEmail(email) != null) throw new InvalidInputException("A guide with this email already exists");
         if (ClimbSafeApplication.getClimbSafe().findMemberFromEmail(email) != null) throw new InvalidInputException("A member with this email already exists");
@@ -185,13 +198,11 @@ public class ClimbSafeFeatureSet2Controller {
      */
  
     private static void itemNamesIsValid(List<String> itemNames) throws InvalidInputException {
-    	String[] bookableItemsTEMP = {"rope","pickaxe","portable stove"}; //temporary
-    	 for(String i:itemNames) {
-    		 for(String b:bookableItemsTEMP ) {
-    			 if(i!=b) throw new InvalidInputException("Requested item not found");	
-    		 }
-    	 }
+    	for(String item:itemNames) {
+    		if(BookableItem.getWithName(item) == null) throw new InvalidInputException("Requested item not found");
+    	}
     }
+    
     
     /**
      * Method for input validation. Makes sure all constraints are respected:
