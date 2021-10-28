@@ -47,7 +47,7 @@ public class ClimbSafeFeatureSet3Controller {
      * @throws InvalidInputException	If constraints are not respected, the method will throw an InvalidInputException
      */
    public static void updateGuide(String email, String newPassword, String newName,
-      String newEmergencyContact) throws InvalidInputException {
+     String newEmergencyContact) throws InvalidInputException {
 
 	 Guide guide = ClimbSafeApplication.getClimbSafe().findGuideFromEmail(email);
 	 if( guide == null )throw new InvalidInputException("Guide not found");
@@ -82,7 +82,7 @@ public class ClimbSafeFeatureSet3Controller {
 		if (email.charAt(i)== ' ') throw new InvalidInputException("Email must not contain any spaces");
 		  
 		else if(email.charAt(i)== '@') {
-
+			
 			 // Constraint for "The @ character cannot be at the beginning of the email"
 			 if(i==0) throw new InvalidInputException("Invalid email");
 			  
