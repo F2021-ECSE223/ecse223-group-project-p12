@@ -2,6 +2,9 @@ package ca.mcgill.ecse.climbsafe.controller;
 
 import java.util.List;
 
+import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
+import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
+
 /**
  * This class is responsible for the implementation of the features relating to the equipment bundle.
  * Namely, its purpose is to help with the creation and updating of equipment bundles.
