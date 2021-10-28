@@ -38,7 +38,7 @@ static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
   public static void addEquipmentBundle(String name, int discount, List<String> equipmentNames, List<Integer> equipmentQuantities) 
 		  throws InvalidInputException {
 	  
-	//makes sure all the constraints are respected.
+	  //makes sure all the constraints are respected.
       nameIsValid(name);
       discountIsValid(discount);
       namesAreValid(equipmentNames);
@@ -50,12 +50,12 @@ static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
 	  EquipmentBundle equipmentBundle = new EquipmentBundle(name, discount, climbSafe);
       // add bundle to climb safe
 	  climbSafe.addBundle(equipmentBundle);
-	
-	// create new bundle items and then add them to bundle
-		  for (int i= 0; i< equipmentNames.size(); i++) {
-		      BundleItem bundleItem = new BundleItem(equipmentQuantities.get(i), climbSafe, equipmentBundle, 
+	  
+	  // create new bundle items and then add them to bundle
+	  for (int i= 0; i< equipmentNames.size(); i++) {
+		  BundleItem bundleItem = new BundleItem(equipmentQuantities.get(i), climbSafe, equipmentBundle, 
 		    		  climbSafe.findEquipmentFromName(equipmentNames.get(i)));
-		      equipmentBundle.addBundleItem(bundleItem);
+		  equipmentBundle.addBundleItem(bundleItem);
 		  }	  
   }
 
@@ -78,6 +78,7 @@ static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
    */  
   public static void updateEquipmentBundle(String oldName, String newName, int newDiscount, List<String> newEquipmentNames, List<Integer> newEquipmentQuantities)
       throws InvalidInputException {
+	  
 	  //makes sure all the constraints are respected.
 	  nameIsValid(oldName);
 	  nameIsValid(newName);
