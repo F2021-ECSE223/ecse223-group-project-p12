@@ -39,16 +39,16 @@ static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
 		  throws InvalidInputException {
 	  
 	  //makes sure all the constraints are respected.
-      nameIsValid(name);
-      discountIsValid(discount);
-      namesAreValid(equipmentNames);
-      quantitiesAreValid(equipmentQuantities);
-      bookableItemIsValid1(climbSafe.getEquipment(), name);
-      bookableItemIsValid2(climbSafe.getBundles(), name);
+          nameIsValid(name);
+          discountIsValid(discount);
+          namesAreValid(equipmentNames);
+          quantitiesAreValid(equipmentQuantities);
+          bookableItemIsValid1(climbSafe.getEquipment(), name);
+          bookableItemIsValid2(climbSafe.getBundles(), name);
 	  
 	  //create new equipment bundle
 	  EquipmentBundle equipmentBundle = new EquipmentBundle(name, discount, climbSafe);
-      // add bundle to climb safe
+          // add bundle to climb safe
 	  climbSafe.addBundle(equipmentBundle);
 	  
 	  // create new bundle items and then add them to bundle
@@ -85,17 +85,17 @@ static ClimbSafe climbSafe  = ClimbSafeApplication.getClimbSafe();
 	  discountIsValid(newDiscount);
 	  namesAreValid(newEquipmentNames);
 	  quantitiesAreValid(newEquipmentQuantities);
-      bookableItemIsValid1(climbSafe.getEquipment(), newName);
-      //if the bundle we want to update has the same name, then we don't check if there already
-      //exists a bundle with the name newName, since we know there does exist
-      if(!oldName.equals(newName)) {
-    	  bookableItemIsValid2(climbSafe.getBundles(), newName);  
+          bookableItemIsValid1(climbSafe.getEquipment(), newName);
+          //if the bundle we want to update has the same name, then we don't check if there already
+          //exists a bundle with the name newName, since we know there does exist
+          if(!oldName.equals(newName)) {
+		  bookableItemIsValid2(climbSafe.getBundles(), newName);  
       }
 	  
 	  //finding old equipment bundle from oldName
-      EquipmentBundle equipmentBundle = climbSafe.findEquipmentBundleFromName(oldName);
-      // constraint checks that there does exist an equipment bundle with name oldName
-      oldEquipmentBundleIsValid(equipmentBundle, oldName);
+          EquipmentBundle equipmentBundle = climbSafe.findEquipmentBundleFromName(oldName);
+          // constraint checks that there does exist an equipment bundle with name oldName
+          oldEquipmentBundleIsValid(equipmentBundle, oldName);
 
 	  //updating the equipment bundle
 	  equipmentBundle.delete();
@@ -147,17 +147,17 @@ private static void namesAreValid(List<String> equipmentNames) throws InvalidInp
 	boolean found = false ;
 	
 	// equipment quantity constraints, first if statement makes sure size of equipmentNames is at least 2
-    if (equipmentNames.size() < 2) throw new InvalidInputException("Equipment bundle must contain at least two distinct types of equipment"); 
-    else {
-	    for (int i = 0; i<equipmentNames.size(); i++) {
-	    	for (int j = i +1; j<equipmentNames.size(); j++) {
-	    		if ((equipmentNames.get(i)).equals(equipmentNames.get(j)) )	{
-	    			throw new InvalidInputException("Equipment bundle must contain at least two distinct types of equipment");
+        if (equipmentNames.size() < 2) throw new InvalidInputException("Equipment bundle must contain at least two distinct types of equipment"); 
+        else {
+		for (int i = 0; i<equipmentNames.size(); i++) {
+			for (int j = i +1; j<equipmentNames.size(); j++) {
+				if ((equipmentNames.get(i)).equals(equipmentNames.get(j)) )	{
+					throw new InvalidInputException("Equipment bundle must contain at least two distinct types of equipment");
 	            }
 	         }
 	     }
-    }
-    // to make sure that all equipment names are valid
+        }
+        // to make sure that all equipment names are valid
 	for (int i = 0; i<equipmentNames.size(); i++) {
 		for (int j= 0; j< climbSafe.getEquipment().size(); j++) {
 			if (equipmentNames.get(i).equals( climbSafe.getEquipment().get(j).getName()) ) found = true ;	  
@@ -165,7 +165,7 @@ private static void namesAreValid(List<String> equipmentNames) throws InvalidInp
 		// if equipment name doesn't match any name from equipments list then  
 		if (found == false) throw new InvalidInputException("Equipment "+ equipmentNames.get(i)+ " does not exist");
 		found = false ; //  re-intializing found to false to check if next name in the list is valid
-    }
+        }
 
 }
 
