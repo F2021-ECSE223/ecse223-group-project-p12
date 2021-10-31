@@ -1,5 +1,7 @@
 namespace ca.mcgill.ecse.climbsafe.model;
 
+use ClimbSafeSM.ump;
+
 class ClimbSafe {
   Date startDate;
   Integer nrWeeks;
@@ -17,7 +19,7 @@ class ClimbSafe {
   /**
    * Helper method used to find a guide of the climbsafe system from its email address
    * 
-   * @author Cédric Barré
+   * @author Cï¿½dric Barrï¿½
    * @param email Email of the guide to find in the climbsafe system instance
    * @return
    */
@@ -34,7 +36,7 @@ class ClimbSafe {
   /**
    * Helper method used to find a member of the climbsafe system from its email address
    * 
-   * @author Cédric Barré
+   * @author Cï¿½dric Barrï¿½
    * @param email Email of the member to find in the climbsafe system instance
    * @return
    */
@@ -51,7 +53,7 @@ class ClimbSafe {
   /**
    * Helper method used to find a hotel of the climbsafe system from its name
    * 
-   * @author Cédric Barré
+   * @author Cï¿½dric Barrï¿½
    * @param name Name of the hotel to find in the climbsafe system instance
    * @return
    */

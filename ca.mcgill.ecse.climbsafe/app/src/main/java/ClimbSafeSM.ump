@@ -1,0 +1,53 @@
+class Assignment{
+  sm{
+    Active{
+      payment{
+        unpaid{
+          pay -> paid;
+        }
+        paid{
+        }
+      }
+      ||
+      GuideAssignment{
+        Unassigned{assign -> Assigned;}
+        Assigned{}
+      }
+      ||
+      status{
+        NotStarted{
+          start -> Started;
+        }
+        Started{
+          finish -> Finished;
+        }
+        Finished{}
+      }
+      cancel -> Cancelled;
+    }
+    Cancelled{}
+  }
+}
+
+class Guide{
+  Integer bookings = 0;
+  sm{
+    NoBooking{
+      book -> SomeBookings;
+    }
+    SomeBookings{
+      unbook [bookings == 1] -> NoBooking;
+      book [bookings == 4] -> FullyBooked;
+    }
+    FullyBooked{
+      unbook -> SomeBookings;
+    }
+  }
+}
+
+class Member{
+  sm{
+    Active{ban -> Banned;}
+    Banned{}
+  }
+}
