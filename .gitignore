@@ -1,2 +1,5 @@
 # Ignore Idea-specific files
 .idea/
+
+# Remove Ds store
+**/*.DS_store
