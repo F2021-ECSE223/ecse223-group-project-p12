@@ -3,8 +3,10 @@
 
 package ca.mcgill.ecse.climbsafe.model;
 
-// line 82 "../../../../../../model.ump"
-// line 158 "../../../../../../model.ump"
+// line 1 "../../../../../../ClimbSafeSM.ump"
+// line 58 "../../../../../../ClimbSafeSM.ump"
+// line 168 "../../../../../../model.ump"
+// line 241 "../../../../../../model.ump"
 public class Assignment
 {
 
@@ -15,6 +17,22 @@ public class Assignment
   //Assignment Attributes
   private int startWeek;
   private int endWeek;
+
+  //Assignment State Machines
+  public enum Sm { Active, Cancelled }
+  public enum SmActivePayment { Null, payment }
+  public enum SmActivePaymentPayment { Null, unpaid, paid }
+  public enum SmActiveGuideAssignment { Null, GuideAssignment }
+  public enum SmActiveGuideAssignmentGuideAssignment { Null, Unassigned, Assigned }
+  public enum SmActiveStatus { Null, status }
+  public enum SmActiveStatusStatus { Null, NotStarted, Started, Finished }
+  private Sm sm;
+  private SmActivePayment smActivePayment;
+  private SmActivePaymentPayment smActivePaymentPayment;
+  private SmActiveGuideAssignment smActiveGuideAssignment;
+  private SmActiveGuideAssignmentGuideAssignment smActiveGuideAssignmentGuideAssignment;
+  private SmActiveStatus smActiveStatus;
+  private SmActiveStatusStatus smActiveStatusStatus;
 
   //Assignment Associations
   private Member member;
@@ -40,6 +58,13 @@ public class Assignment
     {
       throw new RuntimeException("Unable to create assignment due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
+    setSmActivePayment(SmActivePayment.Null);
+    setSmActivePaymentPayment(SmActivePaymentPayment.Null);
+    setSmActiveGuideAssignment(SmActiveGuideAssignment.Null);
+    setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Null);
+    setSmActiveStatus(SmActiveStatus.Null);
+    setSmActiveStatusStatus(SmActiveStatusStatus.Null);
+    setSm(Sm.Active);
   }
 
   //------------------------
@@ -70,6 +95,310 @@ public class Assignment
   public int getEndWeek()
   {
     return endWeek;
+  }
+
+  public String getSmFullName()
+  {
+    String answer = sm.toString();
+    if (smActivePayment != SmActivePayment.Null) { answer += "." + smActivePayment.toString(); }
+    if (smActivePaymentPayment != SmActivePaymentPayment.Null) { answer += "." + smActivePaymentPayment.toString(); }
+    if (smActiveGuideAssignment != SmActiveGuideAssignment.Null) { answer += "." + smActiveGuideAssignment.toString(); }
+    if (smActiveGuideAssignmentGuideAssignment != SmActiveGuideAssignmentGuideAssignment.Null) { answer += "." + smActiveGuideAssignmentGuideAssignment.toString(); }
+    if (smActiveStatus != SmActiveStatus.Null) { answer += "." + smActiveStatus.toString(); }
+    if (smActiveStatusStatus != SmActiveStatusStatus.Null) { answer += "." + smActiveStatusStatus.toString(); }
+    return answer;
+  }
+
+  public Sm getSm()
+  {
+    return sm;
+  }
+
+  public SmActivePayment getSmActivePayment()
+  {
+    return smActivePayment;
+  }
+
+  public SmActivePaymentPayment getSmActivePaymentPayment()
+  {
+    return smActivePaymentPayment;
+  }
+
+  public SmActiveGuideAssignment getSmActiveGuideAssignment()
+  {
+    return smActiveGuideAssignment;
+  }
+
+  public SmActiveGuideAssignmentGuideAssignment getSmActiveGuideAssignmentGuideAssignment()
+  {
+    return smActiveGuideAssignmentGuideAssignment;
+  }
+
+  public SmActiveStatus getSmActiveStatus()
+  {
+    return smActiveStatus;
+  }
+
+  public SmActiveStatusStatus getSmActiveStatusStatus()
+  {
+    return smActiveStatusStatus;
+  }
+
+  public boolean cancel()
+  {
+    boolean wasEventProcessed = false;
+    
+    Sm aSm = sm;
+    switch (aSm)
+    {
+      case Active:
+        exitSm();
+        setSm(Sm.Cancelled);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean pay()
+  {
+    boolean wasEventProcessed = false;
+    
+    SmActivePaymentPayment aSmActivePaymentPayment = smActivePaymentPayment;
+    switch (aSmActivePaymentPayment)
+    {
+      case unpaid:
+        exitSmActivePaymentPayment();
+        setSmActivePaymentPayment(SmActivePaymentPayment.paid);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean assign()
+  {
+    boolean wasEventProcessed = false;
+    
+    SmActiveGuideAssignmentGuideAssignment aSmActiveGuideAssignmentGuideAssignment = smActiveGuideAssignmentGuideAssignment;
+    switch (aSmActiveGuideAssignmentGuideAssignment)
+    {
+      case Unassigned:
+        exitSmActiveGuideAssignmentGuideAssignment();
+        setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Assigned);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean start()
+  {
+    boolean wasEventProcessed = false;
+    
+    SmActiveStatusStatus aSmActiveStatusStatus = smActiveStatusStatus;
+    switch (aSmActiveStatusStatus)
+    {
+      case NotStarted:
+        exitSmActiveStatusStatus();
+        setSmActiveStatusStatus(SmActiveStatusStatus.Started);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean finish()
+  {
+    boolean wasEventProcessed = false;
+    
+    SmActiveStatusStatus aSmActiveStatusStatus = smActiveStatusStatus;
+    switch (aSmActiveStatusStatus)
+    {
+      case Started:
+        exitSmActiveStatusStatus();
+        setSmActiveStatusStatus(SmActiveStatusStatus.Finished);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  private void exitSm()
+  {
+    switch(sm)
+    {
+      case Active:
+        exitSmActivePayment();
+        exitSmActiveGuideAssignment();
+        exitSmActiveStatus();
+        break;
+    }
+  }
+
+  private void setSm(Sm aSm)
+  {
+    sm = aSm;
+
+    // entry actions and do activities
+    switch(sm)
+    {
+      case Active:
+        if (smActivePayment == SmActivePayment.Null) { setSmActivePayment(SmActivePayment.payment); }
+        if (smActiveGuideAssignment == SmActiveGuideAssignment.Null) { setSmActiveGuideAssignment(SmActiveGuideAssignment.GuideAssignment); }
+        if (smActiveStatus == SmActiveStatus.Null) { setSmActiveStatus(SmActiveStatus.status); }
+        break;
+    }
+  }
+
+  private void exitSmActivePayment()
+  {
+    switch(smActivePayment)
+    {
+      case payment:
+        exitSmActivePaymentPayment();
+        setSmActivePayment(SmActivePayment.Null);
+        break;
+    }
+  }
+
+  private void setSmActivePayment(SmActivePayment aSmActivePayment)
+  {
+    smActivePayment = aSmActivePayment;
+    if (sm != Sm.Active && aSmActivePayment != SmActivePayment.Null) { setSm(Sm.Active); }
+
+    // entry actions and do activities
+    switch(smActivePayment)
+    {
+      case payment:
+        if (smActivePaymentPayment == SmActivePaymentPayment.Null) { setSmActivePaymentPayment(SmActivePaymentPayment.unpaid); }
+        break;
+    }
+  }
+
+  private void exitSmActivePaymentPayment()
+  {
+    switch(smActivePaymentPayment)
+    {
+      case unpaid:
+        setSmActivePaymentPayment(SmActivePaymentPayment.Null);
+        break;
+      case paid:
+        setSmActivePaymentPayment(SmActivePaymentPayment.Null);
+        break;
+    }
+  }
+
+  private void setSmActivePaymentPayment(SmActivePaymentPayment aSmActivePaymentPayment)
+  {
+    smActivePaymentPayment = aSmActivePaymentPayment;
+    if (smActivePayment != SmActivePayment.payment && aSmActivePaymentPayment != SmActivePaymentPayment.Null) { setSmActivePayment(SmActivePayment.payment); }
+  }
+
+  private void exitSmActiveGuideAssignment()
+  {
+    switch(smActiveGuideAssignment)
+    {
+      case GuideAssignment:
+        exitSmActiveGuideAssignmentGuideAssignment();
+        setSmActiveGuideAssignment(SmActiveGuideAssignment.Null);
+        break;
+    }
+  }
+
+  private void setSmActiveGuideAssignment(SmActiveGuideAssignment aSmActiveGuideAssignment)
+  {
+    smActiveGuideAssignment = aSmActiveGuideAssignment;
+    if (sm != Sm.Active && aSmActiveGuideAssignment != SmActiveGuideAssignment.Null) { setSm(Sm.Active); }
+
+    // entry actions and do activities
+    switch(smActiveGuideAssignment)
+    {
+      case GuideAssignment:
+        if (smActiveGuideAssignmentGuideAssignment == SmActiveGuideAssignmentGuideAssignment.Null) { setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Unassigned); }
+        break;
+    }
+  }
+
+  private void exitSmActiveGuideAssignmentGuideAssignment()
+  {
+    switch(smActiveGuideAssignmentGuideAssignment)
+    {
+      case Unassigned:
+        setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Null);
+        break;
+      case Assigned:
+        setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Null);
+        break;
+    }
+  }
+
+  private void setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment aSmActiveGuideAssignmentGuideAssignment)
+  {
+    smActiveGuideAssignmentGuideAssignment = aSmActiveGuideAssignmentGuideAssignment;
+    if (smActiveGuideAssignment != SmActiveGuideAssignment.GuideAssignment && aSmActiveGuideAssignmentGuideAssignment != SmActiveGuideAssignmentGuideAssignment.Null) { setSmActiveGuideAssignment(SmActiveGuideAssignment.GuideAssignment); }
+  }
+
+  private void exitSmActiveStatus()
+  {
+    switch(smActiveStatus)
+    {
+      case status:
+        exitSmActiveStatusStatus();
+        setSmActiveStatus(SmActiveStatus.Null);
+        break;
+    }
+  }
+
+  private void setSmActiveStatus(SmActiveStatus aSmActiveStatus)
+  {
+    smActiveStatus = aSmActiveStatus;
+    if (sm != Sm.Active && aSmActiveStatus != SmActiveStatus.Null) { setSm(Sm.Active); }
+
+    // entry actions and do activities
+    switch(smActiveStatus)
+    {
+      case status:
+        if (smActiveStatusStatus == SmActiveStatusStatus.Null) { setSmActiveStatusStatus(SmActiveStatusStatus.NotStarted); }
+        break;
+    }
+  }
+
+  private void exitSmActiveStatusStatus()
+  {
+    switch(smActiveStatusStatus)
+    {
+      case NotStarted:
+        setSmActiveStatusStatus(SmActiveStatusStatus.Null);
+        break;
+      case Started:
+        setSmActiveStatusStatus(SmActiveStatusStatus.Null);
+        break;
+      case Finished:
+        setSmActiveStatusStatus(SmActiveStatusStatus.Null);
+        break;
+    }
+  }
+
+  private void setSmActiveStatusStatus(SmActiveStatusStatus aSmActiveStatusStatus)
+  {
+    smActiveStatusStatus = aSmActiveStatusStatus;
+    if (smActiveStatus != SmActiveStatus.status && aSmActiveStatusStatus != SmActiveStatusStatus.Null) { setSmActiveStatus(SmActiveStatus.status); }
   }
   /* Code from template association_GetOne */
   public Member getMember()

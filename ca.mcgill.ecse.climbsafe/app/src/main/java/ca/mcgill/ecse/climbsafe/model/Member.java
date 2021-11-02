@@ -4,8 +4,10 @@
 package ca.mcgill.ecse.climbsafe.model;
 import java.util.*;
 
-// line 40 "../../../../../../model.ump"
-// line 123 "../../../../../../model.ump"
+// line 48 "../../../../../../ClimbSafeSM.ump"
+// line 68 "../../../../../../ClimbSafeSM.ump"
+// line 126 "../../../../../../model.ump"
+// line 206 "../../../../../../model.ump"
 public class Member extends NamedUser
 {
 
@@ -17,6 +19,10 @@ public class Member extends NamedUser
   private int nrWeeks;
   private boolean guideRequired;
   private boolean hotelRequired;
+
+  //Member State Machines
+  public enum Sm { Active, Banned }
+  private Sm sm;
 
   //Member Associations
   private ClimbSafe climbSafe;
@@ -39,6 +45,7 @@ public class Member extends NamedUser
       throw new RuntimeException("Unable to create member due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     bookedItems = new ArrayList<BookedItem>();
+    setSm(Sm.Active);
   }
 
   //------------------------
@@ -92,6 +99,40 @@ public class Member extends NamedUser
   public boolean isHotelRequired()
   {
     return hotelRequired;
+  }
+
+  public String getSmFullName()
+  {
+    String answer = sm.toString();
+    return answer;
+  }
+
+  public Sm getSm()
+  {
+    return sm;
+  }
+
+  public boolean ban()
+  {
+    boolean wasEventProcessed = false;
+    
+    Sm aSm = sm;
+    switch (aSm)
+    {
+      case Active:
+        setSm(Sm.Banned);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  private void setSm(Sm aSm)
+  {
+    sm = aSm;
   }
   /* Code from template association_GetOne */
   public ClimbSafe getClimbSafe()

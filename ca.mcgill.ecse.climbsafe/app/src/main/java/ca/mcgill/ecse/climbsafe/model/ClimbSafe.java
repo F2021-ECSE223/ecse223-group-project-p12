@@ -5,8 +5,8 @@ package ca.mcgill.ecse.climbsafe.model;
 import java.sql.Date;
 import java.util.*;
 
-// line 4 "../../../../../../model.ump"
-// line 93 "../../../../../../model.ump"
+// line 6 "../../../../../../model.ump"
+// line 179 "../../../../../../model.ump"
 public class ClimbSafe
 {
 
@@ -20,7 +20,7 @@ public class ClimbSafe
   private int priceOfGuidePerWeek;
 
   //ClimbSafe Associations
-  private Administrator adminstrator;
+  private Administrator administrator;
   private List<Guide> guides;
   private List<Member> members;
   private List<BookedItem> bookedItems;
@@ -92,14 +92,14 @@ public class ClimbSafe
     return priceOfGuidePerWeek;
   }
   /* Code from template association_GetOne */
-  public Administrator getAdminstrator()
+  public Administrator getAdministrator()
   {
-    return adminstrator;
+    return administrator;
   }
 
-  public boolean hasAdminstrator()
+  public boolean hasAdministrator()
   {
-    boolean has = adminstrator != null;
+    boolean has = administrator != null;
     return has;
   }
   /* Code from template association_GetMany */
@@ -343,27 +343,27 @@ public class ClimbSafe
     return index;
   }
   /* Code from template association_SetOptionalOneToOne */
-  public boolean setAdminstrator(Administrator aNewAdminstrator)
+  public boolean setAdministrator(Administrator aNewAdministrator)
   {
     boolean wasSet = false;
-    if (adminstrator != null && !adminstrator.equals(aNewAdminstrator) && equals(adminstrator.getClimbSafe()))
+    if (administrator != null && !administrator.equals(aNewAdministrator) && equals(administrator.getClimbSafe()))
     {
-      //Unable to setAdminstrator, as existing adminstrator would become an orphan
+      //Unable to setAdministrator, as existing administrator would become an orphan
       return wasSet;
     }
 
-    adminstrator = aNewAdminstrator;
-    ClimbSafe anOldClimbSafe = aNewAdminstrator != null ? aNewAdminstrator.getClimbSafe() : null;
+    administrator = aNewAdministrator;
+    ClimbSafe anOldClimbSafe = aNewAdministrator != null ? aNewAdministrator.getClimbSafe() : null;
 
     if (!this.equals(anOldClimbSafe))
     {
       if (anOldClimbSafe != null)
       {
-        anOldClimbSafe.adminstrator = null;
+        anOldClimbSafe.administrator = null;
       }
-      if (adminstrator != null)
+      if (administrator != null)
       {
-        adminstrator.setClimbSafe(this);
+        administrator.setClimbSafe(this);
       }
     }
     wasSet = true;
@@ -948,12 +948,12 @@ public class ClimbSafe
 
   public void delete()
   {
-    Administrator existingAdminstrator = adminstrator;
-    adminstrator = null;
-    if (existingAdminstrator != null)
+    Administrator existingAdministrator = administrator;
+    administrator = null;
+    if (existingAdministrator != null)
     {
-      existingAdminstrator.delete();
-      existingAdminstrator.setClimbSafe(null);
+      existingAdministrator.delete();
+      existingAdministrator.setClimbSafe(null);
     }
     while (guides.size() > 0)
     {
@@ -1013,16 +1013,16 @@ public class ClimbSafe
     
   }
 
-  public String toString()
-  {
-    return super.toString() + "["+
-            "nrWeeks" + ":" + getNrWeeks()+ "," +
-            "priceOfGuidePerWeek" + ":" + getPriceOfGuidePerWeek()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "adminstrator = "+(getAdminstrator()!=null?Integer.toHexString(System.identityHashCode(getAdminstrator())):"null");
-  }
-  
-  //line 19 "../../../../../../model.ump"
+
+  /**
+   * 
+   * Helper method used to find a guide of the climbsafe system from its email address
+   * 
+   * @author C???dric Barr???
+   * @param email Email of the guide to find in the climbsafe system instance
+   * @return
+   */
+  // line 28 "../../../../../../model.ump"
    public Guide findGuideFromEmail(String email){
     List<Guide> guideList = this.getGuides();
     for( Guide g : guideList ) {
@@ -1032,8 +1032,17 @@ public class ClimbSafe
     }
     return null;
   }
-   
-  // line 29 "../../../../../../model.ump"
+
+
+  /**
+   * 
+   * Helper method used to find a member of the climbsafe system from its email address
+   * 
+   * @author C???dric Barr???
+   * @param email Email of the member to find in the climbsafe system instance
+   * @return
+   */
+  // line 45 "../../../../../../model.ump"
    public Member findMemberFromEmail(String email){
     List<Member> memberList = this.getMembers();
     for( Member m : memberList ) {
@@ -1043,8 +1052,17 @@ public class ClimbSafe
     }
     return null;
   }
-   
-  // line 39 "../../../../../../model.ump"
+
+
+  /**
+   * 
+   * Helper method used to find a hotel of the climbsafe system from its name
+   * 
+   * @author C???dric Barr???
+   * @param name Name of the hotel to find in the climbsafe system instance
+   * @return
+   */
+  // line 62 "../../../../../../model.ump"
    public Hotel findHotelFromName(String name){
     List<Hotel> hotelList = this.getHotels();
     for( Hotel h : hotelList ) {
@@ -1054,24 +1072,54 @@ public class ClimbSafe
     }
     return null;
   }
-   // line 46 "../../../../../../model.ump"
+
+
+  /**
+   * 
+   * this method searches for equipment bundles in the bundleList in climbSafe
+   * 
+   * @author Habib Jarweh 
+   * @param name Name of the bundle to look for
+   * @return bundle if found, returns null if not
+   */
+  // line 79 "../../../../../../model.ump"
    public EquipmentBundle findEquipmentBundleFromName(String name){
-		List<EquipmentBundle> bundleList = this.getBundles();
-		for( EquipmentBundle eb : bundleList ) {
-	      if(eb.getName().equals(name)) {
-		    return eb;
-		  }
-		}
-		return null;
+    List<EquipmentBundle> bundleList = this.getBundles();
+	for( EquipmentBundle eb : bundleList ) {
+      if(eb.getName().equals(name)) {
+	    return eb;
 	  }
-   // line 55 "../../../../../../model.ump"
+	}
+	return null;
+  }
+
+
+  /**
+   * 
+   * this method searches for an equipment  in the equipment list in climbSafe
+   * 
+   * @author Habib Jarweh
+   * @param name Name of the equipment to look for
+   * @return equipment if found, returns null if not
+   */
+  // line 95 "../../../../../../model.ump"
    public Equipment findEquipmentFromName(String name){
-		List<Equipment> equipment = this.getEquipment();
-		for( Equipment e : equipment ) {
-	      if(e.getName().equals(name)) {
-		    return e;
-		  }
-		}
-		return null;
+    List<Equipment> equipment = this.getEquipment();
+    for( Equipment e : equipment ) {
+	  if(e.getName().equals(name)) {
+		return e;
 	  }
+	}
+	return null;
+  }
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "nrWeeks" + ":" + getNrWeeks()+ "," +
+            "priceOfGuidePerWeek" + ":" + getPriceOfGuidePerWeek()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "administrator = "+(getAdministrator()!=null?Integer.toHexString(System.identityHashCode(getAdministrator())):"null");
+  }
 }

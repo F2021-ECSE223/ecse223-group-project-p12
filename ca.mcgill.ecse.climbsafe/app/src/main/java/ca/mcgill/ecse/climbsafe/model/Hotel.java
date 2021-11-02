@@ -4,8 +4,8 @@
 package ca.mcgill.ecse.climbsafe.model;
 import java.util.*;
 
-// line 75 "../../../../../../model.ump"
-// line 153 "../../../../../../model.ump"
+// line 161 "../../../../../../model.ump"
+// line 236 "../../../../../../model.ump"
 public class Hotel
 {
 

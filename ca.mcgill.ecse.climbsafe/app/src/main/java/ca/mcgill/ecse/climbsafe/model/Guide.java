@@ -4,14 +4,23 @@
 package ca.mcgill.ecse.climbsafe.model;
 import java.util.*;
 
-// line 36 "../../../../../../model.ump"
-// line 118 "../../../../../../model.ump"
+// line 32 "../../../../../../ClimbSafeSM.ump"
+// line 63 "../../../../../../ClimbSafeSM.ump"
+// line 122 "../../../../../../model.ump"
+// line 201 "../../../../../../model.ump"
 public class Guide extends NamedUser
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
+
+  //Guide Attributes
+  private int bookings;
+
+  //Guide State Machines
+  public enum Sm { NoBooking, SomeBookings, FullyBooked }
+  private Sm sm;
 
   //Guide Associations
   private ClimbSafe climbSafe;
@@ -24,17 +33,100 @@ public class Guide extends NamedUser
   public Guide(String aEmail, String aPassword, String aName, String aEmergencyContact, ClimbSafe aClimbSafe)
   {
     super(aEmail, aPassword, aName, aEmergencyContact);
+    bookings = 0;
     boolean didAddClimbSafe = setClimbSafe(aClimbSafe);
     if (!didAddClimbSafe)
     {
       throw new RuntimeException("Unable to create guide due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     assignments = new ArrayList<Assignment>();
+    setSm(Sm.NoBooking);
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setBookings(int aBookings)
+  {
+    boolean wasSet = false;
+    bookings = aBookings;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public int getBookings()
+  {
+    return bookings;
+  }
+
+  public String getSmFullName()
+  {
+    String answer = sm.toString();
+    return answer;
+  }
+
+  public Sm getSm()
+  {
+    return sm;
+  }
+
+  public boolean book()
+  {
+    boolean wasEventProcessed = false;
+    
+    Sm aSm = sm;
+    switch (aSm)
+    {
+      case NoBooking:
+        setSm(Sm.SomeBookings);
+        wasEventProcessed = true;
+        break;
+      case SomeBookings:
+        if (getBookings()==4)
+        {
+          setSm(Sm.FullyBooked);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean unbook()
+  {
+    boolean wasEventProcessed = false;
+    
+    Sm aSm = sm;
+    switch (aSm)
+    {
+      case SomeBookings:
+        if (getBookings()==1)
+        {
+          setSm(Sm.NoBooking);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      case FullyBooked:
+        setSm(Sm.SomeBookings);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  private void setSm(Sm aSm)
+  {
+    sm = aSm;
+  }
   /* Code from template association_GetOne */
   public ClimbSafe getClimbSafe()
   {
@@ -176,4 +268,11 @@ public class Guide extends NamedUser
     super.delete();
   }
 
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "bookings" + ":" + getBookings()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "climbSafe = "+(getClimbSafe()!=null?Integer.toHexString(System.identityHashCode(getClimbSafe())):"null");
+  }
 }
