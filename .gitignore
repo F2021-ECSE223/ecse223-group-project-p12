@@ -1,2 +1,8 @@
 # Ignore Idea-specific files
 .idea/
+
+# Ignore Ds store
+**/*.DS_store
+
+# Ignore metadata files
+**/*.metadata
