@@ -1,30 +1,4 @@
-[9:37 PM, 11/2/2021] Chris: package ca.mcgill.ecse.climbsafe.features;
-
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
-import ca.mcgill.ecse.climbsafe.model.*;
-import ca.mcgill.esce.climbsafe.controller.*;
-import org.junit.Assert;
-
-public class AssignmentFeatureStepDefinitions {
-
-  private String error = "";
-
-  ClimbSafeApplication climbSafe = null;
-
-  /**
-   * @author Cedric Barre, Theo Ghanem, Zachary Godden, Chris Hatoum, Habib Jarweh, Philippe
-   *    *         Sarouphim Hochar
-   *
-   * This method implements the given clause: "Given the following ClimbSafe system exists".
-   *
-   *
-   *@param dataTable Cucumber data table.
-   */
-  @Given("the following ClimbSafe …
-[9:53 PM, 11/2/2021] Chris: package ca.mcgill.ecse.climbsafe.features;
+package ca.mcgill.ecse.climbsafe.features;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
