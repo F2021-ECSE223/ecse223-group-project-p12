@@ -5,7 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.*;
-import ca.mcgill.esce.climbsafe.controller.*;
+import ca.mcgill.ecse.climbsafe.controller.*;
 import org.junit.Assert;
 
 public class AssignmentFeatureStepDefinitions {
@@ -165,14 +165,10 @@ public class AssignmentFeatureStepDefinitions {
    */
   @Then("the number of assignments in the system shall be {string}")
   public void the_number_of_assignments_in_the_system_shall_be(String string) {
-    // Write code here that turns the phrase above into concrete actions
     Assert.assertEquals(Integer.parseInt(string), climbSafe.numberOfAssignments());
   }
 
-  /**
-   * @author Chris Hatoum
-   * @param string
-   */
+  
   @Then("the system shall raise the error {string}")
   public void the_system_shall_raise_the_error(String string) {
 
@@ -249,12 +245,16 @@ public class AssignmentFeatureStepDefinitions {
 
   /**
    * @author Chris Hatoum
+   * 
+   * This method implements the cucumber Then clause: "there are {string} members in the system".
+   * Here, we make sure the amount of members in the system is the same as the number specified.
    *
-   * @param string
+   * @param string Expected number of members in the climbsafe system instance in the form of a
+   * string
    */
   @Then("there are {string} members in the system")
   public void there_are_members_in_the_system(String string) {
-    Assert.assertEquals(Integer.parseInt(string), climbSafe.numberOfMembers());
+    assertEquals(Integer.parseInt(string), climbSafe.numberOfMembers());
 
   }
 
@@ -281,18 +281,22 @@ public class AssignmentFeatureStepDefinitions {
    */
   @When("the administrator attempts to cancel the trip for {string}")
   public void the_administrator_attempts_to_cancel_the_trip_for(String string) {
-    // Write code here that turns the phrase above into concrete actions
     AssignmentController.cancelTrip(string);
   }
 
   /**
    * @author Chris Hatoum
-   * @param string
+   * 
+   * This method implement the cucumber Given clause: "the member with {string} has paid 
+   * for their trip.
+   * It checks to see if the member has payed for trip.
+   * 
+   * @param string Member's Email
    */
   @Given("the member with {string} has paid for their trip")
   public void the_member_with_has_paid_for_their_trip(String string) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+	  climbSafe.findMemberFromEmail(string).getAssignment().pay();
+
   }
 
   @Then("the member with email address {string} shall receive a refund of {string} percent")
@@ -311,11 +315,12 @@ public class AssignmentFeatureStepDefinitions {
   }
 
   /**
+   *@author Chris Hatoum
    *
-   * This method implements the cucumber When clause: "the administrator attempts to cancel the trip for {string}".
+   * This method implements the cucumber When clause: "the administrator attempts to 
+   * finish the trip for the member with email {string}".
    *
-   * @author Chris Hatoum
-   * @param string
+   * @param string Member's email
    */
   @When("the administrator attempts to finish the trip for the member with email {string}")
   public void the_administrator_attempts_to_finish_the_trip_for_the_member_with_email(
@@ -349,11 +354,14 @@ public class AssignmentFeatureStepDefinitions {
   }
   /**
    * @author Chris Hatoum
-   * @param string
+   * 
+   * This method implements the cucumber When clause: "the administrator attempts to 
+   * start the trips for week {string}".
+   * 
+   * @param string  Week number
    */
   @When("the administrator attempts to start the trips for week {string}")
   public void the_administrator_attempts_to_start_the_trips_for_week(String string) {
-
     AssignmentController.startTrips(Integer.valueOf(string));
   }
 
