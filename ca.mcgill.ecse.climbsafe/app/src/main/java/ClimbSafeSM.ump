@@ -1,20 +1,21 @@
 class Assignment{
+  String paymentCode = null;
+  
   sm{
-    Active{
-      payment{
-        unpaid{
-          pay -> paid;
+    Unassigned{
+      assign -> Assigned;
+      cancel -> Cancelled;
+    }
+    Assigned{
+      Payment{
+        Unpaid{
+          pay -> Paid;
         }
-        paid{
+        Paid{
         }
       }
       ||
-      GuideAssignment{
-        Unassigned{assign -> Assigned;}
-        Assigned{}
-      }
-      ||
-      status{
+      Status{
         NotStarted{
           start -> Started;
         }
@@ -46,6 +47,7 @@ class Guide{
 }
 
 class Member{
+  Integer refund = 0;
   sm{
     Active{ban -> Banned;}
     Banned{}

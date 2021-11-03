@@ -1018,7 +1018,7 @@ public class ClimbSafe
    * 
    * Helper method used to find a guide of the climbsafe system from its email address
    * 
-   * @author C???dric Barr???
+   * @author C??????dric Barr??????
    * @param email Email of the guide to find in the climbsafe system instance
    * @return
    */
@@ -1038,7 +1038,7 @@ public class ClimbSafe
    * 
    * Helper method used to find a member of the climbsafe system from its email address
    * 
-   * @author C???dric Barr???
+   * @author C??????dric Barr??????
    * @param email Email of the member to find in the climbsafe system instance
    * @return
    */
@@ -1058,7 +1058,7 @@ public class ClimbSafe
    * 
    * Helper method used to find a hotel of the climbsafe system from its name
    * 
-   * @author C???dric Barr???
+   * @author C??????dric Barr??????
    * @param name Name of the hotel to find in the climbsafe system instance
    * @return
    */

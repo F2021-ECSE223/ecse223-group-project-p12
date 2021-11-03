@@ -4,7 +4,7 @@
 package ca.mcgill.ecse.climbsafe.model;
 
 // line 133 "../../../../../model.ump"
-// line 211 "../../../../../model.ump"
+// line 209 "../../../../../model.ump"
 public class BookedItem
 {
 

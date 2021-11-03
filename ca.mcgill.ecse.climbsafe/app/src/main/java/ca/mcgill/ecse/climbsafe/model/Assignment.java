@@ -4,9 +4,9 @@
 package ca.mcgill.ecse.climbsafe.model;
 
 // line 1 "../../../../../../ClimbSafeSM.ump"
-// line 58 "../../../../../../ClimbSafeSM.ump"
+// line 60 "../../../../../../ClimbSafeSM.ump"
 // line 168 "../../../../../../model.ump"
-// line 241 "../../../../../../model.ump"
+// line 239 "../../../../../../model.ump"
 public class Assignment
 {
 
@@ -15,24 +15,21 @@ public class Assignment
   //------------------------
 
   //Assignment Attributes
+  private String paymentCode;
   private int startWeek;
   private int endWeek;
 
   //Assignment State Machines
-  public enum Sm { Active, Cancelled }
-  public enum SmActivePayment { Null, payment }
-  public enum SmActivePaymentPayment { Null, unpaid, paid }
-  public enum SmActiveGuideAssignment { Null, GuideAssignment }
-  public enum SmActiveGuideAssignmentGuideAssignment { Null, Unassigned, Assigned }
-  public enum SmActiveStatus { Null, status }
-  public enum SmActiveStatusStatus { Null, NotStarted, Started, Finished }
+  public enum Sm { Unassigned, Assigned, Cancelled }
+  public enum SmAssignedPayment { Null, Payment }
+  public enum SmAssignedPaymentPayment { Null, Unpaid, Paid }
+  public enum SmAssignedStatus { Null, Status }
+  public enum SmAssignedStatusStatus { Null, NotStarted, Started, Finished }
   private Sm sm;
-  private SmActivePayment smActivePayment;
-  private SmActivePaymentPayment smActivePaymentPayment;
-  private SmActiveGuideAssignment smActiveGuideAssignment;
-  private SmActiveGuideAssignmentGuideAssignment smActiveGuideAssignmentGuideAssignment;
-  private SmActiveStatus smActiveStatus;
-  private SmActiveStatusStatus smActiveStatusStatus;
+  private SmAssignedPayment smAssignedPayment;
+  private SmAssignedPaymentPayment smAssignedPaymentPayment;
+  private SmAssignedStatus smAssignedStatus;
+  private SmAssignedStatusStatus smAssignedStatusStatus;
 
   //Assignment Associations
   private Member member;
@@ -46,6 +43,7 @@ public class Assignment
 
   public Assignment(int aStartWeek, int aEndWeek, Member aMember, ClimbSafe aClimbSafe)
   {
+    paymentCode = null;
     startWeek = aStartWeek;
     endWeek = aEndWeek;
     boolean didAddMember = setMember(aMember);
@@ -58,18 +56,24 @@ public class Assignment
     {
       throw new RuntimeException("Unable to create assignment due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    setSmActivePayment(SmActivePayment.Null);
-    setSmActivePaymentPayment(SmActivePaymentPayment.Null);
-    setSmActiveGuideAssignment(SmActiveGuideAssignment.Null);
-    setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Null);
-    setSmActiveStatus(SmActiveStatus.Null);
-    setSmActiveStatusStatus(SmActiveStatusStatus.Null);
-    setSm(Sm.Active);
+    setSmAssignedPayment(SmAssignedPayment.Null);
+    setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Null);
+    setSmAssignedStatus(SmAssignedStatus.Null);
+    setSmAssignedStatusStatus(SmAssignedStatusStatus.Null);
+    setSm(Sm.Unassigned);
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setPaymentCode(String aPaymentCode)
+  {
+    boolean wasSet = false;
+    paymentCode = aPaymentCode;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setStartWeek(int aStartWeek)
   {
@@ -87,6 +91,11 @@ public class Assignment
     return wasSet;
   }
 
+  public String getPaymentCode()
+  {
+    return paymentCode;
+  }
+
   public int getStartWeek()
   {
     return startWeek;
@@ -100,12 +109,10 @@ public class Assignment
   public String getSmFullName()
   {
     String answer = sm.toString();
-    if (smActivePayment != SmActivePayment.Null) { answer += "." + smActivePayment.toString(); }
-    if (smActivePaymentPayment != SmActivePaymentPayment.Null) { answer += "." + smActivePaymentPayment.toString(); }
-    if (smActiveGuideAssignment != SmActiveGuideAssignment.Null) { answer += "." + smActiveGuideAssignment.toString(); }
-    if (smActiveGuideAssignmentGuideAssignment != SmActiveGuideAssignmentGuideAssignment.Null) { answer += "." + smActiveGuideAssignmentGuideAssignment.toString(); }
-    if (smActiveStatus != SmActiveStatus.Null) { answer += "." + smActiveStatus.toString(); }
-    if (smActiveStatusStatus != SmActiveStatusStatus.Null) { answer += "." + smActiveStatusStatus.toString(); }
+    if (smAssignedPayment != SmAssignedPayment.Null) { answer += "." + smAssignedPayment.toString(); }
+    if (smAssignedPaymentPayment != SmAssignedPaymentPayment.Null) { answer += "." + smAssignedPaymentPayment.toString(); }
+    if (smAssignedStatus != SmAssignedStatus.Null) { answer += "." + smAssignedStatus.toString(); }
+    if (smAssignedStatusStatus != SmAssignedStatusStatus.Null) { answer += "." + smAssignedStatusStatus.toString(); }
     return answer;
   }
 
@@ -114,34 +121,42 @@ public class Assignment
     return sm;
   }
 
-  public SmActivePayment getSmActivePayment()
+  public SmAssignedPayment getSmAssignedPayment()
   {
-    return smActivePayment;
+    return smAssignedPayment;
   }
 
-  public SmActivePaymentPayment getSmActivePaymentPayment()
+  public SmAssignedPaymentPayment getSmAssignedPaymentPayment()
   {
-    return smActivePaymentPayment;
+    return smAssignedPaymentPayment;
   }
 
-  public SmActiveGuideAssignment getSmActiveGuideAssignment()
+  public SmAssignedStatus getSmAssignedStatus()
   {
-    return smActiveGuideAssignment;
+    return smAssignedStatus;
   }
 
-  public SmActiveGuideAssignmentGuideAssignment getSmActiveGuideAssignmentGuideAssignment()
+  public SmAssignedStatusStatus getSmAssignedStatusStatus()
   {
-    return smActiveGuideAssignmentGuideAssignment;
+    return smAssignedStatusStatus;
   }
 
-  public SmActiveStatus getSmActiveStatus()
+  public boolean assign()
   {
-    return smActiveStatus;
-  }
+    boolean wasEventProcessed = false;
+    
+    Sm aSm = sm;
+    switch (aSm)
+    {
+      case Unassigned:
+        setSm(Sm.Assigned);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
 
-  public SmActiveStatusStatus getSmActiveStatusStatus()
-  {
-    return smActiveStatusStatus;
+    return wasEventProcessed;
   }
 
   public boolean cancel()
@@ -151,7 +166,11 @@ public class Assignment
     Sm aSm = sm;
     switch (aSm)
     {
-      case Active:
+      case Unassigned:
+        setSm(Sm.Cancelled);
+        wasEventProcessed = true;
+        break;
+      case Assigned:
         exitSm();
         setSm(Sm.Cancelled);
         wasEventProcessed = true;
@@ -167,31 +186,12 @@ public class Assignment
   {
     boolean wasEventProcessed = false;
     
-    SmActivePaymentPayment aSmActivePaymentPayment = smActivePaymentPayment;
-    switch (aSmActivePaymentPayment)
+    SmAssignedPaymentPayment aSmAssignedPaymentPayment = smAssignedPaymentPayment;
+    switch (aSmAssignedPaymentPayment)
     {
-      case unpaid:
-        exitSmActivePaymentPayment();
-        setSmActivePaymentPayment(SmActivePaymentPayment.paid);
-        wasEventProcessed = true;
-        break;
-      default:
-        // Other states do respond to this event
-    }
-
-    return wasEventProcessed;
-  }
-
-  public boolean assign()
-  {
-    boolean wasEventProcessed = false;
-    
-    SmActiveGuideAssignmentGuideAssignment aSmActiveGuideAssignmentGuideAssignment = smActiveGuideAssignmentGuideAssignment;
-    switch (aSmActiveGuideAssignmentGuideAssignment)
-    {
-      case Unassigned:
-        exitSmActiveGuideAssignmentGuideAssignment();
-        setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Assigned);
+      case Unpaid:
+        exitSmAssignedPaymentPayment();
+        setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Paid);
         wasEventProcessed = true;
         break;
       default:
@@ -205,12 +205,12 @@ public class Assignment
   {
     boolean wasEventProcessed = false;
     
-    SmActiveStatusStatus aSmActiveStatusStatus = smActiveStatusStatus;
-    switch (aSmActiveStatusStatus)
+    SmAssignedStatusStatus aSmAssignedStatusStatus = smAssignedStatusStatus;
+    switch (aSmAssignedStatusStatus)
     {
       case NotStarted:
-        exitSmActiveStatusStatus();
-        setSmActiveStatusStatus(SmActiveStatusStatus.Started);
+        exitSmAssignedStatusStatus();
+        setSmAssignedStatusStatus(SmAssignedStatusStatus.Started);
         wasEventProcessed = true;
         break;
       default:
@@ -224,12 +224,12 @@ public class Assignment
   {
     boolean wasEventProcessed = false;
     
-    SmActiveStatusStatus aSmActiveStatusStatus = smActiveStatusStatus;
-    switch (aSmActiveStatusStatus)
+    SmAssignedStatusStatus aSmAssignedStatusStatus = smAssignedStatusStatus;
+    switch (aSmAssignedStatusStatus)
     {
       case Started:
-        exitSmActiveStatusStatus();
-        setSmActiveStatusStatus(SmActiveStatusStatus.Finished);
+        exitSmAssignedStatusStatus();
+        setSmAssignedStatusStatus(SmAssignedStatusStatus.Finished);
         wasEventProcessed = true;
         break;
       default:
@@ -243,10 +243,9 @@ public class Assignment
   {
     switch(sm)
     {
-      case Active:
-        exitSmActivePayment();
-        exitSmActiveGuideAssignment();
-        exitSmActiveStatus();
+      case Assigned:
+        exitSmAssignedPayment();
+        exitSmAssignedStatus();
         break;
     }
   }
@@ -258,147 +257,102 @@ public class Assignment
     // entry actions and do activities
     switch(sm)
     {
-      case Active:
-        if (smActivePayment == SmActivePayment.Null) { setSmActivePayment(SmActivePayment.payment); }
-        if (smActiveGuideAssignment == SmActiveGuideAssignment.Null) { setSmActiveGuideAssignment(SmActiveGuideAssignment.GuideAssignment); }
-        if (smActiveStatus == SmActiveStatus.Null) { setSmActiveStatus(SmActiveStatus.status); }
-        break;
-    }
-  }
-
-  private void exitSmActivePayment()
-  {
-    switch(smActivePayment)
-    {
-      case payment:
-        exitSmActivePaymentPayment();
-        setSmActivePayment(SmActivePayment.Null);
-        break;
-    }
-  }
-
-  private void setSmActivePayment(SmActivePayment aSmActivePayment)
-  {
-    smActivePayment = aSmActivePayment;
-    if (sm != Sm.Active && aSmActivePayment != SmActivePayment.Null) { setSm(Sm.Active); }
-
-    // entry actions and do activities
-    switch(smActivePayment)
-    {
-      case payment:
-        if (smActivePaymentPayment == SmActivePaymentPayment.Null) { setSmActivePaymentPayment(SmActivePaymentPayment.unpaid); }
-        break;
-    }
-  }
-
-  private void exitSmActivePaymentPayment()
-  {
-    switch(smActivePaymentPayment)
-    {
-      case unpaid:
-        setSmActivePaymentPayment(SmActivePaymentPayment.Null);
-        break;
-      case paid:
-        setSmActivePaymentPayment(SmActivePaymentPayment.Null);
-        break;
-    }
-  }
-
-  private void setSmActivePaymentPayment(SmActivePaymentPayment aSmActivePaymentPayment)
-  {
-    smActivePaymentPayment = aSmActivePaymentPayment;
-    if (smActivePayment != SmActivePayment.payment && aSmActivePaymentPayment != SmActivePaymentPayment.Null) { setSmActivePayment(SmActivePayment.payment); }
-  }
-
-  private void exitSmActiveGuideAssignment()
-  {
-    switch(smActiveGuideAssignment)
-    {
-      case GuideAssignment:
-        exitSmActiveGuideAssignmentGuideAssignment();
-        setSmActiveGuideAssignment(SmActiveGuideAssignment.Null);
-        break;
-    }
-  }
-
-  private void setSmActiveGuideAssignment(SmActiveGuideAssignment aSmActiveGuideAssignment)
-  {
-    smActiveGuideAssignment = aSmActiveGuideAssignment;
-    if (sm != Sm.Active && aSmActiveGuideAssignment != SmActiveGuideAssignment.Null) { setSm(Sm.Active); }
-
-    // entry actions and do activities
-    switch(smActiveGuideAssignment)
-    {
-      case GuideAssignment:
-        if (smActiveGuideAssignmentGuideAssignment == SmActiveGuideAssignmentGuideAssignment.Null) { setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Unassigned); }
-        break;
-    }
-  }
-
-  private void exitSmActiveGuideAssignmentGuideAssignment()
-  {
-    switch(smActiveGuideAssignmentGuideAssignment)
-    {
-      case Unassigned:
-        setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Null);
-        break;
       case Assigned:
-        setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment.Null);
+        if (smAssignedPayment == SmAssignedPayment.Null) { setSmAssignedPayment(SmAssignedPayment.Payment); }
+        if (smAssignedStatus == SmAssignedStatus.Null) { setSmAssignedStatus(SmAssignedStatus.Status); }
         break;
     }
   }
 
-  private void setSmActiveGuideAssignmentGuideAssignment(SmActiveGuideAssignmentGuideAssignment aSmActiveGuideAssignmentGuideAssignment)
+  private void exitSmAssignedPayment()
   {
-    smActiveGuideAssignmentGuideAssignment = aSmActiveGuideAssignmentGuideAssignment;
-    if (smActiveGuideAssignment != SmActiveGuideAssignment.GuideAssignment && aSmActiveGuideAssignmentGuideAssignment != SmActiveGuideAssignmentGuideAssignment.Null) { setSmActiveGuideAssignment(SmActiveGuideAssignment.GuideAssignment); }
-  }
-
-  private void exitSmActiveStatus()
-  {
-    switch(smActiveStatus)
+    switch(smAssignedPayment)
     {
-      case status:
-        exitSmActiveStatusStatus();
-        setSmActiveStatus(SmActiveStatus.Null);
+      case Payment:
+        exitSmAssignedPaymentPayment();
+        setSmAssignedPayment(SmAssignedPayment.Null);
         break;
     }
   }
 
-  private void setSmActiveStatus(SmActiveStatus aSmActiveStatus)
+  private void setSmAssignedPayment(SmAssignedPayment aSmAssignedPayment)
   {
-    smActiveStatus = aSmActiveStatus;
-    if (sm != Sm.Active && aSmActiveStatus != SmActiveStatus.Null) { setSm(Sm.Active); }
+    smAssignedPayment = aSmAssignedPayment;
+    if (sm != Sm.Assigned && aSmAssignedPayment != SmAssignedPayment.Null) { setSm(Sm.Assigned); }
 
     // entry actions and do activities
-    switch(smActiveStatus)
+    switch(smAssignedPayment)
     {
-      case status:
-        if (smActiveStatusStatus == SmActiveStatusStatus.Null) { setSmActiveStatusStatus(SmActiveStatusStatus.NotStarted); }
+      case Payment:
+        if (smAssignedPaymentPayment == SmAssignedPaymentPayment.Null) { setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Unpaid); }
         break;
     }
   }
 
-  private void exitSmActiveStatusStatus()
+  private void exitSmAssignedPaymentPayment()
   {
-    switch(smActiveStatusStatus)
+    switch(smAssignedPaymentPayment)
+    {
+      case Unpaid:
+        setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Null);
+        break;
+      case Paid:
+        setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Null);
+        break;
+    }
+  }
+
+  private void setSmAssignedPaymentPayment(SmAssignedPaymentPayment aSmAssignedPaymentPayment)
+  {
+    smAssignedPaymentPayment = aSmAssignedPaymentPayment;
+    if (smAssignedPayment != SmAssignedPayment.Payment && aSmAssignedPaymentPayment != SmAssignedPaymentPayment.Null) { setSmAssignedPayment(SmAssignedPayment.Payment); }
+  }
+
+  private void exitSmAssignedStatus()
+  {
+    switch(smAssignedStatus)
+    {
+      case Status:
+        exitSmAssignedStatusStatus();
+        setSmAssignedStatus(SmAssignedStatus.Null);
+        break;
+    }
+  }
+
+  private void setSmAssignedStatus(SmAssignedStatus aSmAssignedStatus)
+  {
+    smAssignedStatus = aSmAssignedStatus;
+    if (sm != Sm.Assigned && aSmAssignedStatus != SmAssignedStatus.Null) { setSm(Sm.Assigned); }
+
+    // entry actions and do activities
+    switch(smAssignedStatus)
+    {
+      case Status:
+        if (smAssignedStatusStatus == SmAssignedStatusStatus.Null) { setSmAssignedStatusStatus(SmAssignedStatusStatus.NotStarted); }
+        break;
+    }
+  }
+
+  private void exitSmAssignedStatusStatus()
+  {
+    switch(smAssignedStatusStatus)
     {
       case NotStarted:
-        setSmActiveStatusStatus(SmActiveStatusStatus.Null);
+        setSmAssignedStatusStatus(SmAssignedStatusStatus.Null);
         break;
       case Started:
-        setSmActiveStatusStatus(SmActiveStatusStatus.Null);
+        setSmAssignedStatusStatus(SmAssignedStatusStatus.Null);
         break;
       case Finished:
-        setSmActiveStatusStatus(SmActiveStatusStatus.Null);
+        setSmAssignedStatusStatus(SmAssignedStatusStatus.Null);
         break;
     }
   }
 
-  private void setSmActiveStatusStatus(SmActiveStatusStatus aSmActiveStatusStatus)
+  private void setSmAssignedStatusStatus(SmAssignedStatusStatus aSmAssignedStatusStatus)
   {
-    smActiveStatusStatus = aSmActiveStatusStatus;
-    if (smActiveStatus != SmActiveStatus.status && aSmActiveStatusStatus != SmActiveStatusStatus.Null) { setSmActiveStatus(SmActiveStatus.status); }
+    smAssignedStatusStatus = aSmAssignedStatusStatus;
+    if (smAssignedStatus != SmAssignedStatus.Status && aSmAssignedStatusStatus != SmAssignedStatusStatus.Null) { setSmAssignedStatus(SmAssignedStatus.Status); }
   }
   /* Code from template association_GetOne */
   public Member getMember()
@@ -546,6 +500,7 @@ public class Assignment
   public String toString()
   {
     return super.toString() + "["+
+            "paymentCode" + ":" + getPaymentCode()+ "," +
             "startWeek" + ":" + getStartWeek()+ "," +
             "endWeek" + ":" + getEndWeek()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "member = "+(getMember()!=null?Integer.toHexString(System.identityHashCode(getMember())):"null") + System.getProperties().getProperty("line.separator") +

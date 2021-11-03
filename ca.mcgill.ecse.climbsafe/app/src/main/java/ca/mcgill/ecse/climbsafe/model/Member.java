@@ -4,10 +4,10 @@
 package ca.mcgill.ecse.climbsafe.model;
 import java.util.*;
 
-// line 48 "../../../../../../ClimbSafeSM.ump"
-// line 68 "../../../../../../ClimbSafeSM.ump"
+// line 49 "../../../../../../ClimbSafeSM.ump"
+// line 70 "../../../../../../ClimbSafeSM.ump"
 // line 126 "../../../../../../model.ump"
-// line 206 "../../../../../../model.ump"
+// line 204 "../../../../../../model.ump"
 public class Member extends NamedUser
 {
 
@@ -16,6 +16,7 @@ public class Member extends NamedUser
   //------------------------
 
   //Member Attributes
+  private int refund;
   private int nrWeeks;
   private boolean guideRequired;
   private boolean hotelRequired;
@@ -36,6 +37,7 @@ public class Member extends NamedUser
   public Member(String aEmail, String aPassword, String aName, String aEmergencyContact, int aNrWeeks, boolean aGuideRequired, boolean aHotelRequired, ClimbSafe aClimbSafe)
   {
     super(aEmail, aPassword, aName, aEmergencyContact);
+    refund = 0;
     nrWeeks = aNrWeeks;
     guideRequired = aGuideRequired;
     hotelRequired = aHotelRequired;
@@ -51,6 +53,14 @@ public class Member extends NamedUser
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setRefund(int aRefund)
+  {
+    boolean wasSet = false;
+    refund = aRefund;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setNrWeeks(int aNrWeeks)
   {
@@ -74,6 +84,11 @@ public class Member extends NamedUser
     hotelRequired = aHotelRequired;
     wasSet = true;
     return wasSet;
+  }
+
+  public int getRefund()
+  {
+    return refund;
   }
 
   public int getNrWeeks()
@@ -325,6 +340,7 @@ public class Member extends NamedUser
   public String toString()
   {
     return super.toString() + "["+
+            "refund" + ":" + getRefund()+ "," +
             "nrWeeks" + ":" + getNrWeeks()+ "," +
             "guideRequired" + ":" + getGuideRequired()+ "," +
             "hotelRequired" + ":" + getHotelRequired()+ "]" + System.getProperties().getProperty("line.separator") +
