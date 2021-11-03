@@ -5,7 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.*;
-import ca.mcgill.esce.climbsafe.controller.*;
+import ca.mcgill.ecse.climbsafe.controller.*;
 import org.junit.Assert;
 
 public class AssignmentFeatureStepDefinitions {
@@ -165,7 +165,6 @@ public class AssignmentFeatureStepDefinitions {
    */
   @Then("the number of assignments in the system shall be {string}")
   public void the_number_of_assignments_in_the_system_shall_be(String string) {
-    // Write code here that turns the phrase above into concrete actions
     Assert.assertEquals(Integer.parseInt(string), climbSafe.numberOfAssignments());
   }
 
@@ -282,7 +281,6 @@ public class AssignmentFeatureStepDefinitions {
    */
   @When("the administrator attempts to cancel the trip for {string}")
   public void the_administrator_attempts_to_cancel_the_trip_for(String string) {
-    // Write code here that turns the phrase above into concrete actions
     AssignmentController.cancelTrip(string);
   }
 
