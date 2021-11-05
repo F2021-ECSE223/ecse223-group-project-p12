@@ -24,12 +24,20 @@ public class AssignmentController {
 	 * @param memberEmail Member who has paid.
 	 * @param authorizationCode Authorization code of the payment.
 	 */
-	public static void payTrip(String memberEmail, String authorizationCode)
-	throws InvalidInputException{
-
-
-
-	}
+	public static void payTrip(String memberEmail, String authorizationCode) throws InvalidInputException{
+		//constraints
+		if (climbSafe.findMemberFromEmail(memberEmail).equals(null)) 
+			throw new InvalidInputException("Member with email address " + memberEmail + " does not exist");
+		if (authorizationCode.equals(null)) 
+			throw new InvalidInputException("Invalid authorization code");
+		
+		for(Assignment a: climbSafe.getAssignments()) {
+			if (a.getMember().equals(climbSafe.findMemberFromEmail(memberEmail)) ) {
+				climbSafe.getAssignment(climbSafe.indexOfAssignment(a)).setPaymentCode(authorizationCode);
+				climbSafe.getAssignment(climbSafe.indexOfAssignment(a)).pay();
+				}
+			}
+		}
 
 	/**
 	 * @author Philippe Sarouphim Hochar
