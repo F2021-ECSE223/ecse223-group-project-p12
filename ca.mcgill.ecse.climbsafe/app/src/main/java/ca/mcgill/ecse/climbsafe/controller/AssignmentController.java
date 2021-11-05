@@ -4,7 +4,7 @@ import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.*;
 
 public class AssignmentController {
-
+			static ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
 	/**
 	 * @author Cedric Barre
 	 *
@@ -38,7 +38,6 @@ public class AssignmentController {
 	 * @param week Week in which to start trips.
 	 */
 	public static void startTrips(int week) throws InvalidInputException{
-		ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
 		if(week > climbSafe.getNrWeeks() || week < 1) throw new InvalidInputException("Week number out of bounds");
 		for(Assignment a: climbSafe.getAssignments())
 			if(a.getStartWeek() == week)
@@ -58,10 +57,16 @@ public class AssignmentController {
 
 	/**
 	 * @author Chris Hatoum
+	 * 
 	 * This method cancels the Trip for a member
 	 * @param memberEmail Member whose trip got cancelled.
 	 */
 	public static void cancelTrip(String memberEmail) throws InvalidInputException{
+		Member member = climbSafe.findMemberFromEmail(memberEmail);
+		if(member == null) throw new InvalidInputException("The member with " + memberEmail + "doesn't exist");
+		else {
+			member.getAssignment().cancel();
+			}
 		
 	}
 }
