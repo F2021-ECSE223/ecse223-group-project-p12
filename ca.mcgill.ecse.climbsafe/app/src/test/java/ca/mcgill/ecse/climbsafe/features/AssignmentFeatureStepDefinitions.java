@@ -325,10 +325,10 @@ public class AssignmentFeatureStepDefinitions {
   @Then("the member with email address {string} shall receive a refund of {string} percent")
   public void the_member_with_email_address_shall_receive_a_refund_of_percent(String string,
       String string2) {
+
 	  int refund = Integer.parseInt(string2);
 	  climbSafe.findMemberFromEmail(string).setRefund(refund);
   }
-
 
   /**
    * @author Zachary Godden
