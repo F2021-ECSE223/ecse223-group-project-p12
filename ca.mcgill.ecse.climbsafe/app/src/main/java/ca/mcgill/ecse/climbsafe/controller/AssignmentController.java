@@ -4,6 +4,7 @@ import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.*;
 
 public class AssignmentController {
+	static ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
 
 	/**
 	 * @author Cedric Barre
@@ -47,7 +48,6 @@ public class AssignmentController {
 	 * @param week Week in which to start trips.
 	 */
 	public static void startTrips(int week) throws InvalidInputException{
-		ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
 		if(week > climbSafe.getNrWeeks() || week < 1) throw new InvalidInputException("Week number out of bounds");
 		for(Assignment a: climbSafe.getAssignments())
 			if(a.getStartWeek() == week)
