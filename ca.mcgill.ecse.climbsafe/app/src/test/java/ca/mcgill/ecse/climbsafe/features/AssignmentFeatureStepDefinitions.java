@@ -313,19 +313,33 @@ public class AssignmentFeatureStepDefinitions {
 
   }
 
+  /**
+   * @author Zachary Godden
+   * 
+   * This method implements the cucumber Then clause: "the member with email address
+   * {string} shall receive a refund of {string} percent"
+   * 
+   * @param string - Member's email address
+   * @param string2 - Refund amount as a string
+   */
   @Then("the member with email address {string} shall receive a refund of {string} percent")
   public void the_member_with_email_address_shall_receive_a_refund_of_percent(String string,
       String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+	  int refund = Integer.parseInt(string2);
+	  climbSafe.findMemberFromEmail(string).setRefund(refund);
   }
 
 
+  /**
+   * @author Zachary Godden
+   * 
+   * THis method implements the cucumber Given clause: "the member with {string} has started their trip"
+   * 
+   * @param string - Member's email
+   */
   @Given("the member with {string} has started their trip")
   public void the_member_with_has_started_their_trip(String string) {
-    // Write code here that turns the phrase above into concrete actions
-
-    throw new io.cucumber.java.PendingException();
+    climbSafe.findMemberFromEmail(string).getAssignment().start();
   }
 
   /**
