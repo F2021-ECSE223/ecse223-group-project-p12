@@ -8,11 +8,15 @@ import ca.mcgill.ecse.climbsafe.model.*;
 import ca.mcgill.ecse.climbsafe.controller.*;
 import org.junit.Assert;
 
+import java.sql.Date;
+import java.util.List;
+import java.util.Map;
+
 public class AssignmentFeatureStepDefinitions {
 
   private String error = "";
 
-  ClimbSafeApplication climbSafe = null;
+  ClimbSafe climbSafe = null;
 
   /**
    * @author Cedric Barre, Theo Ghanem, Zachary Godden, Chris Hatoum, Habib Jarweh, Philippe
@@ -140,12 +144,12 @@ public class AssignmentFeatureStepDefinitions {
   public void the_following_assignments_shall_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> assignmentList = dataTable.asMaps(String.class, String.class);
-    for ( Map<String, String> a : assignmentLists) {
+    for ( Map<String, String> a : assignmentList) {
       Assert.assertTrue(assignmentExists(
               climbSafe.findMemberFromEmail(a.get("memberEmail")),
               climbSafe.findGuideFromEmail("guideEmail"),
-              a.get("startWeek"),
-              a.get("endWeek")));
+              Integer.parseInt(a.get("startWeek")),
+              Integer.parseInt(a.get("endWeek"))));
     }
   }
 
@@ -299,19 +303,35 @@ public class AssignmentFeatureStepDefinitions {
 
   }
 
+  /**
+   * @author Cedric Barre
+   * 
+   * This method implement the cucumber Then clause: "the member with email address 
+   * {string} shall receive a refund of {string} percent"
+   * It retrieves the refund directly from the member with the specified email and
+   * makes sure its value is the same as the value of the refund passed as argument
+   * 
+   * @param string	String holding the email of the member which will receive the refund
+   * @param string2 String holding the value for the refund which the member should receive
+   */
   @Then("the member with email address {string} shall receive a refund of {string} percent")
   public void the_member_with_email_address_shall_receive_a_refund_of_percent(String string,
       String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+	  Assert.assertEquals(climbSafe.findMemberFromEmail(string).getRefund(), Integer.parseInt(string2));
   }
 
-
+ /**
+ * @author Cedric Barre
+ * 
+ * This method implement the cucumber Given clause: "the member with {string} has started
+ * their trip"
+ * It calls the method to transition the assignment into the Started state
+ * 
+ * @param string
+ */
   @Given("the member with {string} has started their trip")
   public void the_member_with_has_started_their_trip(String string) {
-    // Write code here that turns the phrase above into concrete actions
-
-    throw new io.cucumber.java.PendingException();
+	  climbSafe.findMemberFromEmail(string).getAssignment().start();
   }
 
   /**

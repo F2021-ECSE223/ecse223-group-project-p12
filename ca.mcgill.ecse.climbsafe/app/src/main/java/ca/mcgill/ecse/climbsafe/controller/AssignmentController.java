@@ -12,6 +12,7 @@ public class AssignmentController {
 	 */
 	public static void initiateAssignments() {
 		
+		
 	}
 
 	/**
