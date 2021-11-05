@@ -172,7 +172,10 @@ public class AssignmentFeatureStepDefinitions {
     Assert.assertEquals(Integer.parseInt(string), climbSafe.numberOfAssignments());
   }
 
-  
+  /**
+   *
+   * @param string
+   */
   @Then("the system shall raise the error {string}")
   public void the_system_shall_raise_the_error(String string) {
 
@@ -193,10 +196,9 @@ public class AssignmentFeatureStepDefinitions {
 
     List<Map<String, String>> assignmentsList = dataTable.asMaps(String.class, String.class);
     for (Map<String, String> a : assignmentsList) {
-      //climbSafe.addEquipment(a.get("memberEmail"), a.get("guideEmail"), a.get("startWeek"), a.get("endWeek"));
+     climbSafe.addAssignment(Integer.parseInt(a.get("startWeek")),Integer.parseInt(a.get("endWeek")), climbSafe.findMemberFromEmail(a.get("memberEmail")));
     }
-    // Given the following assignments, but equipments are added to the system?
-    throw new io.cucumber.java.PendingException();
+    
   }
 
   /**
@@ -276,9 +278,7 @@ public class AssignmentFeatureStepDefinitions {
    */
   @Then("the error {string} shall be raised")
   public void the_error_shall_be_raised(String string) {
-    // Unsure whether this is correct
-    //throw new Exception(string);
-    throw new io.cucumber.java.PendingException();
+    error = string + error;
   }
 
   /**
@@ -381,8 +381,11 @@ public class AssignmentFeatureStepDefinitions {
    */
   @Then("the member with email {string} shall be {string}")
   public void the_member_with_email_shall_be(String string, String string2) {
-
-    throw new io.cucumber.java.PendingException();
+    Member member = climbSafe.findMemberFromEmail(string);
+    if(member!=null) {
+      Assert.assertTrue(member.isBanned());
+    }
+    else throw new InvalidInputException("Input member with valid email");
   }
   /**
    * @author Chris Hatoum
