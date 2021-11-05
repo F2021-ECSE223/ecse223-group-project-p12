@@ -145,6 +145,15 @@ public class Member extends NamedUser
     return wasEventProcessed;
   }
 
+  /**
+   * @author Theo Ghanem
+   *
+   * @return Whether the member is banned
+   */
+  public boolean isBanned(){
+    return sm == Sm.Banned;
+  }
+
   private void setSm(Sm aSm)
   {
     sm = aSm;
