@@ -172,7 +172,13 @@ public class AssignmentFeatureStepDefinitions {
     Assert.assertEquals(Integer.parseInt(string), climbSafe.numberOfAssignments());
   }
 
-  
+  /**
+   * @author Zachary Godden
+   * 
+   * This method implements the cucumber Then clause "the system shall raise the error {string}"
+   * 
+   * @param string - Error message
+   */
   @Then("the system shall raise the error {string}")
   public void the_system_shall_raise_the_error(String string) {
 
@@ -326,7 +332,7 @@ public class AssignmentFeatureStepDefinitions {
   public void the_member_with_email_address_shall_receive_a_refund_of_percent(String string,
       String string2) {
 	  int refund = Integer.parseInt(string2);
-	  climbSafe.findMemberFromEmail(string).setRefund(refund);
+	  Assert.assertEquals(refund ,climbSafe.findMemberFromEmail(string).getRefund());
   }
 
 
