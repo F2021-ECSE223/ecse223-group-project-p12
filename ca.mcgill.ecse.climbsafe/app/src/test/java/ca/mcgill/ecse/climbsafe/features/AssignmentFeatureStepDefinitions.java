@@ -271,7 +271,7 @@ public class AssignmentFeatureStepDefinitions {
   /**
    * @author Theo Ghanem
    *
-   * This method implements the cucumber When clause: "the error {string} shall be raised"
+   * This method implements the cucumber Then clause: "the error {string} shall be raised"
    * It throws the corresponding error message
    *
    * @param string Error message
@@ -374,13 +374,17 @@ public class AssignmentFeatureStepDefinitions {
   }
 
   /**
-   * @author Theo Ghanem not complete
+   * @author Theo Ghanem
    *
-   * @param string
-   * @param string2
+   *This method implements the cucumber Then clause: "the member with email {string} shall be {string}".
+   *If the member exists then it 
+   *
+   * @param string the member's email
+   * @param string2 banned or active
+   * @throws InvalidInputException 
    */
   @Then("the member with email {string} shall be {string}")
-  public void the_member_with_email_shall_be(String string, String string2) {
+  public void the_member_with_email_shall_be(String string, String string2) throws InvalidInputException {
     Member member = climbSafe.findMemberFromEmail(string);
     if(member!=null) {
       Assert.assertTrue(member.isBanned());
@@ -425,16 +429,21 @@ public class AssignmentFeatureStepDefinitions {
   /**
    * @author Theo Ghanem
    *
-   * This method implements the cucumber Given clause: ""
+   * This method implements the cucumber Given clause: "the member with {string} has finished their trip"
+   * 
    *
    * @param string Member's email
-   *
    */
   @Given("the member with {string} has finished their trip")
   public void the_member_with_has_finished_their_trip(String string) {
+  
+    try {
+      AssignmentController.finishTrip(string);
+    } 
+    catch (InvalidInputException e) {
+      error += e.getMessage();
+    }
 
-
-    throw new io.cucumber.java.PendingException();
   }
 
   /**
