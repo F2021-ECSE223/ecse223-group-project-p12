@@ -4,8 +4,12 @@ import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.*;
 
 public class AssignmentController {
+<<<<<<< HEAD
+			static ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
+=======
 	static ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
 
+>>>>>>> af4479b1159710b7c5b530d3341c2b5b1d4bbf3c
 	/**
 	 * @author Cedric Barre
 	 *
@@ -70,10 +74,16 @@ public class AssignmentController {
 	  
 	/**
 	 * @author Chris Hatoum
+	 * 
 	 * This method cancels the Trip for a member
 	 * @param memberEmail Member whose trip got cancelled.
 	 */
 	public static void cancelTrip(String memberEmail) throws InvalidInputException{
+		Member member = climbSafe.findMemberFromEmail(memberEmail);
+		if(member == null) throw new InvalidInputException("The member with " + memberEmail + "doesn't exist");
+		else {
+			member.getAssignment().cancel();
+			}
 		
 	}
 }
