@@ -126,13 +126,17 @@ public class AssignmentFeatureStepDefinitions {
    */
   @When("the administrator attempts to initiate the assignment process")
   public void the_administrator_attempts_to_initiate_the_assignment_process() {
-    AssignmentController.initiateAssignments();
+    try{
+    	AssignmentController.initiateAssignments();
+    } catch ( Exception e) {
+    	error = e.getMessage();
+    }
   }
 
   /**
    * @author Cedric Barre
    *
-   * This method implements the cucumber When clause: "the following assignments shall exist in
+   * This method implements the cucumber Then clause: "the following assignments shall exist in
    * the system:"
    * It makes sure the specified assignments exist in the system by directly verifying the
    * model
@@ -153,10 +157,21 @@ public class AssignmentFeatureStepDefinitions {
   }
 
 
+  /**
+   * @author Cedric Barre
+   * 
+   * This method implements the cucumber Then clause: "the assignment for {string}
+   * shall be marked as {string}"
+   * It fetches the assignment associated to the member with the specified email and
+   * checks that it is in the Assigned State 
+   * 
+   * @param string
+   * @param string2
+   */
   @Then("the assignment for {string} shall be marked as {string}")
   public void the_assignment_for_shall_be_marked_as(String string, String string2) {
     // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+    Assert.assertEquals(climbSafe.findMemberFromEmail(string).getAssignment().getSm().name(), string2);
   }
 
   /** @author Habib Jarweh
@@ -178,7 +193,7 @@ public class AssignmentFeatureStepDefinitions {
   @Then("the system shall raise the error {string}")
   public void the_system_shall_raise_the_error(String string) {
 
-    Assert.assertTrue(error.startsWith(string));
+    Assert.assertTrue(error.equals(string));
   }
 
   /**

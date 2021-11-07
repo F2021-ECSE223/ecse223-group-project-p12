@@ -2,15 +2,10 @@ package ca.mcgill.ecse.climbsafe.controller;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.*;
-import ca.mcgill.ecse.climbsafe.model.Assignment.Sm;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class AssignmentController {
 	
-	static ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
-
 	static ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
 
 
@@ -18,9 +13,10 @@ public class AssignmentController {
 	 * @author Cedric Barre
 	 *
 	 * This method makes the pairing between trips and guides.
+	 * @throws Exception 
 	 *
 	 */
-	public static void initiateAssignments() {
+	public static void initiateAssignments() throws Exception {
 		List<Member> memberList = climbSafe.getMembers();
 		
 		for( Guide g : climbSafe.getGuides() ) {
@@ -41,6 +37,10 @@ public class AssignmentController {
 					break;
 				}
 			}
+		}
+		
+		for( Member m: memberList ) {
+			if( m.getAssignment() == null ) throw new Exception("Assignments could not be completed for all members");
 		}
 		
 	}
