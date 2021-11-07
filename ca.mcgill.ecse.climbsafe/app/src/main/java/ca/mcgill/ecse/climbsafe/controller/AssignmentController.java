@@ -2,8 +2,14 @@ package ca.mcgill.ecse.climbsafe.controller;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.*;
+import ca.mcgill.ecse.climbsafe.model.Assignment.Sm;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AssignmentController {
+	
+	static ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
 
 	/**
 	 * @author Cedric Barre
@@ -12,7 +18,27 @@ public class AssignmentController {
 	 *
 	 */
 	public static void initiateAssignments() {
+		List<Member> memberList = climbSafe.getMembers();
 		
+		for( Guide g : climbSafe.getGuides() ) {
+			for( Member m : memberList ) {
+				if ( m.getAssignment() == null ) {
+					if( m.getGuideRequired() == true && ( climbSafe.getNrWeeks() - g.getBookings() ) >= m.getNrWeeks() ) {
+						Assignment a = new Assignment((1 + g.getBookings()), ( g.getBookings() + m.getNrWeeks() ), m, climbSafe);
+						a.setGuide( g );
+						a.assign();
+						g.setBookings( g.getBookings() + m.getNrWeeks() );
+					}
+					else if( m.getGuideRequired() == false ) {
+						Assignment a = new Assignment(1, m.getNrWeeks(), m, climbSafe);
+						a.assign();
+					}
+				}
+				if( g.getBookings() == climbSafe.getNrWeeks() ) {
+					break;
+				}
+			}
+		}
 		
 	}
 
@@ -39,7 +65,6 @@ public class AssignmentController {
 	 * @param week Week in which to start trips.
 	 */
 	public static void startTrips(int week) throws InvalidInputException{
-		ClimbSafe climbSafe = ClimbSafeApplication.getClimbSafe();
 		if(week > climbSafe.getNrWeeks() || week < 1) throw new InvalidInputException("Week number out of bounds");
 		for(Assignment a: climbSafe.getAssignments())
 			if(a.getStartWeek() == week)

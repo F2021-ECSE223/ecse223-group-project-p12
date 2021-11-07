@@ -8,6 +8,8 @@ import ca.mcgill.ecse.climbsafe.model.*;
 import ca.mcgill.ecse.climbsafe.controller.*;
 import org.junit.Assert;
 
+import com.google.common.base.Objects;
+
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class AssignmentFeatureStepDefinitions {
    * @author Cedric Barre, Theo Ghanem, Zachary Godden, Chris Hatoum, Habib Jarweh, Philippe
    *    *         Sarouphim Hochar
    *
-   * This method implements the given clause: "Given the following ClimbSafe system exists".
+   * This method implements the Given clause: "Given the following ClimbSafe system exists".
    *
    *
    *@param dataTable Cucumber data table.
@@ -38,19 +40,16 @@ public class AssignmentFeatureStepDefinitions {
   }
 
   /**
+   *@author Cedric Barre
+   *
+   * This method implements the Given clause: "the following pieces of equipment exist in the system:"
+   * It creates all the equipment pieces and adds them to the climbsafe system
    *
    * @param dataTable
    */
   @Given("the following pieces of equipment exist in the system:")
   public void the_following_pieces_of_equipment_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
     List<Map<String, String>> equipmentList = dataTable.asMaps(String.class, String.class);
     for (Map<String, String> e : equipmentList) {
       climbSafe.addEquipment(e.get("name"), Integer.parseInt(e.get("weight")), Integer.parseInt(e.get("pricePerWeek")));
@@ -147,7 +146,7 @@ public class AssignmentFeatureStepDefinitions {
     for ( Map<String, String> a : assignmentList) {
       Assert.assertTrue(assignmentExists(
               climbSafe.findMemberFromEmail(a.get("memberEmail")),
-              climbSafe.findGuideFromEmail("guideEmail"),
+              climbSafe.findGuideFromEmail(a.get("guideEmail")),
               Integer.parseInt(a.get("startWeek")),
               Integer.parseInt(a.get("endWeek"))));
     }
@@ -196,7 +195,6 @@ public class AssignmentFeatureStepDefinitions {
       //climbSafe.addEquipment(a.get("memberEmail"), a.get("guideEmail"), a.get("startWeek"), a.get("endWeek"));
     }
     // Given the following assignments, but equipments are added to the system?
-    throw new io.cucumber.java.PendingException();
   }
 
   /**
@@ -448,9 +446,9 @@ public class AssignmentFeatureStepDefinitions {
   private boolean assignmentExists( Member m, Guide g, int startWeek, int endWeek ) {
     List<Assignment> allAssignments = climbSafe.getAssignments();
     for( Assignment a : allAssignments ) {
-      if( a.getMember().equals(m) && a.getGuide().equals(g)
-              && a.getStartWeek() == startWeek  && a.getEndWeek() == endWeek ) {
-        return true;
+      if( a.getMember().equals(m) && Objects.equal(a.getGuide(), g) 
+    		  && a.getStartWeek() == startWeek  && a.getEndWeek() == endWeek ) {
+    	return true;
       }
     }
     return false;
