@@ -261,10 +261,8 @@ public class AssignmentFeatureStepDefinitions {
   @Then("the assignment for {string} shall record the authorization code {string}")
   public void the_assignment_for_shall_record_the_authorization_code(String string,
       String string2) {
-    /*Assert.assertEquals(string2,
-            climbSafe.findMemberFromEmail(string).getAssignment().getAuthorizationCode());*/
-    // Feature still not implemented
-    throw new io.cucumber.java.PendingException();
+    Assert.assertEquals(string2,
+            climbSafe.findMemberFromEmail(string).getAssignment().getPaymentCode());
   }
 
   /**
