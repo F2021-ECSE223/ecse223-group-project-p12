@@ -78,8 +78,10 @@ public class AssignmentController {
 	public static void startTrips(int week) throws InvalidInputException{
 		if(week > climbSafe.getNrWeeks() || week < 1) throw new InvalidInputException("Week number out of bounds");
 		for(Assignment a: climbSafe.getAssignments())
-			if(a.getStartWeek() == week)
-				climbSafe.getAssignment(climbSafe.indexOfAssignment(a)).start();
+			if(a.getStartWeek() == week) {
+				if(a.getSmAssignedPaymentPayment() == Assignment.SmAssignedPaymentPayment.Paid) a.start();
+				else a.getMember().ban();
+			}
 	}
 
 	/**
