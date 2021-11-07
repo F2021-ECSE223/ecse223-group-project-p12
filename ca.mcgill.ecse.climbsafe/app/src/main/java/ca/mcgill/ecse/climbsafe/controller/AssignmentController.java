@@ -55,7 +55,7 @@ public class AssignmentController {
 	 */
 	public static void payTrip(String memberEmail, String authorizationCode) throws InvalidInputException{
 		//constraints
-		if (climbSafe.findMemberFromEmail(memberEmail).equals(null)) 
+		if (climbSafe.findMemberFromEmail(memberEmail)==null ) 
 			throw new InvalidInputException("Member with email address " + memberEmail + " does not exist");
 		if (authorizationCode.equals(null)) 
 			throw new InvalidInputException("Invalid authorization code");
