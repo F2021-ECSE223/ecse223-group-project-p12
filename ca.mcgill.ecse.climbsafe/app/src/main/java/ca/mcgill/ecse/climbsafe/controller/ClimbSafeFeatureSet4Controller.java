@@ -5,6 +5,7 @@ import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.BookableItem;
 import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
 import ca.mcgill.ecse.climbsafe.model.Equipment;
+import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
 
 /**
  * This class is responsible for the implementation of the features relating to the equipment.
@@ -40,6 +41,7 @@ public class ClimbSafeFeatureSet4Controller {
 
     // Once input is validated, add the new equipment to the application
     ClimbSafeApplication.getClimbSafe().addEquipment(name, weight, pricePerWeek);
+    ClimbSafePersistence.save();
   }
 
   /**
@@ -78,6 +80,7 @@ public class ClimbSafeFeatureSet4Controller {
 
     // Add updated equipment to application
     addEquipment(newName, newWeight, newPricePerWeek);
+    ClimbSafePersistence.save();
 
   }
 

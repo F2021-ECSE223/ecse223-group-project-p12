@@ -10,6 +10,7 @@ import ca.mcgill.ecse.climbsafe.model.BundleItem;
 import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
 import ca.mcgill.ecse.climbsafe.model.Equipment;
 import ca.mcgill.ecse.climbsafe.model.EquipmentBundle;
+import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
 
 public class ClimbSafeFeatureSet6Controller {
 
@@ -39,6 +40,7 @@ public class ClimbSafeFeatureSet6Controller {
     }
 
     equipment.delete(); // removes equipment from ClimbSafe
+    ClimbSafePersistence.save();
   }
 
   /**
@@ -56,6 +58,7 @@ public class ClimbSafeFeatureSet6Controller {
       // if the equipment bundle does not exist, the function does nothing
     } else { // if the bundle exists then it is deleted from CLimbSafe
       equipmentBundle.delete();
+      ClimbSafePersistence.save();
     }
   }
 
