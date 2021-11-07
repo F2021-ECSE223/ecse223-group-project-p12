@@ -170,8 +170,19 @@ public class AssignmentFeatureStepDefinitions {
    */
   @Then("the assignment for {string} shall be marked as {string}")
   public void the_assignment_for_shall_be_marked_as(String string, String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    Assert.assertEquals(climbSafe.findMemberFromEmail(string).getAssignment().getSm().name(), string2);
+    // This is the old code
+    //Assert.assertEquals(climbSafe.findMemberFromEmail(string).getAssignment().getSm().name(), string2);
+
+    //This was added by Philippe
+    boolean test = false;
+    System.out.println(climbSafe.findMemberFromEmail(string).getAssignment().getSmFullName());
+    for(String s: climbSafe.findMemberFromEmail(string).getAssignment().getSmFullName().split("\\.")){
+      if(s.equals(string2)){
+        test = true;
+        break;
+      }
+    }
+    Assert.assertTrue(test);
   }
 
   /** @author Habib Jarweh
@@ -211,6 +222,9 @@ public class AssignmentFeatureStepDefinitions {
     List<Map<String, String>> assignmentsList = dataTable.asMaps(String.class, String.class);
     for (Map<String, String> a : assignmentsList) {
      climbSafe.addAssignment(Integer.parseInt(a.get("startWeek")),Integer.parseInt(a.get("endWeek")), climbSafe.findMemberFromEmail(a.get("memberEmail")));
+
+     // This was added by Philippe
+     climbSafe.getAssignments().get(climbSafe.getAssignments().size() - 1).assign();
     }
   }
 
@@ -449,13 +463,12 @@ public class AssignmentFeatureStepDefinitions {
    */
   @Given("the member with {string} has finished their trip")
   public void the_member_with_has_finished_their_trip(String string) {
-  
-    try {
-      AssignmentController.finishTrip(string);
-    } 
-    catch (InvalidInputException e) {
-      error += e.getMessage();
-    }
+    // This was added by Philippe
+    climbSafe.findMemberFromEmail(string).getAssignment().start();
+    climbSafe.findMemberFromEmail(string).getAssignment().finish();
+
+    //This is the old code
+    //AssignmentController.finishTrip(string);
 
   }
 
