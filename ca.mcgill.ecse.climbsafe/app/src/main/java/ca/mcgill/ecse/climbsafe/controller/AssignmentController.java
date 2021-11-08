@@ -108,7 +108,14 @@ public class AssignmentController {
 		Member member = climbSafe.findMemberFromEmail(memberEmail);
 		if(member == null) throw new InvalidInputException("The member with " + memberEmail + "doesn't exist");
 		else {
+			
+
+			if(member.getAssignment().getSmAssignedPaymentPayment() == Assignment.SmAssignedPaymentPayment.Paid)  member.setRefund(50);
+			else if(member.getAssignment().getStartWeek() != 0) member.setRefund(10);
+
 			member.getAssignment().cancel();
+
 		}
+		
 	}
 }
