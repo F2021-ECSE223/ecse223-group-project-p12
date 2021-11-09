@@ -4,8 +4,8 @@
 package ca.mcgill.ecse.climbsafe.model;
 import java.util.*;
 
-// line 33 "../../../../../../ClimbSafeSM.ump"
-// line 65 "../../../../../../ClimbSafeSM.ump"
+// line 24 "../../../../../../ClimbSafeSM.ump"
+// line 44 "../../../../../../ClimbSafeSM.ump"
 // line 122 "../../../../../../model.ump"
 // line 199 "../../../../../../model.ump"
 public class Guide extends NamedUser
@@ -17,10 +17,6 @@ public class Guide extends NamedUser
 
   //Guide Attributes
   private int bookings;
-
-  //Guide State Machines
-  public enum Sm { NoBooking, SomeBookings, FullyBooked }
-  private Sm sm;
 
   //Guide Associations
   private ClimbSafe climbSafe;
@@ -40,7 +36,6 @@ public class Guide extends NamedUser
       throw new RuntimeException("Unable to create guide due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     assignments = new ArrayList<Assignment>();
-    setSm(Sm.NoBooking);
   }
 
   //------------------------
@@ -58,74 +53,6 @@ public class Guide extends NamedUser
   public int getBookings()
   {
     return bookings;
-  }
-
-  public String getSmFullName()
-  {
-    String answer = sm.toString();
-    return answer;
-  }
-
-  public Sm getSm()
-  {
-    return sm;
-  }
-
-  public boolean book()
-  {
-    boolean wasEventProcessed = false;
-    
-    Sm aSm = sm;
-    switch (aSm)
-    {
-      case NoBooking:
-        setSm(Sm.SomeBookings);
-        wasEventProcessed = true;
-        break;
-      case SomeBookings:
-        if (getBookings()==4)
-        {
-          setSm(Sm.FullyBooked);
-          wasEventProcessed = true;
-          break;
-        }
-        break;
-      default:
-        // Other states do respond to this event
-    }
-
-    return wasEventProcessed;
-  }
-
-  public boolean unbook()
-  {
-    boolean wasEventProcessed = false;
-    
-    Sm aSm = sm;
-    switch (aSm)
-    {
-      case SomeBookings:
-        if (getBookings()==1)
-        {
-          setSm(Sm.NoBooking);
-          wasEventProcessed = true;
-          break;
-        }
-        break;
-      case FullyBooked:
-        setSm(Sm.SomeBookings);
-        wasEventProcessed = true;
-        break;
-      default:
-        // Other states do respond to this event
-    }
-
-    return wasEventProcessed;
-  }
-
-  private void setSm(Sm aSm)
-  {
-    sm = aSm;
   }
   /* Code from template association_GetOne */
   public ClimbSafe getClimbSafe()

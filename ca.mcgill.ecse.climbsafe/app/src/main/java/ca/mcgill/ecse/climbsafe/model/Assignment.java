@@ -4,7 +4,7 @@
 package ca.mcgill.ecse.climbsafe.model;
 
 // line 1 "../../../../../../ClimbSafeSM.ump"
-// line 60 "../../../../../../ClimbSafeSM.ump"
+// line 40 "../../../../../../ClimbSafeSM.ump"
 // line 168 "../../../../../../model.ump"
 // line 239 "../../../../../../model.ump"
 public class Assignment
@@ -20,16 +20,10 @@ public class Assignment
   private int endWeek;
 
   //Assignment State Machines
-  public enum Sm { Unassigned, Assigned, Cancelled }
-  public enum SmAssignedPayment { Null, Payment }
-  public enum SmAssignedPaymentPayment { Null, Unpaid, Paid }
-  public enum SmAssignedStatus { Null, Status }
-  public enum SmAssignedStatusStatus { Null, NotStarted, Started, Finished }
+  public enum Sm { Assigned }
+  public enum SmAssigned { Null, NotStarted, Paid, Started, Finished, Cancelled }
   private Sm sm;
-  private SmAssignedPayment smAssignedPayment;
-  private SmAssignedPaymentPayment smAssignedPaymentPayment;
-  private SmAssignedStatus smAssignedStatus;
-  private SmAssignedStatusStatus smAssignedStatusStatus;
+  private SmAssigned smAssigned;
 
   //Assignment Associations
   private Member member;
@@ -56,11 +50,8 @@ public class Assignment
     {
       throw new RuntimeException("Unable to create assignment due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    setSmAssignedPayment(SmAssignedPayment.Null);
-    setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Null);
-    setSmAssignedStatus(SmAssignedStatus.Null);
-    setSmAssignedStatusStatus(SmAssignedStatusStatus.Null);
-    setSm(Sm.Unassigned);
+    setSmAssigned(SmAssigned.Null);
+    setSm(Sm.Assigned);
   }
 
   //------------------------
@@ -109,10 +100,7 @@ public class Assignment
   public String getSmFullName()
   {
     String answer = sm.toString();
-    if (smAssignedPayment != SmAssignedPayment.Null) { answer += "." + smAssignedPayment.toString(); }
-    if (smAssignedPaymentPayment != SmAssignedPaymentPayment.Null) { answer += "." + smAssignedPaymentPayment.toString(); }
-    if (smAssignedStatus != SmAssignedStatus.Null) { answer += "." + smAssignedStatus.toString(); }
-    if (smAssignedStatusStatus != SmAssignedStatusStatus.Null) { answer += "." + smAssignedStatusStatus.toString(); }
+    if (smAssigned != SmAssigned.Null) { answer += "." + smAssigned.toString(); }
     return answer;
   }
 
@@ -121,77 +109,21 @@ public class Assignment
     return sm;
   }
 
-  public SmAssignedPayment getSmAssignedPayment()
+  public SmAssigned getSmAssigned()
   {
-    return smAssignedPayment;
-  }
-
-  public SmAssignedPaymentPayment getSmAssignedPaymentPayment()
-  {
-    return smAssignedPaymentPayment;
-  }
-
-  public SmAssignedStatus getSmAssignedStatus()
-  {
-    return smAssignedStatus;
-  }
-
-  public SmAssignedStatusStatus getSmAssignedStatusStatus()
-  {
-    return smAssignedStatusStatus;
-  }
-
-  public boolean assign()
-  {
-    boolean wasEventProcessed = false;
-    
-    Sm aSm = sm;
-    switch (aSm)
-    {
-      case Unassigned:
-        setSm(Sm.Assigned);
-        wasEventProcessed = true;
-        break;
-      default:
-        // Other states do respond to this event
-    }
-
-    return wasEventProcessed;
-  }
-
-  public boolean cancel()
-  {
-    boolean wasEventProcessed = false;
-    
-    Sm aSm = sm;
-    switch (aSm)
-    {
-      case Unassigned:
-        setSm(Sm.Cancelled);
-        wasEventProcessed = true;
-        break;
-      case Assigned:
-        exitSm();
-        setSm(Sm.Cancelled);
-        wasEventProcessed = true;
-        break;
-      default:
-        // Other states do respond to this event
-    }
-
-    return wasEventProcessed;
+    return smAssigned;
   }
 
   public boolean pay()
   {
     boolean wasEventProcessed = false;
     
-    SmAssignedPaymentPayment aSmAssignedPaymentPayment = smAssignedPaymentPayment;
-    switch (aSmAssignedPaymentPayment)
+    SmAssigned aSmAssigned = smAssigned;
+    switch (aSmAssigned)
     {
-      case Unpaid:
-        exitSmAssignedPaymentPayment();
-        setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Paid);
+      case NotStarted:
+        exitSmAssigned();
+        setSmAssigned(SmAssigned.Paid);
         wasEventProcessed = true;
         break;
       default:
@@ -205,12 +137,48 @@ public class Assignment
   {
     boolean wasEventProcessed = false;
     
-    SmAssignedStatusStatus aSmAssignedStatusStatus = smAssignedStatusStatus;
-    switch (aSmAssignedStatusStatus)
+    SmAssigned aSmAssigned = smAssigned;
+    switch (aSmAssigned)
     {
       case NotStarted:
-        exitSmAssignedStatusStatus();
-        setSmAssignedStatusStatus(SmAssignedStatusStatus.Started);
+        exitSmAssigned();
+        // line 8 "../../../../../../ClimbSafeSM.ump"
+        getMember().ban();
+        setSmAssigned(SmAssigned.Cancelled);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        exitSmAssigned();
+        setSmAssigned(SmAssigned.Started);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean cancel()
+  {
+    boolean wasEventProcessed = false;
+    
+    SmAssigned aSmAssigned = smAssigned;
+    switch (aSmAssigned)
+    {
+      case NotStarted:
+        exitSmAssigned();
+        setSmAssigned(SmAssigned.Cancelled);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        exitSmAssigned();
+        setSmAssigned(SmAssigned.Cancelled);
+        wasEventProcessed = true;
+        break;
+      case Started:
+        exitSmAssigned();
+        setSmAssigned(SmAssigned.Cancelled);
         wasEventProcessed = true;
         break;
       default:
@@ -224,12 +192,12 @@ public class Assignment
   {
     boolean wasEventProcessed = false;
     
-    SmAssignedStatusStatus aSmAssignedStatusStatus = smAssignedStatusStatus;
-    switch (aSmAssignedStatusStatus)
+    SmAssigned aSmAssigned = smAssigned;
+    switch (aSmAssigned)
     {
       case Started:
-        exitSmAssignedStatusStatus();
-        setSmAssignedStatusStatus(SmAssignedStatusStatus.Finished);
+        exitSmAssigned();
+        setSmAssigned(SmAssigned.Finished);
         wasEventProcessed = true;
         break;
       default:
@@ -244,8 +212,7 @@ public class Assignment
     switch(sm)
     {
       case Assigned:
-        exitSmAssignedPayment();
-        exitSmAssignedStatus();
+        exitSmAssigned();
         break;
     }
   }
@@ -258,101 +225,37 @@ public class Assignment
     switch(sm)
     {
       case Assigned:
-        if (smAssignedPayment == SmAssignedPayment.Null) { setSmAssignedPayment(SmAssignedPayment.Payment); }
-        if (smAssignedStatus == SmAssignedStatus.Null) { setSmAssignedStatus(SmAssignedStatus.Status); }
+        if (smAssigned == SmAssigned.Null) { setSmAssigned(SmAssigned.NotStarted); }
         break;
     }
   }
 
-  private void exitSmAssignedPayment()
+  private void exitSmAssigned()
   {
-    switch(smAssignedPayment)
-    {
-      case Payment:
-        exitSmAssignedPaymentPayment();
-        setSmAssignedPayment(SmAssignedPayment.Null);
-        break;
-    }
-  }
-
-  private void setSmAssignedPayment(SmAssignedPayment aSmAssignedPayment)
-  {
-    smAssignedPayment = aSmAssignedPayment;
-    if (sm != Sm.Assigned && aSmAssignedPayment != SmAssignedPayment.Null) { setSm(Sm.Assigned); }
-
-    // entry actions and do activities
-    switch(smAssignedPayment)
-    {
-      case Payment:
-        if (smAssignedPaymentPayment == SmAssignedPaymentPayment.Null) { setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Unpaid); }
-        break;
-    }
-  }
-
-  private void exitSmAssignedPaymentPayment()
-  {
-    switch(smAssignedPaymentPayment)
-    {
-      case Unpaid:
-        setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Null);
-        break;
-      case Paid:
-        setSmAssignedPaymentPayment(SmAssignedPaymentPayment.Null);
-        break;
-    }
-  }
-
-  private void setSmAssignedPaymentPayment(SmAssignedPaymentPayment aSmAssignedPaymentPayment)
-  {
-    smAssignedPaymentPayment = aSmAssignedPaymentPayment;
-    if (smAssignedPayment != SmAssignedPayment.Payment && aSmAssignedPaymentPayment != SmAssignedPaymentPayment.Null) { setSmAssignedPayment(SmAssignedPayment.Payment); }
-  }
-
-  private void exitSmAssignedStatus()
-  {
-    switch(smAssignedStatus)
-    {
-      case Status:
-        exitSmAssignedStatusStatus();
-        setSmAssignedStatus(SmAssignedStatus.Null);
-        break;
-    }
-  }
-
-  private void setSmAssignedStatus(SmAssignedStatus aSmAssignedStatus)
-  {
-    smAssignedStatus = aSmAssignedStatus;
-    if (sm != Sm.Assigned && aSmAssignedStatus != SmAssignedStatus.Null) { setSm(Sm.Assigned); }
-
-    // entry actions and do activities
-    switch(smAssignedStatus)
-    {
-      case Status:
-        if (smAssignedStatusStatus == SmAssignedStatusStatus.Null) { setSmAssignedStatusStatus(SmAssignedStatusStatus.NotStarted); }
-        break;
-    }
-  }
-
-  private void exitSmAssignedStatusStatus()
-  {
-    switch(smAssignedStatusStatus)
+    switch(smAssigned)
     {
       case NotStarted:
-        setSmAssignedStatusStatus(SmAssignedStatusStatus.Null);
+        setSmAssigned(SmAssigned.Null);
+        break;
+      case Paid:
+        setSmAssigned(SmAssigned.Null);
         break;
       case Started:
-        setSmAssignedStatusStatus(SmAssignedStatusStatus.Null);
+        setSmAssigned(SmAssigned.Null);
         break;
       case Finished:
-        setSmAssignedStatusStatus(SmAssignedStatusStatus.Null);
+        setSmAssigned(SmAssigned.Null);
+        break;
+      case Cancelled:
+        setSmAssigned(SmAssigned.Null);
         break;
     }
   }
 
-  private void setSmAssignedStatusStatus(SmAssignedStatusStatus aSmAssignedStatusStatus)
+  private void setSmAssigned(SmAssigned aSmAssigned)
   {
-    smAssignedStatusStatus = aSmAssignedStatusStatus;
-    if (smAssignedStatus != SmAssignedStatus.Status && aSmAssignedStatusStatus != SmAssignedStatusStatus.Null) { setSmAssignedStatus(SmAssignedStatus.Status); }
+    smAssigned = aSmAssigned;
+    if (sm != Sm.Assigned && aSmAssigned != SmAssigned.Null) { setSm(Sm.Assigned); }
   }
   /* Code from template association_GetOne */
   public Member getMember()

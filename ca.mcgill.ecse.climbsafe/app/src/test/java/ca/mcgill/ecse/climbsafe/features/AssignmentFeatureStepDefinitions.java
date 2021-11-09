@@ -224,7 +224,7 @@ public class AssignmentFeatureStepDefinitions {
      climbSafe.addAssignment(Integer.parseInt(a.get("startWeek")),Integer.parseInt(a.get("endWeek")), climbSafe.findMemberFromEmail(a.get("memberEmail")));
 
      // This was added by Philippe
-     climbSafe.getAssignments().get(climbSafe.getAssignments().size() - 1).assign();
+     //climbSafe.getAssignments().get(climbSafe.getAssignments().size() - 1).assign();
     }
   }
 
@@ -364,6 +364,7 @@ public class AssignmentFeatureStepDefinitions {
    */
   @Given("the member with {string} has started their trip")
   public void the_member_with_has_started_their_trip(String string) {
+    climbSafe.findMemberFromEmail(string).getAssignment().pay();
     climbSafe.findMemberFromEmail(string).getAssignment().start();
   }
 
@@ -444,11 +445,12 @@ public class AssignmentFeatureStepDefinitions {
    */
   @Given("the member with {string} has cancelled their trip")
   public void the_member_with_has_cancelled_their_trip(String string) {
-    try {
+    climbSafe.findMemberFromEmail(string).getAssignment().cancel();
+    /*try {
       AssignmentController.cancelTrip(string);
     } catch(InvalidInputException e){
       error += e.getMessage();
-    }
+    }*/
   }
 
   /**
@@ -462,6 +464,7 @@ public class AssignmentFeatureStepDefinitions {
   @Given("the member with {string} has finished their trip")
   public void the_member_with_has_finished_their_trip(String string) {
     // This was added by Philippe
+    climbSafe.findMemberFromEmail(string).getAssignment().pay();
     climbSafe.findMemberFromEmail(string).getAssignment().start();
     climbSafe.findMemberFromEmail(string).getAssignment().finish();
 

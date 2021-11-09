@@ -1,50 +1,29 @@
 class Assignment{
   String paymentCode = null;
-  
+
   sm{
-    Unassigned{
-      assign -> Assigned;
-      cancel -> Cancelled;
-    }
     Assigned{
-      Payment{
-        Unpaid{
-          pay -> Paid;
-        }
-        Paid{
-        }
+      NotStarted{
+        pay -> Paid;
+        start -> /{getMember().ban();} Cancelled;
       }
-      ||
-      Status{
-        NotStarted{
-          start -> Started;
-        }
-        Started{
-          finish -> Finished;
-        }
-        Finished{}
+      Paid{
+        start -> Started;
+        cancel -> Cancelled;
       }
-      cancel -> Cancelled;
+      Started{
+        finish -> Finished;
+        cancel -> Cancelled;
+      }
+      Finished{}
+      Cancelled{}
     }
-    Cancelled{}
   }
 }
 
 class Guide{
   Integer bookings = 0;
-  sm{
-    NoBooking{
-      book -> SomeBookings;
-    }
-    SomeBookings{
-      unbook [bookings == 1] -> NoBooking;
-      book [bookings == 4] -> FullyBooked;
-    }
-    FullyBooked{
-      unbook -> SomeBookings;
-    }
   }
-}
 
 class Member{
   Integer refund = 0;
