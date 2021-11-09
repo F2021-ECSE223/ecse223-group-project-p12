@@ -2,11 +2,11 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse.climbsafe.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 111 "../../../../../../model.ump"
-// line 189 "../../../../../../model.ump"
-public class Administrator extends User
+// line 113 "../../../../../ClimbSafe.ump"
+public class Administrator extends User implements Serializable
 {
 
   //------------------------
@@ -77,5 +77,13 @@ public class Administrator extends User
     }
     super.delete();
   }
+  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 117 "../../../../../ClimbSafe.ump"
+  private static final long serialVersionUID = 2315072607928790501L ;
 
+  
 }

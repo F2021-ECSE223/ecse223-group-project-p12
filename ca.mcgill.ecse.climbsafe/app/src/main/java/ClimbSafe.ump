@@ -1,6 +1,8 @@
 namespace ca.mcgill.ecse.climbsafe.model;
 
-use ClimbSafePersistence.ump;
+external interface Serializable {}
+
+//use ClimbSafePersistence.ump;
 use ClimbSafeSM.ump;
 
 class ClimbSafe {
@@ -20,7 +22,7 @@ class ClimbSafe {
   /**
    * Helper method used to find a guide of the climbsafe system from its email address
    * 
-   * @author C�dric Barr�
+   * @author Cedric Barre
    * @param email Email of the guide to find in the climbsafe system instance
    * @return
    */
@@ -37,7 +39,7 @@ class ClimbSafe {
   /**
    * Helper method used to find a member of the climbsafe system from its email address
    * 
-   * @author C�dric Barr�
+   * @author Cedric Barre
    * @param email Email of the member to find in the climbsafe system instance
    * @return
    */
@@ -54,7 +56,7 @@ class ClimbSafe {
   /**
    * Helper method used to find a hotel of the climbsafe system from its name
    * 
-   * @author C�dric Barr�
+   * @author Cedric Barre
    * @param name Name of the hotel to find in the climbsafe system instance
    * @return
    */
@@ -110,6 +112,9 @@ class User {
 
 class Administrator {
   isA User;
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 2315072607928790501L;
 }
 
 class NamedUser {
@@ -134,14 +139,23 @@ associationClass BookedItem {
   Integer quantity;
   * Member member;
   * BookableItem item;
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = -3900912597282882073L;
 }
 
 class BookableItem {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 386717977557499839L;
   abstract;
   unique name;
 }
 
 class Equipment {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = -7403802774454467836L;
   isA BookableItem;
   Integer weight;
   Integer pricePerWeek;
@@ -156,6 +170,9 @@ associationClass BundleItem {
   Integer quantity;
   * EquipmentBundle bundle;
   * Equipment equipment;
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 2045406856025012133L;
 }
 
 class Hotel {
@@ -166,6 +183,9 @@ class Hotel {
 } 
 
 class Assignment {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 8896099581655989380L;
   Integer startWeek;
   Integer endWeek;
   0..1 -- 1 Member member;

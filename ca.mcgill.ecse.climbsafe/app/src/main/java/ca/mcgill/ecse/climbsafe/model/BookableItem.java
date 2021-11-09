@@ -2,11 +2,11 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse.climbsafe.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 139 "../../../../../../model.ump"
-// line 214 "../../../../../../model.ump"
-public abstract class BookableItem
+// line 147 "../../../../../ClimbSafe.ump"
+public abstract class BookableItem implements Serializable
 {
 
   //------------------------
@@ -193,5 +193,13 @@ public abstract class BookableItem
   {
     return super.toString() + "["+
             "name" + ":" + getName()+ "]";
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 150 "../../../../../ClimbSafe.ump"
+  private static final long serialVersionUID = 386717977557499839L ;
+
+  
 }
