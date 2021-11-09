@@ -2,12 +2,11 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse.climbsafe.model;
+import java.io.Serializable;
 
-// line 1 "../../../../../../ClimbSafeSM.ump"
-// line 60 "../../../../../../ClimbSafeSM.ump"
-// line 168 "../../../../../../model.ump"
-// line 239 "../../../../../../model.ump"
-public class Assignment
+// line 1 "../../../../../ClimbSafeSM.ump"
+// line 185 "../../../../../ClimbSafe.ump"
+public class Assignment implements Serializable
 {
 
   //------------------------
@@ -507,5 +506,13 @@ public class Assignment
             "  " + "guide = "+(getGuide()!=null?Integer.toHexString(System.identityHashCode(getGuide())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "hotel = "+(getHotel()!=null?Integer.toHexString(System.identityHashCode(getHotel())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "climbSafe = "+(getClimbSafe()!=null?Integer.toHexString(System.identityHashCode(getClimbSafe())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 188 "../../../../../ClimbSafe.ump"
+  private static final long serialVersionUID = 8896099581655989380L ;
+
+  
 }

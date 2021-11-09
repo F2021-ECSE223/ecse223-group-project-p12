@@ -5,8 +5,7 @@ package ca.mcgill.ecse.climbsafe.model;
 import java.sql.Date;
 import java.util.*;
 
-// line 6 "../../../../../../model.ump"
-// line 179 "../../../../../../model.ump"
+// line 8 "../../../../../ClimbSafe.ump"
 public class ClimbSafe
 {
 
@@ -1018,11 +1017,11 @@ public class ClimbSafe
    * 
    * Helper method used to find a guide of the climbsafe system from its email address
    * 
-   * @author C??????dric Barr??????
+   * @author Cedric Barre
    * @param email Email of the guide to find in the climbsafe system instance
    * @return
    */
-  // line 28 "../../../../../../model.ump"
+  // line 30 "../../../../../ClimbSafe.ump"
    public Guide findGuideFromEmail(String email){
     List<Guide> guideList = this.getGuides();
     for( Guide g : guideList ) {
@@ -1038,11 +1037,11 @@ public class ClimbSafe
    * 
    * Helper method used to find a member of the climbsafe system from its email address
    * 
-   * @author C??????dric Barr??????
+   * @author Cedric Barre
    * @param email Email of the member to find in the climbsafe system instance
    * @return
    */
-  // line 45 "../../../../../../model.ump"
+  // line 47 "../../../../../ClimbSafe.ump"
    public Member findMemberFromEmail(String email){
     List<Member> memberList = this.getMembers();
     for( Member m : memberList ) {
@@ -1058,11 +1057,11 @@ public class ClimbSafe
    * 
    * Helper method used to find a hotel of the climbsafe system from its name
    * 
-   * @author C??????dric Barr??????
+   * @author Cedric Barre
    * @param name Name of the hotel to find in the climbsafe system instance
    * @return
    */
-  // line 62 "../../../../../../model.ump"
+  // line 64 "../../../../../ClimbSafe.ump"
    public Hotel findHotelFromName(String name){
     List<Hotel> hotelList = this.getHotels();
     for( Hotel h : hotelList ) {
@@ -1082,7 +1081,7 @@ public class ClimbSafe
    * @param name Name of the bundle to look for
    * @return bundle if found, returns null if not
    */
-  // line 79 "../../../../../../model.ump"
+  // line 81 "../../../../../ClimbSafe.ump"
    public EquipmentBundle findEquipmentBundleFromName(String name){
     List<EquipmentBundle> bundleList = this.getBundles();
 	for( EquipmentBundle eb : bundleList ) {
@@ -1102,7 +1101,7 @@ public class ClimbSafe
    * @param name Name of the equipment to look for
    * @return equipment if found, returns null if not
    */
-  // line 95 "../../../../../../model.ump"
+  // line 97 "../../../../../ClimbSafe.ump"
    public Equipment findEquipmentFromName(String name){
     List<Equipment> equipment = this.getEquipment();
     for( Equipment e : equipment ) {
