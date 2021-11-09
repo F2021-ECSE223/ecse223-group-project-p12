@@ -6,6 +6,7 @@ class Assignment{
       NotStarted{
         pay -> Paid;
         start -> /{getMember().ban();} Cancelled;
+        cancel -> Cancelled;
       }
       Paid{
         start -> Started;
