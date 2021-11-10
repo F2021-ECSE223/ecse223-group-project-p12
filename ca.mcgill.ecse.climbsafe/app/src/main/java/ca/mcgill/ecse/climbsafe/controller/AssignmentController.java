@@ -25,12 +25,10 @@ public class AssignmentController {
 					if( m.getGuideRequired() == true && ( climbSafe.getNrWeeks() - g.getBookings() ) >= m.getNrWeeks() ) {
 						Assignment a = new Assignment((1 + g.getBookings()), ( g.getBookings() + m.getNrWeeks() ), m, climbSafe);
 						a.setGuide( g );
-						a.assign();
 						g.setBookings( g.getBookings() + m.getNrWeeks() );
 					}
 					else if( m.getGuideRequired() == false ) {
 						Assignment a = new Assignment(1, m.getNrWeeks(), m, climbSafe);
-						a.assign();
 					}
 				}
 				if( g.getBookings() == climbSafe.getNrWeeks() ) {
@@ -79,8 +77,7 @@ public class AssignmentController {
 		if(week > climbSafe.getNrWeeks() || week < 1) throw new InvalidInputException("Week number out of bounds");
 		for(Assignment a: climbSafe.getAssignments())
 			if(a.getStartWeek() == week) {
-				if(a.getSmAssignedPaymentPayment() == Assignment.SmAssignedPaymentPayment.Paid) a.start();
-				else a.getMember().ban();
+				a.start();
 			}
 	}
 
@@ -106,16 +103,26 @@ public class AssignmentController {
 	 */
 	public static void cancelTrip(String memberEmail) throws InvalidInputException{
 		Member member = climbSafe.findMemberFromEmail(memberEmail);
-		if(member == null) throw new InvalidInputException("The member with " + memberEmail + "doesn't exist");
-		else {
-			
-
-			if(member.getAssignment().getSmAssignedPaymentPayment() == Assignment.SmAssignedPaymentPayment.Paid)  member.setRefund(50);
-			else if(member.getAssignment().getStartWeek() != 0) member.setRefund(10);
-
-			member.getAssignment().cancel();
-
-		}
+		if(member == null) throw new InvalidInputException("The member with " + memberEmail + " doesn't exist");
+		member.setRefund(getRefund(member));
+		member.getAssignment().cancel();
 		
+	}
+
+	/**
+	 * @author Chris Hatoum
+	 *
+	 * This is a helper method which computes the value of the refund a member would get, would
+	 * he cancel his trip.
+	 *
+	 * @param member Member to check the refund value for
+	 * @return Refund value in percentage for a given member
+	 */
+	private static int getRefund(Member member){
+		if(member.getAssignment().getSmAssigned() == Assignment.SmAssigned.Paid)
+			return 50;
+		if(member.getAssignment().getSmAssigned() == Assignment.SmAssigned.Started)
+			return 10;
+		return 0;
 	}
 }
