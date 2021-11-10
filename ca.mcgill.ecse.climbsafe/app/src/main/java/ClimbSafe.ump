@@ -192,3 +192,9 @@ class Assignment {
   * -- 0..1 Guide guide;
   * -- 0..1 Hotel hotel;
 }
+
+public void reinitialize() {
+  User.reinitializeUniqueEmail(this.getMember);
+  BusVehicle.reinitializeUniqueLicencePlate(this.getVehicles());
+  Route.reinitializeUniqueNumber(this.getRoutes());
+}
