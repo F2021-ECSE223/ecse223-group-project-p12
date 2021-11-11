@@ -109,10 +109,11 @@ public class AssignmentFeatureStepDefinitions {
     List<Map<String, String>> memberList = dataTable.asMaps(String.class, String.class);
 
     for (Map<String, String> m : memberList) {
-      climbSafe.addMember(m.get("email"), m.get("password"), m.get("name"),
+    	Member tmpMember = new Member(m.get("email"), m.get("password"), m.get("name"),
               m.get("emergencyContact"), Integer.parseInt(m.get("nrWeeks")),
               Boolean.parseBoolean(m.get("guideRequired")),
-              Boolean.parseBoolean(m.get("hotelRequired")));
+              Boolean.parseBoolean(m.get("hotelRequired")), climbSafe);
+      climbSafe.addMember(tmpMember);
     }
   }
 
