@@ -8,7 +8,7 @@ import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
 import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
 
 public class ClimbSafeApplication {
-  private static ClimbSafe climbSafe;
+  private static ClimbSafe climbSafe = null;
 
   public String getGreeting() {
     return "Hello World!";
@@ -20,7 +20,9 @@ public class ClimbSafeApplication {
   }
 
   public static ClimbSafe getClimbSafe() {
-	  climbSafe = ClimbSafePersistence.load();
+	  if( climbSafe == null ) {
+		  climbSafe = ClimbSafePersistence.load();  
+	  }
 	  return climbSafe;
   }
 }
