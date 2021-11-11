@@ -413,7 +413,7 @@ public class AssignmentFeatureStepDefinitions {
   public void the_member_with_email_shall_be(String string, String string2) throws InvalidInputException {
     Member member = climbSafe.findMemberFromEmail(string);
     if(member!=null) {
-      Assert.assertTrue(member.isBanned());
+      Assert.assertEquals(member.getSm(), Member.Sm.Banned);
     }
     else throw new InvalidInputException("Input member with valid email");
   }

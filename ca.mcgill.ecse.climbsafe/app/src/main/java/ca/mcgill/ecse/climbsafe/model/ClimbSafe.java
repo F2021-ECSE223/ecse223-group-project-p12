@@ -2,11 +2,12 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse.climbsafe.model;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
 
 // line 8 "../../../../../ClimbSafe.ump"
-public class ClimbSafe
+public class ClimbSafe implements Serializable
 {
 
   //------------------------
@@ -1021,7 +1022,7 @@ public class ClimbSafe
    * @param email Email of the guide to find in the climbsafe system instance
    * @return
    */
-  // line 30 "../../../../../ClimbSafe.ump"
+  // line 33 "../../../../../ClimbSafe.ump"
    public Guide findGuideFromEmail(String email){
     List<Guide> guideList = this.getGuides();
     for( Guide g : guideList ) {
@@ -1041,7 +1042,7 @@ public class ClimbSafe
    * @param email Email of the member to find in the climbsafe system instance
    * @return
    */
-  // line 47 "../../../../../ClimbSafe.ump"
+  // line 50 "../../../../../ClimbSafe.ump"
    public Member findMemberFromEmail(String email){
     List<Member> memberList = this.getMembers();
     for( Member m : memberList ) {
@@ -1061,7 +1062,7 @@ public class ClimbSafe
    * @param name Name of the hotel to find in the climbsafe system instance
    * @return
    */
-  // line 64 "../../../../../ClimbSafe.ump"
+  // line 67 "../../../../../ClimbSafe.ump"
    public Hotel findHotelFromName(String name){
     List<Hotel> hotelList = this.getHotels();
     for( Hotel h : hotelList ) {
@@ -1081,7 +1082,7 @@ public class ClimbSafe
    * @param name Name of the bundle to look for
    * @return bundle if found, returns null if not
    */
-  // line 81 "../../../../../ClimbSafe.ump"
+  // line 84 "../../../../../ClimbSafe.ump"
    public EquipmentBundle findEquipmentBundleFromName(String name){
     List<EquipmentBundle> bundleList = this.getBundles();
 	for( EquipmentBundle eb : bundleList ) {
@@ -1101,7 +1102,7 @@ public class ClimbSafe
    * @param name Name of the equipment to look for
    * @return equipment if found, returns null if not
    */
-  // line 97 "../../../../../ClimbSafe.ump"
+  // line 100 "../../../../../ClimbSafe.ump"
    public Equipment findEquipmentFromName(String name){
     List<Equipment> equipment = this.getEquipment();
     for( Equipment e : equipment ) {
@@ -1120,5 +1121,13 @@ public class ClimbSafe
             "priceOfGuidePerWeek" + ":" + getPriceOfGuidePerWeek()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "administrator = "+(getAdministrator()!=null?Integer.toHexString(System.identityHashCode(getAdministrator())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 11 "../../../../../ClimbSafe.ump"
+  private static final long serialVersionUID = 2315072607928790503L ;
+
+  
 }

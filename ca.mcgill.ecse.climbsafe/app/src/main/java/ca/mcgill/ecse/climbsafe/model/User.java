@@ -2,10 +2,11 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse.climbsafe.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 107 "../../../../../ClimbSafe.ump"
-public abstract class User
+// line 110 "../../../../../ClimbSafe.ump"
+public abstract class User implements Serializable
 {
 
   //------------------------
@@ -97,5 +98,13 @@ public abstract class User
     return super.toString() + "["+
             "email" + ":" + getEmail()+ "," +
             "password" + ":" + getPassword()+ "]";
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 113 "../../../../../ClimbSafe.ump"
+  private static final long serialVersionUID = 2315072607928790502L ;
+
+  
 }

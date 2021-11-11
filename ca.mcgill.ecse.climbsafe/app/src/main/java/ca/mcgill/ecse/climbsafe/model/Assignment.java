@@ -4,13 +4,9 @@
 package ca.mcgill.ecse.climbsafe.model;
 import java.io.Serializable;
 
-
-// line 1 "../../../../../../ClimbSafeSM.ump"
-// line 40 "../../../../../../ClimbSafeSM.ump"
-// line 168 "../../../../../../model.ump"
-// line 239 "../../../../../../model.ump"
-public class Assignment
-
+// line 1 "../../../../../ClimbSafeSM.ump"
+// line 191 "../../../../../ClimbSafe.ump"
+public class Assignment implements Serializable
 {
 
   //------------------------
@@ -145,7 +141,7 @@ public class Assignment
     {
       case NotStarted:
         exitSmAssigned();
-        // line 8 "../../../../../../ClimbSafeSM.ump"
+        // line 8 "../../../../../ClimbSafeSM.ump"
         getMember().ban();
         setSmAssigned(SmAssigned.Cancelled);
         wasEventProcessed = true;
@@ -418,7 +414,7 @@ public class Assignment
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 188 "../../../../../ClimbSafe.ump"
+  // line 194 "../../../../../ClimbSafe.ump"
   private static final long serialVersionUID = 8896099581655989380L ;
 
   

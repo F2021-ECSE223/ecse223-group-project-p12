@@ -2,7 +2,7 @@ package ca.mcgill.ecse.climbsafe.controller;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.Guide;
-//import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
+import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
 
 /**
  * This class is responsible for the implementation of the features relating to the guide. Namely,
@@ -36,7 +36,7 @@ public class ClimbSafeFeatureSet3Controller {
 		// If so, add a new guide with the given input
 		ClimbSafeApplication.getClimbSafe().addGuide(
 				new Guide(email, password, name, emergencyContact, ClimbSafeApplication.getClimbSafe()));
-		//ClimbSafePersistence.save();
+		ClimbSafePersistence.save();
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class ClimbSafeFeatureSet3Controller {
 		guide.setPassword(newPassword);
 		guide.setName(newName);
 		guide.setEmergencyContact(newEmergencyContact);
-		//ClimbSafePersistence.save();
+		ClimbSafePersistence.save();
 	}
 
 	/**

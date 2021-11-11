@@ -6,6 +6,9 @@ external interface Serializable {}
 use ClimbSafeSM.ump;
 
 class ClimbSafe {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 2315072607928790503L;
   Date startDate;
   Integer nrWeeks;
   Integer priceOfGuidePerWeek;
@@ -105,6 +108,9 @@ class ClimbSafe {
 }
 
 class User {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 2315072607928790502L;
   abstract;
   unique email;
   password;
@@ -153,9 +159,6 @@ class BookableItem {
 }
 
 class Equipment {
-  depend java.io.Serializable;
-  isA Serializable;
-  private static final long serialVersionUID = -7403802774454467836L;
   isA BookableItem;
   Integer weight;
   Integer pricePerWeek;
@@ -176,6 +179,9 @@ associationClass BundleItem {
 }
 
 class Hotel {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 8896099581655989381L;
   unique name;
   address;
   enum HotelRating { OneStar, TwoStars, ThreeStars, FourStars, FiveStars }
@@ -191,10 +197,4 @@ class Assignment {
   0..1 -- 1 Member member;
   * -- 0..1 Guide guide;
   * -- 0..1 Hotel hotel;
-}
-
-public void reinitialize() {
-  User.reinitializeUniqueEmail(this.getMember);
-  BusVehicle.reinitializeUniqueLicencePlate(this.getVehicles());
-  Route.reinitializeUniqueNumber(this.getRoutes());
 }

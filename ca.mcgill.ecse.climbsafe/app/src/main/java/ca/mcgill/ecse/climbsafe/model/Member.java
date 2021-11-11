@@ -4,8 +4,8 @@
 package ca.mcgill.ecse.climbsafe.model;
 import java.util.*;
 
-// line 49 "../../../../../ClimbSafeSM.ump"
-// line 131 "../../../../../ClimbSafe.ump"
+// line 29 "../../../../../ClimbSafeSM.ump"
+// line 137 "../../../../../ClimbSafe.ump"
 public class Member extends NamedUser
 {
 
@@ -141,10 +141,6 @@ public class Member extends NamedUser
     }
 
     return wasEventProcessed;
-  }
-
-  public boolean isBanned(){
-    return sm == Sm.Banned;
   }
 
   private void setSm(Sm aSm)

@@ -3,7 +3,7 @@ package ca.mcgill.ecse.climbsafe.controller;
 import java.util.List;
 
 import ca.mcgill.ecse.climbsafe.model.*;
-//import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
+import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
 import ca.mcgill.ecse.climbsafe.application.*;
 
 /**
@@ -55,7 +55,7 @@ public class ClimbSafeFeatureSet2Controller {
       BookedItem bookedItem = new BookedItem(quantity, climbSafe, newMember, bookableItem);
     }
     climbSafe.addMember(newMember);
-    //ClimbSafePersistence.save();
+    ClimbSafePersistence.save();
   }
 
 
@@ -104,7 +104,7 @@ public class ClimbSafeFeatureSet2Controller {
       Integer quantity = newItemQuantities.get(i);
       BookedItem bookedItem = new BookedItem(quantity, climbSafe, member, bookableItem);
     }
-    //ClimbSafePersistence.save();
+    ClimbSafePersistence.save();
   }
 
 

@@ -6,7 +6,7 @@ import ca.mcgill.ecse.climbsafe.model.BundleItem;
 import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
 import ca.mcgill.ecse.climbsafe.model.Equipment;
 import ca.mcgill.ecse.climbsafe.model.EquipmentBundle;
-//import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
+import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
 
 /**
  * This class is responsible for the implementation of the features relating to the equipment
@@ -56,7 +56,7 @@ public class ClimbSafeFeatureSet5Controller {
       BundleItem bundleItem = new BundleItem(equipmentQuantities.get(i), climbSafe, equipmentBundle,
           climbSafe.findEquipmentFromName(equipmentNames.get(i)));
       equipmentBundle.addBundleItem(bundleItem);
-      //ClimbSafePersistence.save();
+      ClimbSafePersistence.save();
     }
   }
 
@@ -109,7 +109,7 @@ public class ClimbSafeFeatureSet5Controller {
           equipmentBundle, climbSafe.findEquipmentFromName(newEquipmentNames.get(i)));
       equipmentBundle.addBundleItem(bundleItem);
     }
-    //ClimbSafePersistence.save();
+    ClimbSafePersistence.save();
 
   }
 
