@@ -2,13 +2,10 @@ namespace ca.mcgill.ecse.climbsafe.model;
 
 external interface Serializable {}
 
-//use ClimbSafePersistence.ump;
+use ClimbSafePersistence.ump;
 use ClimbSafeSM.ump;
 
 class ClimbSafe {
-  depend java.io.Serializable;
-  isA Serializable;
-  private static final long serialVersionUID = 2315072607928790503L;
   Date startDate;
   Integer nrWeeks;
   Integer priceOfGuidePerWeek;
@@ -108,9 +105,6 @@ class ClimbSafe {
 }
 
 class User {
-  depend java.io.Serializable;
-  isA Serializable;
-  private static final long serialVersionUID = 2315072607928790502L;
   abstract;
   unique email;
   password;
@@ -118,9 +112,6 @@ class User {
 
 class Administrator {
   isA User;
-  depend java.io.Serializable;
-  isA Serializable;
-  private static final long serialVersionUID = 2315072607928790501L;
 }
 
 class NamedUser {
@@ -151,9 +142,6 @@ associationClass BookedItem {
 }
 
 class BookableItem {
-  depend java.io.Serializable;
-  isA Serializable;
-  private static final long serialVersionUID = 386717977557499839L;
   abstract;
   unique name;
 }
@@ -179,9 +167,6 @@ associationClass BundleItem {
 }
 
 class Hotel {
-  depend java.io.Serializable;
-  isA Serializable;
-  private static final long serialVersionUID = 8896099581655989381L;
   unique name;
   address;
   enum HotelRating { OneStar, TwoStars, ThreeStars, FourStars, FiveStars }
@@ -189,9 +174,6 @@ class Hotel {
 } 
 
 class Assignment {
-  depend java.io.Serializable;
-  isA Serializable;
-  private static final long serialVersionUID = 8896099581655989380L;
   Integer startWeek;
   Integer endWeek;
   0..1 -- 1 Member member;

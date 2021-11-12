@@ -5,7 +5,8 @@ package ca.mcgill.ecse.climbsafe.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 110 "../../../../../ClimbSafe.ump"
+// line 10 "../../../../../ClimbSafePersistence.ump"
+// line 107 "../../../../../ClimbSafe.ump"
 public abstract class User implements Serializable
 {
 
@@ -103,7 +104,7 @@ public abstract class User implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 113 "../../../../../ClimbSafe.ump"
+  // line 13 "../../../../../ClimbSafePersistence.ump"
   private static final long serialVersionUID = 2315072607928790502L ;
 
   

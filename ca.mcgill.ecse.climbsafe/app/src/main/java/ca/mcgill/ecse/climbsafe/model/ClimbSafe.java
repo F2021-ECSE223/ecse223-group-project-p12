@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
 
+// line 3 "../../../../../ClimbSafePersistence.ump"
 // line 8 "../../../../../ClimbSafe.ump"
 public class ClimbSafe implements Serializable
 {
@@ -1022,7 +1023,7 @@ public class ClimbSafe implements Serializable
    * @param email Email of the guide to find in the climbsafe system instance
    * @return
    */
-  // line 33 "../../../../../ClimbSafe.ump"
+  // line 30 "../../../../../ClimbSafe.ump"
    public Guide findGuideFromEmail(String email){
     List<Guide> guideList = this.getGuides();
     for( Guide g : guideList ) {
@@ -1042,7 +1043,7 @@ public class ClimbSafe implements Serializable
    * @param email Email of the member to find in the climbsafe system instance
    * @return
    */
-  // line 50 "../../../../../ClimbSafe.ump"
+  // line 47 "../../../../../ClimbSafe.ump"
    public Member findMemberFromEmail(String email){
     List<Member> memberList = this.getMembers();
     for( Member m : memberList ) {
@@ -1062,7 +1063,7 @@ public class ClimbSafe implements Serializable
    * @param name Name of the hotel to find in the climbsafe system instance
    * @return
    */
-  // line 67 "../../../../../ClimbSafe.ump"
+  // line 64 "../../../../../ClimbSafe.ump"
    public Hotel findHotelFromName(String name){
     List<Hotel> hotelList = this.getHotels();
     for( Hotel h : hotelList ) {
@@ -1082,7 +1083,7 @@ public class ClimbSafe implements Serializable
    * @param name Name of the bundle to look for
    * @return bundle if found, returns null if not
    */
-  // line 84 "../../../../../ClimbSafe.ump"
+  // line 81 "../../../../../ClimbSafe.ump"
    public EquipmentBundle findEquipmentBundleFromName(String name){
     List<EquipmentBundle> bundleList = this.getBundles();
 	for( EquipmentBundle eb : bundleList ) {
@@ -1102,7 +1103,7 @@ public class ClimbSafe implements Serializable
    * @param name Name of the equipment to look for
    * @return equipment if found, returns null if not
    */
-  // line 100 "../../../../../ClimbSafe.ump"
+  // line 97 "../../../../../ClimbSafe.ump"
    public Equipment findEquipmentFromName(String name){
     List<Equipment> equipment = this.getEquipment();
     for( Equipment e : equipment ) {
@@ -1126,7 +1127,7 @@ public class ClimbSafe implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 11 "../../../../../ClimbSafe.ump"
+  // line 6 "../../../../../ClimbSafePersistence.ump"
   private static final long serialVersionUID = 2315072607928790503L ;
 
   
