@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
 
-// line 3 "../../../../../ClimbSafePersistence.ump"
+// line 5 "../../../../../ClimbSafePersistence.ump"
 // line 8 "../../../../../ClimbSafe.ump"
 public class ClimbSafe implements Serializable
 {
@@ -1014,6 +1014,26 @@ public class ClimbSafe implements Serializable
     
   }
 
+  // line 11 "../../../../../ClimbSafePersistence.ump"
+   public void reinitialize(){
+    List<User> allUsers = new ArrayList<User>();
+	List<BookableItem> allBookableItems = new ArrayList<BookableItem>();
+	
+	allUsers.addAll(this.getMembers());
+	allUsers.addAll(this.getGuides());
+	User u = (User)this.getAdministrator();
+	if( u != null ) {
+		allUsers.add(u);
+	}
+	
+	allBookableItems.addAll(this.getEquipment());
+	allBookableItems.addAll(this.getBundles());
+	  	
+  	User.reinitializeUniqueEmail(allUsers);
+  	Hotel.reinitializeUniqueName(this.getHotels());
+  	BookableItem.reinitializeUniqueName(allBookableItems);
+  }
+
 
   /**
    * 
@@ -1127,7 +1147,7 @@ public class ClimbSafe implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 6 "../../../../../ClimbSafePersistence.ump"
+  // line 8 "../../../../../ClimbSafePersistence.ump"
   private static final long serialVersionUID = 2315072607928790503L ;
 
   

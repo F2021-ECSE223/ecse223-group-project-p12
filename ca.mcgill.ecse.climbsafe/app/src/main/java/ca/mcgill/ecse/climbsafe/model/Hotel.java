@@ -5,7 +5,7 @@ package ca.mcgill.ecse.climbsafe.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 22 "../../../../../ClimbSafePersistence.ump"
+// line 58 "../../../../../ClimbSafePersistence.ump"
 // line 169 "../../../../../ClimbSafe.ump"
 public class Hotel implements Serializable
 {
@@ -259,6 +259,15 @@ public class Hotel implements Serializable
     }
   }
 
+  // line 64 "../../../../../ClimbSafePersistence.ump"
+   public static  void reinitializeUniqueName(List<Hotel> hotels){
+    hotelsByName = new HashMap<String, Hotel>();
+  	
+  	for( Hotel h : hotels ){
+  		hotelsByName.put( h.getName(), h );
+  	}
+  }
+
 
   public String toString()
   {
@@ -272,7 +281,7 @@ public class Hotel implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 25 "../../../../../ClimbSafePersistence.ump"
+  // line 61 "../../../../../ClimbSafePersistence.ump"
   private static final long serialVersionUID = 8896099581655989381L ;
 
   

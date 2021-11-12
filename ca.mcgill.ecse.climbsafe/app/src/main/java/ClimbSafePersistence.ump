@@ -1,28 +1,72 @@
+namespace ca.mcgill.ecse.climbsafe.model;
+
 external interface Serializable {}
 
 class ClimbSafe {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = 2315072607928790503L;
- 
+  
+  public void reinitialize() {
+  	List<User> allUsers = new ArrayList<User>();
+	List<BookableItem> allBookableItems = new ArrayList<BookableItem>();
+	
+	allUsers.addAll(this.getMembers());
+	allUsers.addAll(this.getGuides());
+	User u = (User)this.getAdministrator();
+	if( u != null ) {
+		allUsers.add(u);
+	}
+	
+	allBookableItems.addAll(this.getEquipment());
+	allBookableItems.addAll(this.getBundles());
+	  	
+  	User.reinitializeUniqueEmail(allUsers);
+  	Hotel.reinitializeUniqueName(this.getHotels());
+  	BookableItem.reinitializeUniqueName(allBookableItems);
+  }
 }
 
 class User {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = 2315072607928790502L;
+  
+  public static void reinitializeUniqueEmail(List<User> users){
+  	usersByEmail = new HashMap<String, User>();
+  	
+  	for( User u : users ){
+  		usersByEmail.put( u.getEmail(), u );
+  	}
+  }
 }
 
 class BookableItem {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = 386717977557499839L;
+  
+  public static void reinitializeUniqueName(List<BookableItem> bookableItems){
+  	bookableitemsByName = new HashMap<String, BookableItem>();
+  	
+  	for( BookableItem b : bookableItems ){
+  		bookableitemsByName.put( b.getName(), b );
+  	}
+  }
 }
 
 class Hotel {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = 8896099581655989381L;
+  
+  public static void reinitializeUniqueName(List<Hotel> hotels){
+  	hotelsByName = new HashMap<String, Hotel>();
+  	
+  	for( Hotel h : hotels ){
+  		hotelsByName.put( h.getName(), h );
+  	}
+  }
 } 
 
 class Assignment {
