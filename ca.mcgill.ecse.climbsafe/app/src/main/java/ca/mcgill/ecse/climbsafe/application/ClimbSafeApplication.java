@@ -3,7 +3,8 @@
  */
 package ca.mcgill.ecse.climbsafe.application;
 
-import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
+import ca.mcgill.ecse.climbsafe.model.*;
+import ca.mcgill.ecse.climbsafe.view.*;
 import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
 
 public class ClimbSafeApplication {
@@ -14,7 +15,13 @@ public class ClimbSafeApplication {
   }
 
   public static void main(String[] args) {
-    System.out.println(new ClimbSafeApplication().getGreeting()); 
+    System.out.println(new ClimbSafeApplication().getGreeting());
+    climbSafe = getClimbSafe();
+    if( climbSafe.getAdministrator() == null ) {
+    	new Administrator("admin@nmc.nt", "admin", climbSafe);
+    	ClimbSafePersistence.save();
+    }
+    ClimbSafeGUI gui = new ClimbSafeGUI();
   }
 
   public static ClimbSafe getClimbSafe() {
