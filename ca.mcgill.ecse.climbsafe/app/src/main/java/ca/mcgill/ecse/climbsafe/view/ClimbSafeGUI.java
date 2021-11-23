@@ -3,8 +3,10 @@ package ca.mcgill.ecse.climbsafe.view;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JSeparator;
 
 public class ClimbSafeGUI extends JFrame{
@@ -14,6 +16,9 @@ public class ClimbSafeGUI extends JFrame{
 	// Title
 	private JLabel windowTitle;
 	private JSeparator titleSeparator = new JSeparator();
+	
+	JList<String> sideBar = new JList<String>(new String[]{"Season", "Guides", "Members", "Equipment", 
+			"Equipment Bundle", "Assignment", "Tool"});
 	
 	public ClimbSafeGUI() {
 		initComponents();
@@ -32,14 +37,19 @@ public class ClimbSafeGUI extends JFrame{
 	    
 	    layout.setHorizontalGroup(
 		   layout.createSequentialGroup()
+		   	  .addGroup(layout.createParallelGroup()
+		   			  .addComponent(sideBar))
 		      .addGroup(layout.createParallelGroup()
-		           .addComponent(windowTitle)
-		           .addComponent(titleSeparator))
+		    		  .addComponent(windowTitle)
+		    		  .addComponent(titleSeparator))
 		);
 		layout.setVerticalGroup(
-		   layout.createSequentialGroup()
-		      .addComponent(windowTitle)
-		      .addComponent(titleSeparator)
+		   layout.createParallelGroup()
+		      .addGroup(layout.createSequentialGroup()
+		    		  .addComponent(sideBar))
+		      .addGroup(layout.createSequentialGroup()
+		    		  .addComponent(windowTitle)
+		    		  .addComponent(titleSeparator))
 		);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,4 +57,5 @@ public class ClimbSafeGUI extends JFrame{
 		pack();
 		setVisible(true);
 	}
+
 }
