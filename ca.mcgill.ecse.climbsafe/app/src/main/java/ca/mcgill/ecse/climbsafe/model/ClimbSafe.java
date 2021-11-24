@@ -1014,24 +1014,11 @@ public class ClimbSafe implements Serializable
     
   }
 
-  // line 11 "../../../../../ClimbSafePersistence.ump"
+  // line 12 "../../../../../ClimbSafePersistence.ump"
    public void reinitialize(){
-    List<User> allUsers = new ArrayList<User>();
-	List<BookableItem> allBookableItems = new ArrayList<BookableItem>();
-	
-	allUsers.addAll(this.getMembers());
-	allUsers.addAll(this.getGuides());
-	User u = (User)this.getAdministrator();
-	if( u != null ) {
-		allUsers.add(u);
-	}
-	
-	allBookableItems.addAll(this.getEquipment());
-	allBookableItems.addAll(this.getBundles());
-	  	
-  	User.reinitializeUniqueEmail(allUsers);
-  	Hotel.reinitializeUniqueName(this.getHotels());
-  	BookableItem.reinitializeUniqueName(allBookableItems);
+    User.reinitializeUniqueEmail(this.getAdministrator(), this.getGuides(), this.getMembers());
+    BookableItem.reinitializeUniqueName(this.getEquipment(), this.getBundles());
+    Hotel.reinitializeUniqueName(this.getHotels());
   }
 
 
@@ -1147,8 +1134,8 @@ public class ClimbSafe implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 8 "../../../../../ClimbSafePersistence.ump"
-  private static final long serialVersionUID = 2315072607928790503L ;
+  // line 9 "../../../../../ClimbSafePersistence.ump"
+  private static final long serialVersionUID = 1L ;
 
   
 }

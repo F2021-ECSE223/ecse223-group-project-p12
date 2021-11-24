@@ -2,11 +2,13 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse.climbsafe.model;
+import java.io.Serializable;
 import java.util.*;
 
+// line 48 "../../../../../ClimbSafePersistence.ump"
 // line 25 "../../../../../ClimbSafeSM.ump"
 // line 124 "../../../../../ClimbSafe.ump"
-public class Guide extends NamedUser
+public class Guide extends NamedUser implements Serializable
 {
 
   //------------------------
@@ -199,5 +201,13 @@ public class Guide extends NamedUser
     return super.toString() + "["+
             "bookings" + ":" + getBookings()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "climbSafe = "+(getClimbSafe()!=null?Integer.toHexString(System.identityHashCode(getClimbSafe())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 51 "../../../../../ClimbSafePersistence.ump"
+  private static final long serialVersionUID = 5L ;
+
+  
 }
