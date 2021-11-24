@@ -73,12 +73,11 @@ public class ClimbSafeGUI extends JFrame{
 		setTitle("ClimbSafe Application");
 		pack();
 		setVisible(true);
-		
 	}
 	
 	public void setPagePanel(JPanel panel) {
 		contentPanel.removeAll();
 		contentPanel.add(panel);
-		pack();
+		contentPanel.updateUI();
 	}
 }
