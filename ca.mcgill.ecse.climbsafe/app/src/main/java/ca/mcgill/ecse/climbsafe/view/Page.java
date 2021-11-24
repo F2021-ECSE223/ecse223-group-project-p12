@@ -4,6 +4,6 @@ import javax.swing.*;
 
 public interface Page {
 
-    public GroupLayout getLayout();
+    public JPanel getPanel();
 
 }

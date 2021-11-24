@@ -1,7 +1,12 @@
 package ca.mcgill.ecse.climbsafe.view;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Font;
+import java.util.Dictionary;
+import java.util.LinkedHashMap;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.*;
 
 public class ClimbSafeGUI extends JFrame{
@@ -11,12 +16,21 @@ public class ClimbSafeGUI extends JFrame{
 	// Title
 	private JLabel windowTitle;
 	private JSeparator titleSeparator = new JSeparator();
+	private JPanel contentPanel = new JPanel();
 	
-	JList<String> sideBar = new JList<String>(new String[]{"Season", "Guides", "Members", "Equipment", 
-			"Equipment Bundle", "Assignment", "Tool"});
+	private LinkedHashMap<String, Page> list = new LinkedHashMap<String, Page>();
+	private SideBar sideBar;
+	//JList<String> sideBar = new JList<String>(new String[]{"Season", "Guides", "Members", "Equipment", 
+		//	"Equipment Bundle", "Assignment", "Tool"});
 	
 	public ClimbSafeGUI() {
+		initData();
 		initComponents();
+	}
+	
+	private void initData() {
+		list.put("Guides", new GuidesPage());
+		sideBar = new SideBar(list, this);
 	}
 	
 	private void initComponents() {
@@ -24,36 +38,31 @@ public class ClimbSafeGUI extends JFrame{
 		windowTitle = new JLabel("Welcome to ClimbSafe");
 		windowTitle.setFont(new Font("Corbel Light", Font.PLAIN, 30));
 		
+		contentPanel.setBackground(Color.white);
+		
 		GroupLayout layout = new GroupLayout(getContentPane());
 	    getContentPane().setLayout(layout);
 	    getContentPane().setBackground(Color.WHITE);
 	    layout.setAutoCreateGaps(true);
 	    layout.setAutoCreateContainerGaps(true);
-
-		JPanel panel = new JPanel();
-		panel.add(new JLabel("hi"));
-
-		JFrame frame = new JFrame();
-		frame.add(panel);
 	    
 	    layout.setHorizontalGroup(
 		   layout.createSequentialGroup()
 		   	  .addGroup(layout.createParallelGroup()
-		   			  .addComponent(sideBar))
+		   			  .addComponent(sideBar.getSideBar()))
 		      .addGroup(layout.createParallelGroup()
 		    		  .addComponent(windowTitle)
 		    		  .addComponent(titleSeparator)
-					  .addComponent(frame)
-			  )
+					  .addComponent(contentPanel))
 		);
 		layout.setVerticalGroup(
 		   layout.createParallelGroup()
 		      .addGroup(layout.createSequentialGroup()
-		    		  .addComponent(sideBar))
+		    		  .addComponent(sideBar.getSideBar()))
 		      .addGroup(layout.createSequentialGroup()
 		    		  .addComponent(windowTitle)
 		    		  .addComponent(titleSeparator)
-					  .addComponent(frame)
+					  .addComponent(contentPanel)
 			  )
 		);
 		
@@ -61,6 +70,12 @@ public class ClimbSafeGUI extends JFrame{
 		setTitle("ClimbSafe Application");
 		pack();
 		setVisible(true);
+		
 	}
-
+	
+	public void setPagePanel(JPanel panel) {
+		contentPanel.removeAll();
+		contentPanel.add(panel);
+		pack();
+	}
 }

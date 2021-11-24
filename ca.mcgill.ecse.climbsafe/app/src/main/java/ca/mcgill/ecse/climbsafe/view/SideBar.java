@@ -4,18 +4,21 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.util.Dictionary;
+import java.util.LinkedHashMap;
 
 public class SideBar {
 
     ClimbSafeGUI mainGUI;
-    Dictionary<String, Page> pages;
+    LinkedHashMap<String, Page> pages;
     JList<String> bar;
 
-    public SideBar(Dictionary<String, Page> pages, ClimbSafeGUI mainGUI){
+    public SideBar(LinkedHashMap<String, Page> pages, ClimbSafeGUI mainGUI){
         this.pages = pages;
         String[] items = new String[pages.size()];
-        for(int i = 0; i < pages.size(); i++){
-            items[i] = pages.keys().nextElement();
+        int i = 0;
+        for(String s : pages.keySet()){
+            items[i] = s;
+            i++;
         }
         this.bar = new JList<String>(items);
 
@@ -30,7 +33,7 @@ public class SideBar {
     }
 
     private void selectionChanged(String selectedPage){
-        mainGUI.setPageLayout(pages.get(selectedPage).getLayout());
+        mainGUI.setPagePanel(pages.get(selectedPage).getPanel());
     }
 
     public JList<String> getSideBar(){

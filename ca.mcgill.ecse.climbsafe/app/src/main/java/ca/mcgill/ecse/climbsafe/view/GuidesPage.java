@@ -6,15 +6,21 @@ import java.awt.*;
 
 public class GuidesPage implements Page {
 
-    public GroupLayout layout;
+    private GroupLayout layout;
+    private JPanel panel;
 
-    public GuidesPage(Container container){
-        layout = new GroupLayout(container);
+    public GuidesPage(){
+    	panel = new JPanel();
+        layout = new GroupLayout(panel);
         initComponents();
     }
 
     private void initComponents(){
         JButton button = new JButton("Button");
+        panel.setLayout(layout);
+	    panel.setBackground(Color.WHITE);
+	    layout.setAutoCreateGaps(true);
+	    layout.setAutoCreateContainerGaps(true);
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
                         .addComponent(button)
@@ -26,7 +32,7 @@ public class GuidesPage implements Page {
     }
 
     @Override
-    public GroupLayout getLayout() {
-        return layout;
+    public JPanel getPanel() {
+        return panel;
     }
 }
