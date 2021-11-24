@@ -26,7 +26,13 @@ public class ClimbSafeGUI extends JFrame{
 	}
 	
 	private void initData() {
+		list.put("Seasons", new SeasonsPage());
+		list.put("Members", new MembersPage());
 		list.put("Guides", new GuidesPage());
+		list.put("Equipments", new EquipmentsPage());
+		list.put("Equipment Bundles", new EquipmentBundlesPage());
+		list.put("Payments", new PaymentsPage());
+		list.put("Trips", new TripsPage());
 		sideBar = new SideBar(list, this);
 	}
 	
