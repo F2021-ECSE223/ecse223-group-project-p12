@@ -13,15 +13,12 @@ public class ClimbSafeGUI extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	
-	// Title
 	private JLabel windowTitle;
 	private JSeparator titleSeparator = new JSeparator();
 	private JPanel contentPanel = new JPanel();
 	
 	private LinkedHashMap<String, Page> list = new LinkedHashMap<String, Page>();
 	private SideBar sideBar;
-	//JList<String> sideBar = new JList<String>(new String[]{"Season", "Guides", "Members", "Equipment", 
-		//	"Equipment Bundle", "Assignment", "Tool"});
 	
 	public ClimbSafeGUI() {
 		initData();
