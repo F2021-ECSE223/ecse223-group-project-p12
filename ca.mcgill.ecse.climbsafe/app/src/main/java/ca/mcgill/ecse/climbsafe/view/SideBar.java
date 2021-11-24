@@ -3,6 +3,7 @@ package ca.mcgill.ecse.climbsafe.view;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.util.Dictionary;
 import java.util.LinkedHashMap;
 
@@ -21,6 +22,9 @@ public class SideBar {
             i++;
         }
         this.bar = new JList<String>(items);
+        this.bar.setFont(this.bar.getFont().deriveFont(Font.PLAIN, 15.0f));
+        this.bar.setFixedCellHeight(30);
+        this.bar.setBorder(BorderFactory.createEmptyBorder());
 
         this.bar.addListSelectionListener(new ListSelectionListener() {
             @Override
