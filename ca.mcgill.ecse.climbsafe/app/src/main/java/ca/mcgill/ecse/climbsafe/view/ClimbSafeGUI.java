@@ -2,12 +2,7 @@ package ca.mcgill.ecse.climbsafe.view;
 
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JSeparator;
+import javax.swing.*;
 
 public class ClimbSafeGUI extends JFrame{
 
@@ -34,6 +29,12 @@ public class ClimbSafeGUI extends JFrame{
 	    getContentPane().setBackground(Color.WHITE);
 	    layout.setAutoCreateGaps(true);
 	    layout.setAutoCreateContainerGaps(true);
+
+		JPanel panel = new JPanel();
+		panel.add(new JLabel("hi"));
+
+		JFrame frame = new JFrame();
+		frame.add(panel);
 	    
 	    layout.setHorizontalGroup(
 		   layout.createSequentialGroup()
@@ -41,7 +42,9 @@ public class ClimbSafeGUI extends JFrame{
 		   			  .addComponent(sideBar))
 		      .addGroup(layout.createParallelGroup()
 		    		  .addComponent(windowTitle)
-		    		  .addComponent(titleSeparator))
+		    		  .addComponent(titleSeparator)
+					  .addComponent(frame)
+			  )
 		);
 		layout.setVerticalGroup(
 		   layout.createParallelGroup()
@@ -49,7 +52,9 @@ public class ClimbSafeGUI extends JFrame{
 		    		  .addComponent(sideBar))
 		      .addGroup(layout.createSequentialGroup()
 		    		  .addComponent(windowTitle)
-		    		  .addComponent(titleSeparator))
+		    		  .addComponent(titleSeparator)
+					  .addComponent(frame)
+			  )
 		);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
