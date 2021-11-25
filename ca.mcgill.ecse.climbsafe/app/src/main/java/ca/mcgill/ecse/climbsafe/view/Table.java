@@ -304,6 +304,7 @@ public class Table extends JPanel {
             };
 
             editButton = new JButton("E");
+            editButton.setFont(editButton.getFont().deriveFont(8.5f));
             editButton.setMinimumSize(new Dimension(40, 30));
             editButton.setPreferredSize(new Dimension(40, 30));
             editButton.setMaximumSize(new Dimension(40, 30));
@@ -327,6 +328,7 @@ public class Table extends JPanel {
             editButton.addMouseListener(hoverListener);
 
             deleteButton = new JButton("D");
+            deleteButton.setFont(deleteButton.getFont().deriveFont(8.5f));
             deleteButton.setMinimumSize(new Dimension(40, 30));
             deleteButton.setPreferredSize(new Dimension(40, 30));
             deleteButton.setMaximumSize(new Dimension(40, 30));
