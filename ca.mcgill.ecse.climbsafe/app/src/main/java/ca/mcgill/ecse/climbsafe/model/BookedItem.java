@@ -256,7 +256,7 @@ public class BookedItem implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 141 ../../../../../ClimbSafe.ump
-  private static final long serialVersionUID = -3900912597282882073L;
+  // line 142 ../../../../../ClimbSafe.ump
+  private static final long serialVersionUID = 12L;
   
 }
