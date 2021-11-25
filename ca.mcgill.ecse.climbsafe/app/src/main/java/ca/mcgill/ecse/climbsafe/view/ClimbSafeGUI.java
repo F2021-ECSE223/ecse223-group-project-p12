@@ -1,8 +1,12 @@
 package ca.mcgill.ecse.climbsafe.view;
 
+import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Dictionary;
 import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
@@ -70,6 +74,30 @@ public class ClimbSafeGUI extends JFrame{
 		);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowListener() {
+			@Override
+			public void windowOpened(WindowEvent e) {}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				ClimbSafePersistence.save();
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {}
+
+			@Override
+			public void windowIconified(WindowEvent e) {}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {}
+
+			@Override
+			public void windowActivated(WindowEvent e) {}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {}
+		});
 		setTitle("ClimbSafe Application");
 		pack();
 		setVisible(true);
