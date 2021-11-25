@@ -31,6 +31,7 @@ public class ClimbSafeGUI extends JFrame{
 		list.put("Guides", new GuidesPage());
 		list.put("Equipments", new EquipmentsPage());
 		list.put("Equipment Bundles", new EquipmentBundlesPage());
+		list.put("Assignments", new AssignmentsPage());
 		list.put("Payments", new PaymentsPage());
 		list.put("Trips", new TripsPage());
 		sideBar = new SideBar(list, this);
@@ -72,6 +73,7 @@ public class ClimbSafeGUI extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("ClimbSafe Application");
 		pack();
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
 	}
 	
