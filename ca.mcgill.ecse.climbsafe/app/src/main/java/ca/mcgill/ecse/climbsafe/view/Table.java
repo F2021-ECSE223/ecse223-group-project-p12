@@ -1,9 +1,13 @@
 package ca.mcgill.ecse.climbsafe.view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.nio.file.DirectoryNotEmptyException;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -105,11 +109,14 @@ public class Table extends JPanel {
         for(int i = 0; i < columns.length; i++){
             addFields[i] = new JTextField("");
             addFields[i].setFont(addFields[i].getFont().deriveFont(15.0f));
-            addFields[i].setMinimumSize(new Dimension(100 ,20));
-            addFields[i].setPreferredSize(new Dimension(100 ,20));
-            addFields[i].setMaximumSize(new Dimension(100 ,20));
+            addFields[i].setMinimumSize(new Dimension(100 ,30));
+            addFields[i].setPreferredSize(new Dimension(100 ,30));
+            addFields[i].setMaximumSize(new Dimension(100 ,30));
         }
         addButton = new JButton("Add");
+        addButton.setMinimumSize(new Dimension(80, 30));
+        addButton.setPreferredSize(new Dimension(80, 30));
+        addButton.setMaximumSize(new Dimension(80, 30));
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -169,6 +176,8 @@ public class Table extends JPanel {
 
         layout.setHorizontalGroup(horizontalGroup);
         layout.setVerticalGroup(verticalGroup);
+
+        setBorder(new EmptyBorder(10, 10, 10, 10));
 
         setLayout(layout);
         updateUI();
@@ -242,6 +251,7 @@ public class Table extends JPanel {
 
         private int index;
 
+        private boolean hover = false;
         private boolean editMode = false;
 
         private Object[] rowData;
@@ -268,11 +278,40 @@ public class Table extends JPanel {
 
             updateLabels();
 
+            setMinimumSize(new Dimension(columns.length * 100 + 80, 40));
+            setPreferredSize(new Dimension(columns.length * 100 + 80, 40));
+            setMaximumSize(new Dimension(columns.length * 100 + 80, 40));
+
+            MouseListener hoverListener = new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {}
+                @Override
+                public void mousePressed(MouseEvent e) {}
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    hover = true;
+                    checkEditDisplay();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    hover = false;
+                    checkEditDisplay();
+                }
+            };
+
             editButton = new JButton("E");
+            editButton.setMinimumSize(new Dimension(40, 30));
+            editButton.setPreferredSize(new Dimension(40, 30));
+            editButton.setMaximumSize(new Dimension(40, 30));
             editButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     editMode = !editMode;
+                    checkEditDisplay();
                     if(editMode){
                         editButton.setText("S");
                         makeEditLayout();
@@ -285,16 +324,25 @@ public class Table extends JPanel {
                     updateUI();
                 }
             });
+            editButton.addMouseListener(hoverListener);
 
             deleteButton = new JButton("D");
+            deleteButton.setMinimumSize(new Dimension(40, 30));
+            deleteButton.setPreferredSize(new Dimension(40, 30));
+            deleteButton.setMaximumSize(new Dimension(40, 30));
             deleteButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     deleteRow();
                 }
             });
+            deleteButton.addMouseListener(hoverListener);
+
+            addMouseListener(hoverListener);
 
             makeNonEditLayout();
+
+            checkEditDisplay();
         }
 
         /**
@@ -378,18 +426,29 @@ public class Table extends JPanel {
             for(int i = 0; i < rowData.length; i++){
                 labels[i] = new JLabel(rowData[i].toString());
                 labels[i].setFont(labels[i].getFont().deriveFont(Font.PLAIN, 15.0f));
-                labels[i].setMinimumSize(new Dimension(100 ,20));
-                labels[i].setPreferredSize(new Dimension(100 ,20));
-                labels[i].setMaximumSize(new Dimension(100 ,20));
+                labels[i].setMinimumSize(new Dimension(100 ,30));
+                labels[i].setPreferredSize(new Dimension(100 ,30));
+                labels[i].setMaximumSize(new Dimension(100 ,30));
             }
             fields = new JTextField[rowData.length];
             for(int i = 0; i < rowData.length; i++){
                 fields[i] = new JTextField(rowData[i].toString());
                 fields[i].setFont(labels[i].getFont().deriveFont(Font.PLAIN, 15.0f));
-                fields[i].setMinimumSize(new Dimension(100 ,20));
-                fields[i].setPreferredSize(new Dimension(100 ,20));
-                fields[i].setMaximumSize(new Dimension(100 ,20));
+                fields[i].setMinimumSize(new Dimension(100 ,30));
+                fields[i].setPreferredSize(new Dimension(100 ,30));
+                fields[i].setMaximumSize(new Dimension(100 ,30));
             }
+        }
+
+        /**
+         * This method checks whether the edit and delete buttons should be displayed.
+         *
+         * @author Philippe Sarouphim Hochar.
+         */
+        private void checkEditDisplay(){
+            editButton.setVisible(hover || editMode);
+            deleteButton.setVisible(hover || editMode);
+            updateUI();
         }
 
     }
