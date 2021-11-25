@@ -1,5 +1,11 @@
 package ca.mcgill.ecse.climbsafe.view;
 
+import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
+import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet4Controller;
+import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet6Controller;
+import ca.mcgill.ecse.climbsafe.controller.InvalidInputException;
+import ca.mcgill.ecse.climbsafe.model.Equipment;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,6 +14,10 @@ public class EquipmentsPage implements Page {
     private GroupLayout layout;
     private JPanel panel;
 
+    private JLabel titleLabel;
+
+    private Table customTable;
+
     public EquipmentsPage(){
         panel = new JPanel();
         layout = new GroupLayout(panel);
@@ -15,18 +25,59 @@ public class EquipmentsPage implements Page {
     }
 
     private void initComponents(){
-        JLabel label = new JLabel("Equipments");
+        titleLabel = new JLabel("Equipments");
+        titleLabel.setFont(titleLabel.getFont().deriveFont(20.0f).deriveFont(Font.PLAIN));
+
+        customTable = new Table(new String[]{ "Name", "Weight", "Price" },
+            (object) -> {
+                try{
+                    ClimbSafeFeatureSet4Controller.addEquipment(
+                        object[0].toString(),
+                        Integer.parseInt(object[1].toString()),
+                        Integer.parseInt(object[2].toString())
+                    );
+                } catch(Exception e){
+                    e.printStackTrace();
+                    throw new RuntimeException(e.getMessage());
+                }
+            },
+            (i, data) -> {
+                try{
+                    ClimbSafeFeatureSet4Controller.updateEquipment(
+                            data[0][0].toString(),
+                            data[1][0].toString(),
+                            Integer.parseInt(data[1][1].toString()),
+                            Integer.parseInt(data[1][2].toString())
+                    );
+                } catch(Exception e){
+                    e.printStackTrace();
+                    throw new RuntimeException(e.getMessage());
+                }
+            },
+            (i, object) -> {
+                try {
+                    ClimbSafeFeatureSet6Controller.deleteEquipment(object[0].toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e.getMessage());
+                }
+            }
+        );
+        for(Equipment e: ClimbSafeApplication.getClimbSafe().getEquipment()){
+            customTable.addRow(new Object[]{ e.getName(), e.getWeight(), e.getPricePerWeek() });
+        }
+
         panel.setLayout(layout);
         panel.setBackground(Color.WHITE);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-        layout.setHorizontalGroup(
-                layout.createSequentialGroup()
-                        .addComponent(label)
+        layout.setHorizontalGroup(layout.createParallelGroup()
+                .addComponent(titleLabel)
+                .addComponent(customTable)
         );
-        layout.setVerticalGroup(
-                layout.createSequentialGroup()
-                        .addComponent(label)
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addComponent(titleLabel)
+                .addComponent(customTable)
         );
     }
 
