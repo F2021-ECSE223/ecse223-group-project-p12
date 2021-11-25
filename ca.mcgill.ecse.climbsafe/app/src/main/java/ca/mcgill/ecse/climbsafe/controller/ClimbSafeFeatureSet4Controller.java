@@ -75,11 +75,16 @@ public class ClimbSafeFeatureSet4Controller {
     if (newPricePerWeek < 0)
       throw new InvalidInputException("The price per week must be greater than or equal to 0");
 
+    /*
     // Remove old equipment from application
     ClimbSafeApplication.getClimbSafe().getEquipment(findEquipmentIndexByName(oldName)).delete();
 
     // Add updated equipment to application
-    addEquipment(newName, newWeight, newPricePerWeek);
+    addEquipment(newName, newWeight, newPricePerWeek);*/
+
+    ClimbSafeApplication.getClimbSafe().findEquipmentFromName(oldName).setName(newName);
+    ClimbSafeApplication.getClimbSafe().findEquipmentFromName(newName).setWeight(newWeight);
+    ClimbSafeApplication.getClimbSafe().findEquipmentFromName(newName).setPricePerWeek(newPricePerWeek);
     ClimbSafePersistence.save();
 
   }
