@@ -11,7 +11,7 @@ import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
  * This class is responsible for the implementation of the features relating to the equipment.
  * Namely, its purpose is to help with the creation and updating of equipment.
  *
- * @author Philippe Sarouphim Hochar
+ * @author .
  */
 public class ClimbSafeFeatureSet4Controller {
 
