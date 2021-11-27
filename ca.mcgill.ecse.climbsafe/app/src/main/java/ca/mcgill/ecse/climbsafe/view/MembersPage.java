@@ -37,7 +37,7 @@ public class MembersPage implements Page{
     }
 
     private void initComponents(){
-        label = new JLabel("<HTML><U>Members</U></HTML>");
+        label = new JLabel("<HTML><B><U>Members</U></B></HTML>");
         String[] memberNames = new String[ClimbSafeApplication.getClimbSafe().getMembers().size()];
         for(int i = 0; i < ClimbSafeApplication.getClimbSafe().getMembers().size(); i++){
             memberNames[i] = ClimbSafeApplication.getClimbSafe().getMember(i).getEmail();
@@ -47,6 +47,11 @@ public class MembersPage implements Page{
                 (selected) -> {
                     panel.remove(memberPanel);
                     memberPanel = new MemberPanel(ClimbSafeApplication.getClimbSafe().findMemberFromEmail(selected));
+                    makeLayout();
+                },
+                (email) -> {
+                    panel.remove(memberPanel);
+                    memberPanel = new MemberPanel(email);
                     makeLayout();
                 }
         );
@@ -88,8 +93,10 @@ public class MembersPage implements Page{
 
         GroupLayout barLayout;
         JList bar;
+        JTextField addEmailField;
+        JButton addButton;
 
-        public MemberSelector(String[] memberNames, Consumer<String> select){
+        public MemberSelector(String[] memberNames, Consumer<String> select, Consumer<String> addEvent){
             this.memberNames = memberNames;
 
             bar = new JList(memberNames);
@@ -100,9 +107,35 @@ public class MembersPage implements Page{
                 }
             });
 
+            addEmailField = new JTextField();
+            addButton = new JButton("Add");
+
+            addButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addEvent.accept(addEmailField.getText());
+                }
+            });
+
             barLayout = new GroupLayout(this);
-            barLayout.setHorizontalGroup(barLayout.createSequentialGroup().addComponent(bar));
-            barLayout.setVerticalGroup(barLayout.createSequentialGroup().addComponent(bar));
+            barLayout.setHorizontalGroup(
+                    barLayout.createParallelGroup()
+                            .addComponent(bar)
+                            .addGroup(
+                                    barLayout.createSequentialGroup()
+                                            .addComponent(addEmailField)
+                                            .addComponent(addButton)
+                            )
+            );
+            barLayout.setVerticalGroup(
+                    barLayout.createSequentialGroup()
+                            .addComponent(bar)
+                            .addGroup(
+                                    barLayout.createParallelGroup()
+                                            .addComponent(addEmailField)
+                                            .addComponent(addButton)
+                            )
+            );
             setLayout(barLayout);
         }
 
@@ -112,6 +145,8 @@ public class MembersPage implements Page{
 
     class MemberPanel extends JPanel{
 
+        private boolean newMember;
+        private String newEmail = "";
         private Member member;
 
         private JLabel email;
@@ -138,34 +173,61 @@ public class MembersPage implements Page{
 
         public MemberPanel(){}
 
+        public MemberPanel(String email){
+            newMember = true;
+            newEmail = email;
+
+            makeLayout();
+        }
+
         public MemberPanel(Member member){
             this.member = member;
 
+            newMember = false;
+
+            makeLayout();
+        }
+
+        private void makeLayout(){
             email = new JLabel ("Email:");
             password = new JLabel ("Password:");
             name = new JLabel ("Name:");
-            emergencyContact = new JLabel ("Emergency Contact:");
+            emergencyContact = new JLabel ("Emergency Contact:  ");
             nrOfWeeks = new JLabel ("Number of weeks:");
-            guideRequired = new JLabel ("Guide Required:");
-            hotelRequired = new JLabel ("Hotel Required:");
+            guideRequired = new JLabel ("Guide Required:  ");
+            hotelRequired = new JLabel ("Hotel Required:  ");
 
-            enterEmail = new JLabel (member.getEmail());
-            enterEmail.setFont(enterEmail.getFont().deriveFont(Font.PLAIN));
-            enterPassword = new JTextField (member.getPassword());
-            enterName = new JTextField (member.getName());
-            enterEmergencyContact = new JTextField (member.getEmergencyContact());
-            enterNrOfWeeks = new JTextField (String.valueOf(member.getNrWeeks()));
-            enterGuideRequired = new JToggleButton("Required");
-            enterGuideRequired.setSelected(member.getGuideRequired());
-            enterHotelRequired = new JToggleButton("Required");
-            enterHotelRequired.setSelected(member.getHotelRequired());
+            if(newMember){
+                enterEmail = new JLabel(newEmail);
+                enterEmail.setFont(enterEmail.getFont().deriveFont(Font.PLAIN));
+                enterPassword = new JTextField();
+                enterName = new JTextField();
+                enterEmergencyContact = new JTextField();
+                enterNrOfWeeks = new JTextField();
+                enterGuideRequired = new JToggleButton("Required");
+                enterGuideRequired.setSelected(false);
+                enterHotelRequired = new JToggleButton("Required");
+                enterHotelRequired.setSelected(false);
+            } else {
+                enterEmail = new JLabel(member.getEmail());
+                enterEmail.setFont(enterEmail.getFont().deriveFont(Font.PLAIN));
+                enterPassword = new JTextField(member.getPassword());
+                enterName = new JTextField(member.getName());
+                enterEmergencyContact = new JTextField(member.getEmergencyContact());
+                enterNrOfWeeks = new JTextField(String.valueOf(member.getNrWeeks()));
+                enterGuideRequired = new JToggleButton("Required");
+                enterGuideRequired.setSelected(member.getGuideRequired());
+                enterHotelRequired = new JToggleButton("Required");
+                enterHotelRequired.setSelected(member.getHotelRequired());
+            }
 
             ArrayList<String> equipmentNames = new ArrayList<>();
             ArrayList<Integer> equipmentQuantities = new ArrayList<>();
-            for(BookedItem b: member.getBookedItems()){
-                equipmentNames.add(b.getItem().getName());
-                equipmentQuantities.add(b.getQuantity());
-            }
+            if(!newMember)
+                for(BookedItem b: member.getBookedItems()){
+                    equipmentNames.add(b.getItem().getName());
+                    equipmentQuantities.add(b.getQuantity());
+                }
             equipmentSelector = new EquipmentSelector(equipmentNames, equipmentQuantities);
             equipmentSelector.setBorder(new EmptyBorder(0, 100, 0, 0));
 
@@ -181,15 +243,15 @@ public class MembersPage implements Page{
             memberInfoLayout.setHorizontalGroup(
                     memberInfoLayout.createSequentialGroup()
                             .addGroup(
-                                memberInfoLayout.createParallelGroup()
-                                        .addComponent(email)
-                                        .addComponent(password)
-                                        .addComponent(name)
-                                        .addComponent(emergencyContact)
-                                        .addComponent(nrOfWeeks)
-                                        .addComponent(guideRequired)
-                                        .addComponent(hotelRequired)
-                                        .addComponent(saveButton)
+                                    memberInfoLayout.createParallelGroup()
+                                            .addComponent(email)
+                                            .addComponent(password)
+                                            .addComponent(name)
+                                            .addComponent(emergencyContact)
+                                            .addComponent(nrOfWeeks)
+                                            .addComponent(guideRequired)
+                                            .addComponent(hotelRequired)
+                                            .addComponent(saveButton)
                             )
                             .addGroup(
                                     memberInfoLayout.createParallelGroup()
@@ -205,49 +267,49 @@ public class MembersPage implements Page{
             );
             memberInfoLayout.setVerticalGroup(
                     memberInfoLayout.createParallelGroup()
-                                    .addGroup(
-                                        memberInfoLayout.createSequentialGroup()
-                                                .addGroup(
-                                                        memberInfoLayout.createParallelGroup()
-                                                                .addComponent(email)
-                                                                .addComponent(enterEmail)
-                                                )
-                                                .addGroup(
-                                                        memberInfoLayout.createParallelGroup()
-                                                                .addComponent(password)
-                                                                .addComponent(enterPassword)
-                                                )
-                                                .addGroup(
-                                                        memberInfoLayout.createParallelGroup()
-                                                                .addComponent(name)
-                                                                .addComponent(enterName)
-                                                )
-                                                .addGroup(
-                                                        memberInfoLayout.createParallelGroup()
-                                                                .addComponent(emergencyContact)
-                                                                .addComponent(enterEmergencyContact)
-                                                )
-                                                .addGroup(
-                                                        memberInfoLayout.createParallelGroup()
-                                                                .addComponent(nrOfWeeks)
-                                                                .addComponent(enterNrOfWeeks)
-                                                )
-                                                .addGroup(
-                                                        memberInfoLayout.createParallelGroup()
-                                                                .addComponent(guideRequired)
-                                                                .addComponent(enterGuideRequired)
-                                                ).addGroup(
-                                                        memberInfoLayout.createParallelGroup()
-                                                                .addComponent(hotelRequired)
-                                                                .addComponent(enterHotelRequired)
-                                                )
-                                                .addComponent(saveButton)
-                                    )
+                            .addGroup(
+                                    memberInfoLayout.createSequentialGroup()
+                                            .addGroup(
+                                                    memberInfoLayout.createParallelGroup()
+                                                            .addComponent(email)
+                                                            .addComponent(enterEmail)
+                                            )
+                                            .addGroup(
+                                                    memberInfoLayout.createParallelGroup()
+                                                            .addComponent(password)
+                                                            .addComponent(enterPassword)
+                                            )
+                                            .addGroup(
+                                                    memberInfoLayout.createParallelGroup()
+                                                            .addComponent(name)
+                                                            .addComponent(enterName)
+                                            )
+                                            .addGroup(
+                                                    memberInfoLayout.createParallelGroup()
+                                                            .addComponent(emergencyContact)
+                                                            .addComponent(enterEmergencyContact)
+                                            )
+                                            .addGroup(
+                                                    memberInfoLayout.createParallelGroup()
+                                                            .addComponent(nrOfWeeks)
+                                                            .addComponent(enterNrOfWeeks)
+                                            )
+                                            .addGroup(
+                                                    memberInfoLayout.createParallelGroup()
+                                                            .addComponent(guideRequired)
+                                                            .addComponent(enterGuideRequired)
+                                            ).addGroup(
+                                                    memberInfoLayout.createParallelGroup()
+                                                            .addComponent(hotelRequired)
+                                                            .addComponent(enterHotelRequired)
+                                            )
+                                            .addComponent(saveButton)
+                            )
                             .addComponent(equipmentSelector)
             );
             setLayout(memberInfoLayout);
-
         }
+
         private void SaveModification(){
             equipmentSelector.getEquipmentQuantities().keySet(); //gets the items that have quantities
             equipmentSelector.getEquipmentQuantities().values(); //gets the quantities of the items
@@ -256,17 +318,31 @@ public class MembersPage implements Page{
             ArrayList<String> items = new ArrayList<String>();
             items.addAll(equipmentSelector.getEquipmentQuantities().keySet());
             try {
-                ClimbSafeFeatureSet2Controller.updateMember(
-                        enterEmail.getText(),
-                        enterPassword.getText(),
-                        enterName.getText(),
-                        enterEmergencyContact.getText(),
-                        Integer.parseInt(enterNrOfWeeks.getText()),
-                        enterGuideRequired.isSelected(),
-                        enterHotelRequired.isSelected(),
-                        items,
-                        quantities
-                );
+                if (newMember) {
+                    ClimbSafeFeatureSet2Controller.registerMember(
+                            enterEmail.getText(),
+                            enterPassword.getText(),
+                            enterName.getText(),
+                            enterEmergencyContact.getText(),
+                            Integer.parseInt(enterNrOfWeeks.getText()),
+                            enterGuideRequired.isSelected(),
+                            enterHotelRequired.isSelected(),
+                            items,
+                            quantities
+                    );
+                } else {
+                    ClimbSafeFeatureSet2Controller.updateMember(
+                            enterEmail.getText(),
+                            enterPassword.getText(),
+                            enterName.getText(),
+                            enterEmergencyContact.getText(),
+                            Integer.parseInt(enterNrOfWeeks.getText()),
+                            enterGuideRequired.isSelected(),
+                            enterHotelRequired.isSelected(),
+                            items,
+                            quantities
+                    );
+                }
             } catch(Exception e){
                 e.printStackTrace();
             }
