@@ -21,8 +21,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * This class takes care of creating the page (accesible from the sidebar) where the admin can
+ * add, update and delete members.
+ * The admin can enter all the required information for a member such as:
+ * email, password, name, emergency contact, the number of weeks the member desires to climb,
+ * if the member requires a guide, if the member requires a hotel.
+ *
+ * From this page, the admin can see a list of the added members and all their corresponding information.
+ *
+ * @author Philippe Sarouphim Hochar.
+ * @author Theo Ghanem
+ */
 public class MembersPage implements Page{
 
+//    Member member1 = new Member("member1@email.com", "password", "John Doe", "+1 (234) 567-8910", 6, true, false, ClimbSafeApplication.getClimbSafe());
+//    Member member2 = new Member("member2@email.com", "password", "John Doe", "+1 (234) 567-8910", 6, true, false, ClimbSafeApplication.getClimbSafe());
     private GroupLayout layout;
     private JPanel panel;
 
@@ -60,12 +74,23 @@ public class MembersPage implements Page{
         makeLayout();
     }
 
+    /**
+     * This method removes the member panel and creates a new empty one to replace it.
+     *
+     * @author Philippe Sarouphim Hochar.
+     * @author Theo Ghanem
+     */
     private void removeMemberPanel(){
         panel.remove(memberPanel);
         memberPanel = new MemberPanel();
         makeLayout();
     }
-
+    /**
+     * Makes the layout for the member page:
+     * Adds the sidebar with the list of the added members and the panel with the information
+     * @author Philippe Sarouphim Hochar
+     * @author Theo Ghanem
+     */
     private void makeLayout(){
         layout = new GroupLayout(panel);
         panel.setBackground(Color.WHITE);
@@ -143,6 +168,11 @@ public class MembersPage implements Page{
             makeLayout();
         }
 
+        /**
+         * Creates a new sidebar with the list of the added members
+         * @author Philippe Sarouphim Hochar
+         * @author Theo Ghanem
+         */
         private void makeNewBar(){
             remove(bar);
             bar = new JList(memberNames);
@@ -158,6 +188,12 @@ public class MembersPage implements Page{
             makeLayout();
         }
 
+        /**
+         * Makes the layout for the sidebar for the list of members
+         * Adds the sidebar, adds the fields for the emails, adds the add button and delete button
+         * @author Philippe Sarouphim Hochar
+         * @author Theo Ghanem
+         */
         private void makeLayout(){
             barLayout = new GroupLayout(this);
             barLayout.setHorizontalGroup(
@@ -178,6 +214,11 @@ public class MembersPage implements Page{
             updateUI();
         }
 
+        /**
+         * Removes the selected member from the list of added members
+         * @author Philippe Sarouphim Hochar
+         * @author Theo Ghanem
+         */
         private void removeSelectedItem(){
             String[] newMembers = new String[memberNames.length-1];
             int j = 0;
@@ -191,8 +232,13 @@ public class MembersPage implements Page{
 
     }
 
-
-
+    /**
+     * This class calls a method that takes care of creating a member panel where we
+     * will be able to see and modify a member's information.
+     * It also initializes the necessary java swing components.
+     * @author Philippe Sarouphim Hochar
+     * @author Theo Ghanem
+     */
     class MemberPanel extends JPanel{
 
         private boolean newMember;
@@ -226,18 +272,23 @@ public class MembersPage implements Page{
         public MemberPanel(String email){
             newMember = true;
             newEmail = email;
-
             makeLayout();
         }
 
         public MemberPanel(Member member){
             this.member = member;
-
             newMember = false;
-
             makeLayout();
         }
 
+        /**
+         * Makes the layout for the information of the member we are adding.
+         * Adds the entries for the member's: email, password, name, emergency contact,
+         * number of weeks, requires a guide, requires a hotel.
+         * Adds JLabels and JTextFields for the corresponding information.
+         * @author Philippe Sarouphim Hochar
+         * @author Theo Ghanem
+         */
         private void makeLayout(){
             email = new JLabel ("Email:");
             password = new JLabel ("Password:");
@@ -360,6 +411,15 @@ public class MembersPage implements Page{
             setLayout(memberInfoLayout);
         }
 
+
+        /**
+         * Method used to add and update the information for a new or existing member.
+         * It gets the information provided in the text fields and passes them to the constructor of the member.
+         * It also gets the selected items and their respective quantities and passes them to the creation or
+         * update of the member.
+         * @author Philippe Sarouphim Hochar
+         * @author Theo Ghanem
+         */
         private void SaveModification(){
             equipmentSelector.getEquipmentQuantities().keySet(); //gets the items that have quantities
             equipmentSelector.getEquipmentQuantities().values(); //gets the quantities of the items

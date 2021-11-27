@@ -126,9 +126,19 @@ public class ClimbSafeFeatureSet6Controller {
       } else {
         hotelName = assignment.getHotel().getName(); // sets hotel Name to String
       }
+      
+      String status;
+      String authorizationCode;
+      int refundPercentage;
+      
+      status = assignment.getSmFullName();
+      authorizationCode = assignment.getPaymentCode();
+      refundPercentage = assignment.getMember().getRefund();
+      
       assignments.add(new TOAssignment(assignment.getMember().getEmail(),
           assignment.getMember().getName(), guideEmail, guideName, hotelName,
-          assignment.getStartWeek(), assignment.getEndWeek(), priceGuide, totalItemPrice));
+          assignment.getStartWeek(), assignment.getEndWeek(), priceGuide, totalItemPrice,
+          status, authorizationCode, refundPercentage));
       // adds assignment from loop to the return List
     }
 
