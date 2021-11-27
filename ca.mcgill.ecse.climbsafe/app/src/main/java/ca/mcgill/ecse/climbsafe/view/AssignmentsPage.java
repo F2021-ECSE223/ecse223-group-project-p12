@@ -156,7 +156,7 @@ public class AssignmentsPage implements Page{
      */
     private Object[][] getAssignmentObjects( int week ) {
     	ArrayList<TOAssignment> assignmentList = getAllAssignmentsByWeek( week );
-        Object[][] objectList = new Object[assignmentList.size()][8];
+        Object[][] objectList = new Object[assignmentList.size()][11];
         int idx = 0;
         for( TOAssignment a : assignmentList ) {
         	objectList[idx][0] = a.getMemberName();
