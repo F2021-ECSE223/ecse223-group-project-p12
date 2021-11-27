@@ -8,6 +8,7 @@ import ca.mcgill.ecse.climbsafe.model.Member;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet2Controller;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -17,11 +18,17 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class MembersPage implements Page{
 
     private GroupLayout layout;
     private JPanel panel;
+
+    private JLabel label;
+
+    private MemberPanel memberPanel;
+    private MemberSelector memberSelector;
 
     public MembersPage(){
         panel = new JPanel();
@@ -30,30 +37,44 @@ public class MembersPage implements Page{
     }
 
     private void initComponents(){
-        JLabel label = new JLabel("Members");
-        /*String[] memberNames = new String[ClimbSafeApplication.getClimbSafe().getMembers().size()];
+        label = new JLabel("<HTML><U>Members</U></HTML>");
+        String[] memberNames = new String[ClimbSafeApplication.getClimbSafe().getMembers().size()];
         for(int i = 0; i < ClimbSafeApplication.getClimbSafe().getMembers().size(); i++){
             memberNames[i] = ClimbSafeApplication.getClimbSafe().getMember(i).getEmail();
-        }*/
-        String[] memberNames = new String[]{ "Member 1", "Member 2", "Member 3" };
-        MemberSelector memberSelector = new MemberSelector(memberNames);
-        MemberPanel memberPanel = new MemberPanel(new Member("member@email.com", "password", "John Doe", "+1 (234) 567-8910", 6, true, false, ClimbSafeApplication.getClimbSafe()));
-        panel.setLayout(layout);
+        }
+        memberPanel = new MemberPanel();
+        memberSelector = new MemberSelector(memberNames,
+                (selected) -> {
+                    panel.remove(memberPanel);
+                    memberPanel = new MemberPanel(ClimbSafeApplication.getClimbSafe().findMemberFromEmail(selected));
+                    makeLayout();
+                }
+        );
+        makeLayout();
+    }
+
+    private void makeLayout(){
+        layout = new GroupLayout(panel);
         panel.setBackground(Color.WHITE);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         layout.setHorizontalGroup(
-                layout.createParallelGroup()
-                        .addComponent(label)
-                        .addComponent(memberSelector)
+                layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(label)
+                                .addComponent(memberSelector)
+                        )
                         .addComponent(memberPanel)
         );
         layout.setVerticalGroup(
-                layout.createSequentialGroup()
-                        .addComponent(label)
-                        .addComponent(memberSelector)
+                layout.createParallelGroup()
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(label)
+                                .addComponent(memberSelector)
+                        )
                         .addComponent(memberPanel)
         );
+        panel.setLayout(layout);
     }
 
     @Override
@@ -68,14 +89,14 @@ public class MembersPage implements Page{
         GroupLayout barLayout;
         JList bar;
 
-        public MemberSelector(String[] memberNames){
+        public MemberSelector(String[] memberNames, Consumer<String> select){
             this.memberNames = memberNames;
 
             bar = new JList(memberNames);
             bar.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
-
+                    if(!e.getValueIsAdjusting()) select.accept(String.valueOf(bar.getSelectedValue()));
                 }
             });
 
@@ -101,7 +122,7 @@ public class MembersPage implements Page{
         private JLabel guideRequired;
         private JLabel hotelRequired;
 
-        private JTextField enterEmail;
+        private JLabel enterEmail;
         private JTextField enterPassword;
         private JTextField enterName;
         private JTextField enterEmergencyContact;
@@ -111,7 +132,11 @@ public class MembersPage implements Page{
 
         private EquipmentSelector equipmentSelector;
 
+        private JButton saveButton;
+
         private GroupLayout memberInfoLayout;
+
+        public MemberPanel(){}
 
         public MemberPanel(Member member){
             this.member = member;
@@ -124,7 +149,8 @@ public class MembersPage implements Page{
             guideRequired = new JLabel ("Guide Required:");
             hotelRequired = new JLabel ("Hotel Required:");
 
-            enterEmail = new JTextField (member.getEmail());
+            enterEmail = new JLabel (member.getEmail());
+            enterEmail.setFont(enterEmail.getFont().deriveFont(Font.PLAIN));
             enterPassword = new JTextField (member.getPassword());
             enterName = new JTextField (member.getName());
             enterEmergencyContact = new JTextField (member.getEmergencyContact());
@@ -141,6 +167,15 @@ public class MembersPage implements Page{
                 equipmentQuantities.add(b.getQuantity());
             }
             equipmentSelector = new EquipmentSelector(equipmentNames, equipmentQuantities);
+            equipmentSelector.setBorder(new EmptyBorder(0, 100, 0, 0));
+
+            saveButton = new JButton("Save");
+            saveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    SaveModification();
+                }
+            });
 
             memberInfoLayout = new GroupLayout(this);
             memberInfoLayout.setHorizontalGroup(
@@ -154,6 +189,7 @@ public class MembersPage implements Page{
                                         .addComponent(nrOfWeeks)
                                         .addComponent(guideRequired)
                                         .addComponent(hotelRequired)
+                                        .addComponent(saveButton)
                             )
                             .addGroup(
                                     memberInfoLayout.createParallelGroup()
@@ -205,6 +241,7 @@ public class MembersPage implements Page{
                                                                 .addComponent(hotelRequired)
                                                                 .addComponent(enterHotelRequired)
                                                 )
+                                                .addComponent(saveButton)
                                     )
                             .addComponent(equipmentSelector)
             );
@@ -233,128 +270,6 @@ public class MembersPage implements Page{
             } catch(Exception e){
                 e.printStackTrace();
             }
-        }
-
-    }
-
-    class EquipmentSelector extends JPanel{
-
-        private java.util.List<String> equipmentNames;
-        private java.util.List<Integer> quantities;
-
-        private GroupLayout equipmentLayout;
-
-        private JLabel titleLabel;
-        private EquipmentSelectorItem[] items;
-
-        public EquipmentSelector(java.util.List<String> equipmentNames, java.util.List<Integer> quantities){
-            this.equipmentNames = new ArrayList<String>();
-            this.quantities = new ArrayList<Integer>();
-            for(Equipment e: MiscellaneousController.getEquipmentList()) this.equipmentNames.add(e.getName());
-            for(String en: this.equipmentNames){
-                int i = equipmentNames.indexOf(en);
-                if(i < 0) this.quantities.add(0);
-                else this.quantities.add(quantities.get(i));
-            }
-
-            titleLabel = new JLabel("Equipment Selector");
-            items = new EquipmentSelectorItem[this.equipmentNames.size()];
-
-            equipmentLayout = new GroupLayout(this);
-            GroupLayout.ParallelGroup horizontalGroup = equipmentLayout.createParallelGroup();
-            GroupLayout.SequentialGroup verticalGroup = equipmentLayout.createSequentialGroup();
-            horizontalGroup.addComponent(titleLabel);
-            verticalGroup.addComponent(titleLabel);
-            for(int i = 0; i < this.equipmentNames.size(); i++){
-                items[i] = new EquipmentSelectorItem(this.equipmentNames.get(i), this.quantities.get(i));
-                horizontalGroup.addComponent(items[i]);
-                verticalGroup.addComponent(items[i]);
-            }
-            equipmentLayout.setHorizontalGroup(horizontalGroup);
-            equipmentLayout.setVerticalGroup(verticalGroup);
-
-            setLayout(equipmentLayout);
-        }
-
-        private Map<String, Integer> getEquipmentQuantities(){
-            Map<String, Integer> equipmentQuantities = new LinkedHashMap<>();
-            for(EquipmentSelectorItem i: items){
-                equipmentQuantities.put(i.getEquipmentName(), i.getQuantity());
-            }
-            return equipmentQuantities;
-        }
-
-        class EquipmentSelectorItem extends JPanel{
-
-            private String equipmentName;
-            private int quantity;
-
-            private GroupLayout itemLayout;
-            private JLabel nameLabel;
-            private JButton decrementButton;
-            private JLabel quantityLabel;
-            private JButton incrementButton;
-
-            public EquipmentSelectorItem(String equipmentName, int quantity){
-                this.equipmentName = equipmentName;
-                this.quantity = quantity;
-
-                nameLabel = new JLabel(equipmentName);
-                nameLabel.setMaximumSize(new Dimension(200, 30));
-                nameLabel.setPreferredSize(new Dimension(200, 30));
-                nameLabel.setMaximumSize(new Dimension(200, 30));
-                decrementButton = new JButton("-");
-                quantityLabel = new JLabel(String.valueOf(quantity));
-                quantityLabel.setMaximumSize(new Dimension(50, 30));
-                quantityLabel.setPreferredSize(new Dimension(50, 30));
-                quantityLabel.setMaximumSize(new Dimension(50, 30));
-                incrementButton = new JButton("+");
-
-                itemLayout = new GroupLayout(this);
-                itemLayout.setHorizontalGroup(
-                        itemLayout.createSequentialGroup()
-                                .addComponent(nameLabel)
-                                .addComponent(decrementButton)
-                                .addComponent(quantityLabel)
-                                .addComponent(incrementButton)
-                );
-                itemLayout.setVerticalGroup(
-                        itemLayout.createParallelGroup()
-                                .addComponent(nameLabel)
-                                .addComponent(decrementButton)
-                                .addComponent(quantityLabel)
-                                .addComponent(incrementButton)
-                );
-
-                incrementButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        addToQuantity(1);
-                    }
-                });
-                decrementButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        addToQuantity(-1);
-                    }
-                });
-                setLayout(itemLayout);
-            }
-
-            private void addToQuantity(int i){
-                quantity += i;
-                if(quantity < 0) quantity = 0;
-                quantityLabel.setText(String.valueOf(quantity));
-            }
-
-            public String getEquipmentName(){
-                return equipmentName;
-            }
-
-            public int getQuantity(){
-                return quantity;
-            }
-
         }
 
     }
