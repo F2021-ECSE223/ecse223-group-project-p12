@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.climbsafe.view;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
+import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet1Controller;
 import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
 import ca.mcgill.ecse.climbsafe.model.BookedItem;
 import ca.mcgill.ecse.climbsafe.model.Equipment;
@@ -52,9 +53,16 @@ public class MembersPage implements Page{
                 (email) -> {
                     panel.remove(memberPanel);
                     memberPanel = new MemberPanel(email);
+
                     makeLayout();
                 }
         );
+        makeLayout();
+    }
+
+    private void removeMemberPanel(){
+        panel.remove(memberPanel);
+        memberPanel = new MemberPanel();
         makeLayout();
     }
 
@@ -90,14 +98,17 @@ public class MembersPage implements Page{
     class MemberSelector extends JPanel{
 
         String[] memberNames;
+        Consumer<String> select;
 
         GroupLayout barLayout;
         JList bar;
         JTextField addEmailField;
         JButton addButton;
+        JButton deleteButton;
 
         public MemberSelector(String[] memberNames, Consumer<String> select, Consumer<String> addEvent){
             this.memberNames = memberNames;
+            this.select = select;
 
             bar = new JList(memberNames);
             bar.addListSelectionListener(new ListSelectionListener() {
@@ -106,9 +117,22 @@ public class MembersPage implements Page{
                     if(!e.getValueIsAdjusting()) select.accept(String.valueOf(bar.getSelectedValue()));
                 }
             });
+            bar.setFont(bar.getFont().deriveFont(Font.PLAIN, 15.0f));
+            bar.setFixedCellHeight(30);
+            bar.setBorder(BorderFactory.createEmptyBorder());
 
             addEmailField = new JTextField();
             addButton = new JButton("Add");
+            deleteButton = new JButton("Delete");
+            deleteButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ClimbSafeFeatureSet1Controller.deleteMember(String.valueOf(bar.getSelectedValue()));
+                    removeSelectedItem();
+                    makeNewBar();
+                    removeMemberPanel();
+                }
+            });
 
             addButton.addActionListener(new ActionListener() {
                 @Override
@@ -116,27 +140,53 @@ public class MembersPage implements Page{
                     addEvent.accept(addEmailField.getText());
                 }
             });
+            makeLayout();
+        }
 
+        private void makeNewBar(){
+            remove(bar);
+            bar = new JList(memberNames);
+            bar.setFont(bar.getFont().deriveFont(Font.PLAIN, 15.0f));
+            bar.setFixedCellHeight(30);
+            bar.setBorder(BorderFactory.createEmptyBorder());
+            bar.addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if(!e.getValueIsAdjusting()) select.accept(String.valueOf(bar.getSelectedValue()));
+                }
+            });
+            makeLayout();
+        }
+
+        private void makeLayout(){
             barLayout = new GroupLayout(this);
             barLayout.setHorizontalGroup(
                     barLayout.createParallelGroup()
                             .addComponent(bar)
-                            .addGroup(
-                                    barLayout.createSequentialGroup()
-                                            .addComponent(addEmailField)
-                                            .addComponent(addButton)
-                            )
+                            .addComponent(addEmailField)
+                            .addComponent(addButton)
+                            .addComponent(deleteButton)
             );
             barLayout.setVerticalGroup(
                     barLayout.createSequentialGroup()
                             .addComponent(bar)
-                            .addGroup(
-                                    barLayout.createParallelGroup()
-                                            .addComponent(addEmailField)
-                                            .addComponent(addButton)
-                            )
+                            .addComponent(addEmailField)
+                            .addComponent(addButton)
+                            .addComponent(deleteButton)
             );
             setLayout(barLayout);
+            updateUI();
+        }
+
+        private void removeSelectedItem(){
+            String[] newMembers = new String[memberNames.length-1];
+            int j = 0;
+            for(String m: memberNames){
+                if(m == bar.getSelectedValue()) continue;
+                newMembers[j] = m;
+                j++;
+            }
+            memberNames = newMembers;
         }
 
     }

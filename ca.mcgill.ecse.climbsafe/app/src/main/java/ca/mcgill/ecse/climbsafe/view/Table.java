@@ -327,7 +327,7 @@ public class Table extends JPanel {
             });
             editButton.addMouseListener(hoverListener);
 
-            deleteButton = new JButton("D");
+            deleteButton = new JButton("X");
             deleteButton.setFont(deleteButton.getFont().deriveFont(8.5f));
             deleteButton.setMinimumSize(new Dimension(40, 30));
             deleteButton.setPreferredSize(new Dimension(40, 30));
