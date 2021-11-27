@@ -7,7 +7,8 @@ import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
 
 public class ClimbSafePersistence {
 
-  private static String filename = "ClimbSafeDemo.data"; //"data.climbsafe";
+  private static String filename = "ClimbSafeDemo.data";
+  //private static String filename = "data.climbsafe";
 
   public static void setFilename(String filename) {
     ClimbSafePersistence.filename = filename;

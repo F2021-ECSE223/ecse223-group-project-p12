@@ -3,22 +3,32 @@ class Assignment{
 
   sm{
     Assigned{
-      NotStarted{
-        pay -> Paid;
-        start -> /{getMember().ban();} Cancelled;
-        cancel -> Cancelled;
+      s1{
+        NotStarted{
+          start [!isPaid()] -> /{getMember().ban();} Cancelled;
+          start [isPaid()] -> Started;
+          cancel -> Cancelled;
+        }
+        Started{
+          finish -> Finished;
+          cancel -> Cancelled;
+        }
+        Finished{}
+        Cancelled{}
       }
-      Paid{
-        start -> Started;
-        cancel -> Cancelled;
+      ||
+      s2{
+        NotPaid{
+          pay -> Paid;
+        }
+        Paid{}
       }
-      Started{
-        finish -> Finished;
-        cancel -> Cancelled;
-      }
-      Finished{}
-      Cancelled{}
-    }
+     }
+  }
+  
+  private boolean isPaid() {
+    if( this.getSmAssignedS2S2() == SmAssignedS2S2.Paid ) return true;
+    return false;
   }
 }
 

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 56 "../../../../../ClimbSafePersistence.ump"
-// line 29 "../../../../../ClimbSafeSM.ump"
+// line 39 "../../../../../ClimbSafeSM.ump"
 // line 128 "../../../../../ClimbSafe.ump"
 public class Member extends NamedUser implements Serializable
 {

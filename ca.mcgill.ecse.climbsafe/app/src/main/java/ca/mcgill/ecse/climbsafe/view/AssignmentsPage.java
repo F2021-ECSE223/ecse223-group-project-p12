@@ -46,12 +46,7 @@ public class AssignmentsPage implements Page{
 				  "Guide",
 				  "Guide Email",
 				  "Start Week",
-				  "End Week",
-				  "Guide Cost",
-				  "Equipment Cost",
-				  "Status",
-				  "Authorization Code",
-				  "Refund Percentage"};
+				  "End Week"};
         assignmentTable = new JTable( new DefaultTableModel( getAssignmentObjects( 1 ), tableColumns ){
 
             /**
@@ -65,7 +60,8 @@ public class AssignmentsPage implements Page{
             }
         } );
         scrollPane = new JScrollPane(assignmentTable);
-        scrollPane.setPreferredSize( new Dimension( 1200, 200 ) );
+        scrollPane.setPreferredSize( new Dimension( (int)Toolkit.getDefaultToolkit()
+										.getScreenSize().getWidth() - 400, 200 ) );
         assignmentTable.setFillsViewportHeight(true);
         
         initiateButton = new JButton( "Initiate" );
@@ -165,11 +161,6 @@ public class AssignmentsPage implements Page{
         	objectList[idx][3] = a.getGuideEmail();
         	objectList[idx][4] = a.getStartWeek();
         	objectList[idx][5] = a.getEndWeek();
-        	objectList[idx][6] = a.getTotalCostForGuide();
-        	objectList[idx][7] = a.getTotalCostForEquipment();
-        	objectList[idx][8] = a.getStatus();
-        	objectList[idx][9] = a.getAuthorizationCode();
-        	objectList[idx][10] = a.getRefundedPercentageAmount();
         	idx++;
         }
         return objectList;
