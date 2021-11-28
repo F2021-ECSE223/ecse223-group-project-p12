@@ -23,6 +23,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * This class takes care of creating the page (accessible from the side bar) where the admin can
+ * add, update and delete equipment bundles.
+ * The admin can enter all the required information for an equipment bundle such as:
+ * name, discount, number of each of the equipments included in the bundle
+ *
+ * From this page, the admin can see a list of the added equipment bundles
+ *
+ * @author Habib Jarweh.
+ * @author Philippe Sarouphim Hochar
+ */
 public class EquipmentBundlesPage implements Page{
 
     private GroupLayout layout;
@@ -49,21 +60,28 @@ public class EquipmentBundlesPage implements Page{
                     equipmentBundlePanel = new EquipmentBundlePanel(ClimbSafeApplication.getClimbSafe().findEquipmentBundleFromName(selected));
                     makeLayout();
                 },
-                (email) -> {
+                (name) -> {
                     panel.remove(equipmentBundlePanel);
-                    equipmentBundlePanel = new EquipmentBundlePanel(email);
+                    equipmentBundlePanel = new EquipmentBundlePanel(name);
                     makeLayout();
                 }
         );
         makeLayout();
     }
 
+    /**
+     * This method removes the equipment bundle panel and creates a new empty one to replace it.
+     *
+     */
     private void removeEquipmentBundlePanel(){
         panel.remove(equipmentBundlePanel);
         equipmentBundlePanel = new EquipmentBundlePanel();
         makeLayout();
     }
 
+    /**  
+     * Adds the sidebar with the list of the added equipment bundles and the panel with the information
+     */
     private void makeLayout(){
         layout = new GroupLayout(panel);
         panel.setBackground(Color.WHITE);
@@ -100,7 +118,7 @@ public class EquipmentBundlesPage implements Page{
 
         GroupLayout barLayout;
         JList bar;
-        JTextField addEmailField;
+        JTextField addNameField;
         JButton addButton;
         JButton deleteButton;
 
@@ -119,7 +137,7 @@ public class EquipmentBundlesPage implements Page{
             bar.setFixedCellHeight(30);
             bar.setBorder(BorderFactory.createEmptyBorder());
 
-            addEmailField = new JTextField();
+            addNameField = new JTextField();
             addButton = new JButton("Add");
             deleteButton = new JButton("Delete");
             deleteButton.addActionListener(new ActionListener() {
@@ -135,12 +153,15 @@ public class EquipmentBundlesPage implements Page{
             addButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    addEvent.accept(addEmailField.getText());
+                    addEvent.accept(addNameField.getText());
                 }
             });
             makeLayout();
         }
 
+        /**
+         * Creates a new sidebar with the list of the added equipment bundles
+         */
         private void makeNewBar(){
             remove(bar);
             bar = new JList(equipmentBundleNames);
@@ -156,19 +177,23 @@ public class EquipmentBundlesPage implements Page{
             makeLayout();
         }
 
+        /**
+         * Makes the layout for the sidebar for the list of bundles
+         * Adds the sidebar, adds the fields for the names, adds the add button and delete button
+         */
         private void makeLayout(){
             barLayout = new GroupLayout(this);
             barLayout.setHorizontalGroup(
                     barLayout.createParallelGroup()
                             .addComponent(bar)
-                            .addComponent(addEmailField)
+                            .addComponent(addNameField)
                             .addComponent(addButton)
                             .addComponent(deleteButton)
             );
             barLayout.setVerticalGroup(
                     barLayout.createSequentialGroup()
                             .addComponent(bar)
-                            .addComponent(addEmailField)
+                            .addComponent(addNameField)
                             .addComponent(addButton)
                             .addComponent(deleteButton)
             );
@@ -176,6 +201,9 @@ public class EquipmentBundlesPage implements Page{
             updateUI();
         }
 
+        /**
+         * removes the selected equipment bundle from the list 
+         */
         private void removeSelectedItem(){
             String[] newEquipmentBundles = new String[equipmentBundleNames.length-1];
             int j = 0;
@@ -190,6 +218,11 @@ public class EquipmentBundlesPage implements Page{
     }
 
 
+    /**
+     * This class calls a method that takes care of creating a bundle panel where we
+     * will be able to see and modify a bundle's information.
+     * It also initializes the necessary java swing components.
+     */
 
     class EquipmentBundlePanel extends JPanel{
 
@@ -223,6 +256,10 @@ public class EquipmentBundlesPage implements Page{
             makeLayout();
         }
 
+        /**
+         *  this method makes the layout for the information of the bundle we are adding.
+         * Adds the entries for the member's: name, discount
+         */
         private void makeLayout(){
             name = new JLabel ("Name:");
             discount = new JLabel ("Discount:  ");
@@ -289,6 +326,13 @@ public class EquipmentBundlesPage implements Page{
             );
             setLayout(equipmentBundleInfoLayout);
         }
+        
+        /**
+         * Method used to add and update the information for a new or existing equipment bundle.
+         * It gets the information provided in the text fields and passes them to the constructor of the equipment bundle.
+         * It also gets the selected items and their respective quantities and passes them to the creation or
+         * update of the equipment bundle.
+         */
 
         private void SaveModification(){
             ArrayList<Integer> quantities = new ArrayList<Integer>();
