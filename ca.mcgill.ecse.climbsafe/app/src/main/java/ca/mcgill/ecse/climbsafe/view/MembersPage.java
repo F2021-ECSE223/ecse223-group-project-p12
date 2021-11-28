@@ -2,9 +2,7 @@ package ca.mcgill.ecse.climbsafe.view;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet1Controller;
-import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
 import ca.mcgill.ecse.climbsafe.model.BookedItem;
-import ca.mcgill.ecse.climbsafe.model.Equipment;
 import ca.mcgill.ecse.climbsafe.model.Member;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet2Controller;
 
@@ -16,9 +14,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -35,8 +30,6 @@ import java.util.function.Consumer;
  */
 public class MembersPage implements Page{
 
-//    Member member1 = new Member("member1@email.com", "password", "John Doe", "+1 (234) 567-8910", 6, true, false, ClimbSafeApplication.getClimbSafe());
-//    Member member2 = new Member("member2@email.com", "password", "John Doe", "+1 (234) 567-8910", 6, true, false, ClimbSafeApplication.getClimbSafe());
     private GroupLayout layout;
     private JPanel panel;
 

@@ -22,9 +22,8 @@ public class EquipmentSelector extends JPanel {
     private EquipmentSelectorItem[] items;
 
     public EquipmentSelector(java.util.List<String> equipmentNames, java.util.List<Integer> quantities){
-        this.equipmentNames = new ArrayList<String>();
+        this.equipmentNames = MiscellaneousController.getEquipmentNamesList();
         this.quantities = new ArrayList<Integer>();
-        for(Equipment e: MiscellaneousController.getEquipmentList()) this.equipmentNames.add(e.getName());
         for(String en: this.equipmentNames){
             int i = equipmentNames.indexOf(en);
             if(i < 0) this.quantities.add(0);
@@ -55,6 +54,14 @@ public class EquipmentSelector extends JPanel {
         for(EquipmentSelectorItem i: items){
             equipmentQuantities.put(i.getEquipmentName(), i.getQuantity());
         }
+        return equipmentQuantities;
+    }
+
+    public Map<String, Integer> getNonZeroEquipmentQuantities(){
+        Map<String, Integer> equipmentQuantities = new LinkedHashMap<String, Integer>();
+        for(EquipmentSelectorItem i: items)
+            if(i.getQuantity() > 0)
+                equipmentQuantities.put(i.getEquipmentName(), i.getQuantity());
         return equipmentQuantities;
     }
 
