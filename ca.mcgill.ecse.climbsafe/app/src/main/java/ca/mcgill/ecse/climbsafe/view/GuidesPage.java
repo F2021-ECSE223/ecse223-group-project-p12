@@ -15,6 +15,8 @@ public class GuidesPage implements Page {
     private JLabel titleLabel;
     private Table customTable;
 
+    private JLabel statusLabel;
+
     public GuidesPage(){
     	panel = new JPanel();
         layout = new GroupLayout(panel);
@@ -25,7 +27,9 @@ public class GuidesPage implements Page {
         private void initComponents(){
             titleLabel = new JLabel("Guides");
             titleLabel.setFont(titleLabel.getFont().deriveFont(20.0f).deriveFont(Font.PLAIN));
-
+            statusLabel = new JLabel("");
+            statusLabel.setFont(statusLabel.getFont().deriveFont(Font.PLAIN, 15.0f));
+            statusLabel.setForeground(Color.RED);
             customTable = new Table(new String[]{ "Email", "Password", "Name", "EmergencyContact" },
                 (object) -> {
                     try{
@@ -61,7 +65,8 @@ public class GuidesPage implements Page {
                         e.printStackTrace();
                         throw new RuntimeException(e.getMessage());
                     }
-                }
+                },
+                    statusLabel
             );
             for(Guide e: ClimbSafeApplication.getClimbSafe().getGuides()){
                 customTable.addRow(new Object[]{ e.getEmail(),e.getPassword(), e.getName(), e.getEmergencyContact() });
@@ -74,10 +79,12 @@ public class GuidesPage implements Page {
             layout.setHorizontalGroup(layout.createParallelGroup()
                     .addComponent(titleLabel)
                     .addComponent(customTable)
+                    .addComponent(statusLabel)
             );
             layout.setVerticalGroup(layout.createSequentialGroup()
                     .addComponent(titleLabel)
                     .addComponent(customTable)
+                    .addComponent(statusLabel)
             );
         }
 

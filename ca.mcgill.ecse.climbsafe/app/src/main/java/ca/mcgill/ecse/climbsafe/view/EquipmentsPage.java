@@ -18,6 +18,8 @@ public class EquipmentsPage implements Page {
 
     private Table customTable;
 
+    private JLabel statusLabel;
+
     public EquipmentsPage(){
         panel = new JPanel();
         layout = new GroupLayout(panel);
@@ -27,7 +29,9 @@ public class EquipmentsPage implements Page {
     private void initComponents(){
         titleLabel = new JLabel("Equipments");
         titleLabel.setFont(titleLabel.getFont().deriveFont(20.0f).deriveFont(Font.PLAIN));
-
+        statusLabel = new JLabel("");
+        statusLabel.setFont(statusLabel.getFont().deriveFont(Font.PLAIN, 15.0f));
+        statusLabel.setForeground(Color.RED);
         customTable = new Table(new String[]{ "Name", "Weight", "Price" },
             (object) -> {
                 try{
@@ -61,7 +65,8 @@ public class EquipmentsPage implements Page {
                     e.printStackTrace();
                     throw new RuntimeException(e.getMessage());
                 }
-            }
+            },
+                statusLabel
         );
         for(Equipment e: ClimbSafeApplication.getClimbSafe().getEquipment()){
             customTable.addRow(new Object[]{ e.getName(), e.getWeight(), e.getPricePerWeek() });
@@ -74,10 +79,12 @@ public class EquipmentsPage implements Page {
         layout.setHorizontalGroup(layout.createParallelGroup()
                 .addComponent(titleLabel)
                 .addComponent(customTable)
+                .addComponent(statusLabel)
         );
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addComponent(titleLabel)
                 .addComponent(customTable)
+                .addComponent(statusLabel)
         );
     }
 

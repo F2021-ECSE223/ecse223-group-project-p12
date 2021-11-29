@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.nio.file.DirectoryNotEmptyException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -39,6 +41,8 @@ public class Table extends JPanel {
     private JTextField[] addFields;
     private JButton addButton;
 
+    private JLabel statusLabel;
+
     /**
      * Constructor for the table.
      * It takes all of the necessary inputs to create the table columns and get the necessary event functions.
@@ -51,12 +55,14 @@ public class Table extends JPanel {
      * @param editEvent Edit event
      * @param deleteEvent Deletion event
      */
-    public Table(String[] columns, Consumer<Object[]> createEvent, BiConsumer<Integer, Object[][]> editEvent, BiConsumer<Integer, Object[]> deleteEvent){
+    public Table(String[] columns, Consumer<Object[]> createEvent, BiConsumer<Integer, Object[][]> editEvent, BiConsumer<Integer, Object[]> deleteEvent, JLabel statusLabel){
         this.columns = columns;
 
         this.createEvent = createEvent;
         this.editEvent = editEvent;
         this.deleteEvent = deleteEvent;
+
+        this.statusLabel = statusLabel;
 
         this.layout = new GroupLayout(this);
         this.rows = new ArrayList<TableRow>();
@@ -194,7 +200,7 @@ public class Table extends JPanel {
         try{
             createEvent.accept(data);
         } catch(Exception e){
-            e.printStackTrace();
+            setStatus(e.getMessage());
             return;
         }
         addRow(data);
@@ -216,7 +222,7 @@ public class Table extends JPanel {
         try {
             editEvent.accept(rows.indexOf(row), data);
         } catch(Exception e){
-            e.printStackTrace();
+            setStatus(e.getMessage());
             return;
         }
         row.rowData = newData;
@@ -233,11 +239,22 @@ public class Table extends JPanel {
         try {
             deleteEvent.accept(rows.indexOf(row), row.rowData);
         } catch(Exception e){
-            e.printStackTrace();
+            setStatus(e.getMessage());
             return;
         }
         rows.remove(row);
         makeLayout();
+    }
+
+    private void setStatus(String message){
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                statusLabel.setText("");
+            }
+        }, 5000);
+        statusLabel.setText(message);
     }
 
     /**
