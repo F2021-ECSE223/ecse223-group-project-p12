@@ -31,7 +31,7 @@ public class PaymentsPage implements Page{
         payButton = new JButton("Pay");
         payButton.addActionListener( e -> payAction() );
         codeField = new JTextField();
-        payButtonText = new JLabel("Enter the authorization code: ");
+		payButtonText = new JLabel("Enter the authorization code: ");
         codeFieldText = new JLabel("Press here to proceed to payment");
         description = new JLabel("Select a row of the table and enter the authorization code to pay for the trip");
         error = new JLabel("");
@@ -77,10 +77,10 @@ public class PaymentsPage implements Page{
                 		.addComponent(description)
                         .addComponent(scrollPane)
                         .addGroup(layout.createSequentialGroup()
-                        		.addComponent(codeFieldText)
+                        		.addComponent(payButtonText)
                         		.addComponent(codeField))
                         .addGroup(layout.createSequentialGroup()
-                        		.addComponent(payButtonText)
+                        		.addComponent(codeFieldText)
                         		.addComponent(payButton))
                         .addComponent(error)
         );
@@ -89,10 +89,10 @@ public class PaymentsPage implements Page{
                 		.addComponent(description)
                         .addComponent(scrollPane)
                         .addGroup(layout.createParallelGroup()
-                        		.addComponent(codeFieldText)
+                        		.addComponent(payButtonText)
                         		.addComponent(codeField))
                         .addGroup(layout.createParallelGroup()
-                        		.addComponent(payButtonText)
+                        		.addComponent(codeFieldText)
                         		.addComponent(payButton))
                         .addComponent(error)
         );
