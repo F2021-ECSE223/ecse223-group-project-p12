@@ -17,6 +17,8 @@ public class ClimbSafeGUI extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	
+	private JButton button;
+	
 	private JLabel windowTitle;
 	private JSeparator titleSeparator = new JSeparator();
 	private JPanel contentPanel = new JPanel();
@@ -45,6 +47,10 @@ public class ClimbSafeGUI extends JFrame{
 		setBackground(Color.white);
 		windowTitle = new JLabel("Welcome to ClimbSafe");
 		windowTitle.setFont(new Font("Corbel Light", Font.PLAIN, 30));
+		button = new JButton("Click to Close!");
+		button.addActionListener(e -> {
+			   this.dispose();
+			});
 		
 		contentPanel.setBackground(Color.white);
 		
@@ -61,7 +67,8 @@ public class ClimbSafeGUI extends JFrame{
 		      .addGroup(layout.createParallelGroup()
 		    		  .addComponent(windowTitle)
 		    		  .addComponent(titleSeparator)
-					  .addComponent(contentPanel))
+					  .addComponent(contentPanel)
+					  .addComponent(button))
 		);
 		layout.setVerticalGroup(
 		   layout.createParallelGroup()
@@ -71,6 +78,7 @@ public class ClimbSafeGUI extends JFrame{
 		    		  .addComponent(windowTitle)
 		    		  .addComponent(titleSeparator)
 					  .addComponent(contentPanel)
+					  .addComponent(button)
 			  )
 		);
 		
