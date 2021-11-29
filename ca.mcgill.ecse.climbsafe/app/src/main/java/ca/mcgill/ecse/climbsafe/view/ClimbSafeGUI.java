@@ -47,7 +47,7 @@ public class ClimbSafeGUI extends JFrame{
 		setBackground(Color.white);
 		windowTitle = new JLabel("Welcome to ClimbSafe");
 		windowTitle.setFont(new Font("Corbel Light", Font.PLAIN, 30));
-		button = new JButton("Click to Close!");
+		button = new JButton("Quit");
 		button.addActionListener(e -> {
 			   this.dispose();
 			});
