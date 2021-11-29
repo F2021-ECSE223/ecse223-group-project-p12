@@ -25,6 +25,8 @@ public class Table extends JPanel {
 
     private String[] columns;
 
+    private boolean firstColumnEdit;
+
     private Consumer<Object[]> createEvent;
     private BiConsumer<Integer, Object[][]> editEvent;
     private BiConsumer<Integer, Object[]> deleteEvent;
@@ -55,8 +57,10 @@ public class Table extends JPanel {
      * @param editEvent Edit event
      * @param deleteEvent Deletion event
      */
-    public Table(String[] columns, Consumer<Object[]> createEvent, BiConsumer<Integer, Object[][]> editEvent, BiConsumer<Integer, Object[]> deleteEvent, JLabel statusLabel){
+    public Table(String[] columns, boolean firstColumnEdit, Consumer<Object[]> createEvent, BiConsumer<Integer, Object[][]> editEvent, BiConsumer<Integer, Object[]> deleteEvent, JLabel statusLabel){
         this.columns = columns;
+
+        this.firstColumnEdit = firstColumnEdit;
 
         this.createEvent = createEvent;
         this.editEvent = editEvent;
@@ -397,13 +401,14 @@ public class Table extends JPanel {
         private void makeEditLayout(){
             removeAll();
             layout = new GroupLayout(this);
-
             GroupLayout.SequentialGroup horizontalGroup = layout.createSequentialGroup();
-            for(JTextField tf: fields) horizontalGroup.addComponent(tf);
+            if(!firstColumnEdit) horizontalGroup.addComponent(labels[0]);
+            for(int i = firstColumnEdit ? 0 : 1; i < fields.length; i++) horizontalGroup.addComponent(fields[i]);
             horizontalGroup.addComponent(editButton);
             horizontalGroup.addComponent(deleteButton);
             GroupLayout.ParallelGroup verticalGroup = layout.createParallelGroup();
-            for(JTextField tf: fields) verticalGroup.addComponent(tf);
+            if(!firstColumnEdit) verticalGroup.addComponent(labels[0]);
+            for(int i = firstColumnEdit ? 0 : 1; i < fields.length; i++) verticalGroup.addComponent(fields[i]);
             verticalGroup.addComponent(editButton);
             verticalGroup.addComponent(deleteButton);
 

@@ -30,7 +30,7 @@ public class GuidesPage implements Page {
             statusLabel = new JLabel("");
             statusLabel.setFont(statusLabel.getFont().deriveFont(Font.PLAIN, 15.0f));
             statusLabel.setForeground(Color.RED);
-            customTable = new Table(new String[]{ "Email", "Password", "Name", "EmergencyContact" },
+            customTable = new Table(new String[]{ "Email", "Password", "Name", "EmergencyContact" }, false,
                 (object) -> {
                     try{
                         ClimbSafeFeatureSet3Controller.registerGuide(

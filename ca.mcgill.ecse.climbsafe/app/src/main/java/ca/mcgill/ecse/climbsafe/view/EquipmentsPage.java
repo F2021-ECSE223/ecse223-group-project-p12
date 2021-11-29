@@ -32,7 +32,7 @@ public class EquipmentsPage implements Page {
         statusLabel = new JLabel("");
         statusLabel.setFont(statusLabel.getFont().deriveFont(Font.PLAIN, 15.0f));
         statusLabel.setForeground(Color.RED);
-        customTable = new Table(new String[]{ "Name", "Weight", "Price" },
+        customTable = new Table(new String[]{ "Name", "Weight", "Price" }, true,
             (object) -> {
                 try{
                     ClimbSafeFeatureSet4Controller.addEquipment(
