@@ -166,7 +166,7 @@ public class MembersPage implements Page{
          * @author Philippe Sarouphim Hochar
          * @author Theo Ghanem
          */
-        private void makeNewBar(){
+        public void makeNewBar(){
             remove(bar);
             bar = new JList(memberNames);
             bar.setFont(bar.getFont().deriveFont(Font.PLAIN, 15.0f));
@@ -220,6 +220,15 @@ public class MembersPage implements Page{
                 newMembers[j] = m;
                 j++;
             }
+            memberNames = newMembers;
+        }
+
+        public void addMember(String newMember){
+            String[] newMembers = new String[memberNames.length + 1];
+            for(int i = 0; i < memberNames.length; i++){
+                newMembers[i] = memberNames[i];
+            }
+            newMembers[newMembers.length - 1] = newMember;
             memberNames = newMembers;
         }
 
@@ -417,9 +426,9 @@ public class MembersPage implements Page{
             equipmentSelector.getEquipmentQuantities().keySet(); //gets the items that have quantities
             equipmentSelector.getEquipmentQuantities().values(); //gets the quantities of the items
             ArrayList<Integer> quantities = new ArrayList<Integer>();
-            quantities.addAll(equipmentSelector.getEquipmentQuantities().values());
+            quantities.addAll(equipmentSelector.getNonZeroEquipmentQuantities().values());
             ArrayList<String> items = new ArrayList<String>();
-            items.addAll(equipmentSelector.getEquipmentQuantities().keySet());
+            items.addAll(equipmentSelector.getNonZeroEquipmentQuantities().keySet());
             try {
                 if (newMember) {
                     ClimbSafeFeatureSet2Controller.registerMember(
@@ -433,6 +442,8 @@ public class MembersPage implements Page{
                             items,
                             quantities
                     );
+                    memberSelector.addMember(enterEmail.getText());
+                    memberSelector.makeNewBar();
                 } else {
                     ClimbSafeFeatureSet2Controller.updateMember(
                             enterEmail.getText(),

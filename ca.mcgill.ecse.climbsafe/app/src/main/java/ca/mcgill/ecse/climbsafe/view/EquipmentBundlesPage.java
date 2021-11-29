@@ -118,7 +118,6 @@ public class EquipmentBundlesPage implements Page{
 
         GroupLayout barLayout;
         JList bar;
-        JTextField addNameField;
         JButton addButton;
         JButton deleteButton;
 
@@ -137,7 +136,6 @@ public class EquipmentBundlesPage implements Page{
             bar.setFixedCellHeight(30);
             bar.setBorder(BorderFactory.createEmptyBorder());
 
-            addNameField = new JTextField();
             addButton = new JButton("Add");
             deleteButton = new JButton("Delete");
             deleteButton.addActionListener(new ActionListener() {
@@ -153,7 +151,7 @@ public class EquipmentBundlesPage implements Page{
             addButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    addEvent.accept(addNameField.getText());
+                    addEvent.accept("");
                 }
             });
             makeLayout();
@@ -162,7 +160,7 @@ public class EquipmentBundlesPage implements Page{
         /**
          * Creates a new sidebar with the list of the added equipment bundles
          */
-        private void makeNewBar(){
+        public void makeNewBar(){
             remove(bar);
             bar = new JList(equipmentBundleNames);
             bar.setFont(bar.getFont().deriveFont(Font.PLAIN, 15.0f));
@@ -186,14 +184,12 @@ public class EquipmentBundlesPage implements Page{
             barLayout.setHorizontalGroup(
                     barLayout.createParallelGroup()
                             .addComponent(bar)
-                            .addComponent(addNameField)
                             .addComponent(addButton)
                             .addComponent(deleteButton)
             );
             barLayout.setVerticalGroup(
                     barLayout.createSequentialGroup()
                             .addComponent(bar)
-                            .addComponent(addNameField)
                             .addComponent(addButton)
                             .addComponent(deleteButton)
             );
@@ -213,6 +209,15 @@ public class EquipmentBundlesPage implements Page{
                 j++;
             }
             equipmentBundleNames = newEquipmentBundles;
+        }
+
+        public void addBundle(String newBundle){
+            String[] newBundles = new String[equipmentBundleNames.length + 1];
+            for(int i = 0; i < equipmentBundleNames.length; i++){
+                newBundles[i] = equipmentBundleNames[i];
+            }
+            newBundles[newBundles.length - 1] = newBundle;
+            equipmentBundleNames = newBundles;
         }
 
     }
@@ -347,6 +352,8 @@ public class EquipmentBundlesPage implements Page{
                             items,
                             quantities
                     );
+                    equipmentBundleSelector.addBundle(enterName.getText());
+                    equipmentBundleSelector.makeNewBar();
                 } else {
                     ClimbSafeFeatureSet5Controller.updateEquipmentBundle(
                     		equipmentBundle.getName(),
