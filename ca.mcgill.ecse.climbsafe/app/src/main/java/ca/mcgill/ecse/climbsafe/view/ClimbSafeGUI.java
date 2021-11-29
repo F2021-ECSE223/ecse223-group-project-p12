@@ -17,9 +17,11 @@ public class ClimbSafeGUI extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	
-	private JButton button;
+	private JButton quit;
+	
 	
 	private JLabel windowTitle;
+	private JLabel empty;
 	private JSeparator titleSeparator = new JSeparator();
 	private JPanel contentPanel = new JPanel();
 	
@@ -47,10 +49,13 @@ public class ClimbSafeGUI extends JFrame{
 		setBackground(Color.white);
 		windowTitle = new JLabel("Welcome to ClimbSafe");
 		windowTitle.setFont(new Font("Corbel Light", Font.PLAIN, 30));
-		button = new JButton("Quit");
-		button.addActionListener(e -> {
+		quit = new JButton("Exit Application");
+		quit.addActionListener(e -> {
 			   this.dispose();
 			});
+		
+		empty = new JLabel(" ");
+		empty.setFont(new Font("Corbel Light", Font.PLAIN, 500));
 		
 		contentPanel.setBackground(Color.white);
 		
@@ -63,22 +68,27 @@ public class ClimbSafeGUI extends JFrame{
 	    layout.setHorizontalGroup(
 		   layout.createSequentialGroup()
 		   	  .addGroup(layout.createParallelGroup()
-		   			  .addComponent(sideBar.getSideBar()))
+		   			  .addComponent(sideBar.getSideBar())
+		   			  .addComponent(empty)
+		   			  .addComponent(quit))
 		      .addGroup(layout.createParallelGroup()
 		    		  .addComponent(windowTitle)
 		    		  .addComponent(titleSeparator)
 					  .addComponent(contentPanel)
-					  .addComponent(button))
+					  )
 		);
 		layout.setVerticalGroup(
 		   layout.createParallelGroup()
 		      .addGroup(layout.createSequentialGroup()
-		    		  .addComponent(sideBar.getSideBar()))
+		    		  .addComponent(sideBar.getSideBar())
+		    		  .addComponent(empty)
+		    		  .addComponent(quit)
+		    		  )
 		      .addGroup(layout.createSequentialGroup()
 		    		  .addComponent(windowTitle)
 		    		  .addComponent(titleSeparator)
 					  .addComponent(contentPanel)
-					  .addComponent(button)
+					  
 			  )
 		);
 		
