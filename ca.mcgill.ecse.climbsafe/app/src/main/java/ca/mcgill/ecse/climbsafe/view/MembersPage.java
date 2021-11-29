@@ -2,6 +2,7 @@ package ca.mcgill.ecse.climbsafe.view;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet1Controller;
+import ca.mcgill.ecse.climbsafe.controller.InvalidInputException;
 import ca.mcgill.ecse.climbsafe.model.BookedItem;
 import ca.mcgill.ecse.climbsafe.model.Member;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet2Controller;
@@ -157,6 +158,11 @@ public class MembersPage implements Page{
             addButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    try {
+                        ClimbSafeFeatureSet2Controller.emailIsValid(addEmailField.getText());
+                    } catch (Exception ex) {
+                        return;
+                    }
                     addEvent.accept(addEmailField.getText());
                 }
             });
