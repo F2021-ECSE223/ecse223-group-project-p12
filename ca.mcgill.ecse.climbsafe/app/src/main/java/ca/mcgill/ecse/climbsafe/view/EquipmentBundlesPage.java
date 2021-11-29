@@ -17,10 +17,8 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.Timer;
 import java.util.function.Consumer;
 
 /**
@@ -245,6 +243,8 @@ public class EquipmentBundlesPage implements Page{
 
         private JButton saveButton;
 
+        private JLabel statusLabel;
+
         private GroupLayout equipmentBundleInfoLayout;
 
         public EquipmentBundlePanel(){}
@@ -277,6 +277,10 @@ public class EquipmentBundlesPage implements Page{
                 enterDiscount = new JTextField(String.valueOf(equipmentBundle.getDiscount()));
             }
 
+            statusLabel = new JLabel("");
+            statusLabel.setFont(statusLabel.getFont().deriveFont(Font.PLAIN, 15.0f));
+            statusLabel.setForeground(Color.RED);
+
             ArrayList<String> equipmentNames = new ArrayList<>();
             ArrayList<Integer> equipmentQuantities = new ArrayList<>();
             if(!newEquipmentBundle)
@@ -297,6 +301,8 @@ public class EquipmentBundlesPage implements Page{
 
             equipmentBundleInfoLayout = new GroupLayout(this);
             equipmentBundleInfoLayout.setHorizontalGroup(
+                    equipmentBundleInfoLayout.createParallelGroup()
+                                    .addGroup(
             		equipmentBundleInfoLayout.createSequentialGroup()
                             .addGroup(
                             		equipmentBundleInfoLayout.createParallelGroup()
@@ -310,8 +316,12 @@ public class EquipmentBundlesPage implements Page{
                                             .addComponent(enterDiscount)
                             )
                             .addComponent(equipmentSelector)
+                                    )
+                            .addComponent(statusLabel)
             );
             equipmentBundleInfoLayout.setVerticalGroup(
+                    equipmentBundleInfoLayout.createSequentialGroup()
+                                    .addGroup(
             		equipmentBundleInfoLayout.createParallelGroup()
                             .addGroup(
                             		equipmentBundleInfoLayout.createSequentialGroup()
@@ -328,6 +338,8 @@ public class EquipmentBundlesPage implements Page{
                                             .addComponent(saveButton)
                             )
                             .addComponent(equipmentSelector)
+                                    )
+                            .addComponent(statusLabel)
             );
             setLayout(equipmentBundleInfoLayout);
         }
@@ -364,7 +376,14 @@ public class EquipmentBundlesPage implements Page{
                     );
                 }
             } catch(Exception e){
-                e.printStackTrace();
+                statusLabel.setText(e.getMessage());
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        statusLabel.setText("");
+                    }
+                }, 5000);
             }
         }
 

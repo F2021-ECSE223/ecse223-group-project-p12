@@ -14,6 +14,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Consumer;
 
 /**
@@ -267,6 +269,8 @@ public class MembersPage implements Page{
 
         private JButton saveButton;
 
+        private JLabel statusLabel;
+
         private GroupLayout memberInfoLayout;
 
         public MemberPanel(){}
@@ -324,6 +328,10 @@ public class MembersPage implements Page{
                 enterHotelRequired.setSelected(member.getHotelRequired());
             }
 
+            statusLabel = new JLabel("");
+            statusLabel.setFont(statusLabel.getFont().deriveFont(Font.PLAIN, 15.0f));
+            statusLabel.setForeground(Color.RED);
+
             ArrayList<String> equipmentNames = new ArrayList<>();
             ArrayList<Integer> equipmentQuantities = new ArrayList<>();
             if(!newMember)
@@ -344,7 +352,8 @@ public class MembersPage implements Page{
 
             memberInfoLayout = new GroupLayout(this);
             memberInfoLayout.setHorizontalGroup(
-                    memberInfoLayout.createSequentialGroup()
+                    memberInfoLayout.createParallelGroup()
+                            .addGroup(memberInfoLayout.createSequentialGroup()
                             .addGroup(
                                     memberInfoLayout.createParallelGroup()
                                             .addComponent(email)
@@ -367,8 +376,12 @@ public class MembersPage implements Page{
                                             .addComponent(enterHotelRequired)
                             )
                             .addComponent(equipmentSelector)
+                )
+                            .addComponent(statusLabel)
             );
             memberInfoLayout.setVerticalGroup(
+                    memberInfoLayout.createSequentialGroup()
+                                    .addGroup(
                     memberInfoLayout.createParallelGroup()
                             .addGroup(
                                     memberInfoLayout.createSequentialGroup()
@@ -409,6 +422,8 @@ public class MembersPage implements Page{
                                             .addComponent(saveButton)
                             )
                             .addComponent(equipmentSelector)
+                                    )
+                            .addComponent(statusLabel)
             );
             setLayout(memberInfoLayout);
         }
@@ -458,7 +473,14 @@ public class MembersPage implements Page{
                     );
                 }
             } catch(Exception e){
-                e.printStackTrace();
+                statusLabel.setText(e.getMessage());
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        statusLabel.setText("");
+                    }
+                }, 5000);
             }
         }
 
