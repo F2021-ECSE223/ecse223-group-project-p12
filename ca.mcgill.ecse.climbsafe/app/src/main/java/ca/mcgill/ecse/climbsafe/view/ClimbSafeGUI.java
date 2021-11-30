@@ -121,6 +121,8 @@ public class ClimbSafeGUI extends JFrame{
 		pack();
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
+
+		sideBar.select(0);
 	}
 
 	public void setPagePanel(JPanel panel) {

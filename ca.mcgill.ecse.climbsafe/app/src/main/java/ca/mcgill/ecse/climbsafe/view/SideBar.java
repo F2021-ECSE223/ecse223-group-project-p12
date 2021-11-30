@@ -36,6 +36,10 @@ public class SideBar {
         this.mainGUI = mainGUI;
     }
 
+    public void select(int i){
+        bar.setSelectedIndex(i);
+    }
+
     private void selectionChanged(String selectedPage){
         mainGUI.setPagePanel(pages.get(selectedPage).getPanel());
     }
