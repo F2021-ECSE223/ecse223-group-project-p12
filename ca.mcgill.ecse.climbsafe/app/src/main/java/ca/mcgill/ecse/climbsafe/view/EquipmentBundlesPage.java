@@ -271,10 +271,22 @@ public class EquipmentBundlesPage implements Page{
 
             if(newEquipmentBundle){
                 enterName = new JTextField(newName);
+                enterName.setMinimumSize(new Dimension(130, 45));
+                enterName.setMaximumSize(new Dimension(130, 45));
+                enterName.setPreferredSize(new Dimension(130, 45));
                 enterDiscount = new JTextField();
+                enterDiscount.setMinimumSize(new Dimension(130, 45));
+                enterDiscount.setMaximumSize(new Dimension(130, 45));
+                enterDiscount.setPreferredSize(new Dimension(130, 45));
             } else {
                 enterName = new JTextField(equipmentBundle.getName());
+                enterName.setMinimumSize(new Dimension(130, 45));
+                enterName.setMaximumSize(new Dimension(130, 45));
+                enterName.setPreferredSize(new Dimension(130, 45));
                 enterDiscount = new JTextField(String.valueOf(equipmentBundle.getDiscount()));
+                enterDiscount.setMinimumSize(new Dimension(130, 45));
+                enterDiscount.setMaximumSize(new Dimension(130, 45));
+                enterDiscount.setPreferredSize(new Dimension(130, 45));
             }
 
             statusLabel = new JLabel("");
