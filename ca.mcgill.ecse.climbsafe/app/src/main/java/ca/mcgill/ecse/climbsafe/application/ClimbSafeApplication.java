@@ -26,6 +26,7 @@ public class ClimbSafeApplication {
 
   public static ClimbSafe getClimbSafe() {
 	  if( climbSafe == null ) {
+		  ClimbSafePersistence.setFilename("ClimbSafeDemo.data");
 		  climbSafe = ClimbSafePersistence.load();  
 	  }
 	  return climbSafe;
