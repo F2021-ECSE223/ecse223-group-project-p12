@@ -157,6 +157,11 @@ public class MembersPage implements Page{
             addButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    try {
+                        ClimbSafeFeatureSet2Controller.emailIsValid(addEmailField.getText());
+                    } catch (Exception ex) {
+                        return;
+                    }
                     addEvent.accept(addEmailField.getText());
                 }
             });
