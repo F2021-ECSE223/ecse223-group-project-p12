@@ -16,21 +16,23 @@ import javax.swing.*;
 public class ClimbSafeGUI extends JFrame{
 
 	private static final long serialVersionUID = 1L;
-	
-	private JButton button;
-	
+
+	private JButton quit;
+
+
 	private JLabel windowTitle;
+	private JLabel empty;
 	private JSeparator titleSeparator = new JSeparator();
 	private JPanel contentPanel = new JPanel();
-	
+
 	private LinkedHashMap<String, Page> list = new LinkedHashMap<String, Page>();
 	private SideBar sideBar;
-	
+
 	public ClimbSafeGUI() {
 		initData();
 		initComponents();
 	}
-	
+
 	private void initData() {
 		list.put("Seasons", new SeasonsPage());
 		list.put("Members", new MembersPage());
@@ -42,46 +44,54 @@ public class ClimbSafeGUI extends JFrame{
 		list.put("Trips", new TripsPage());
 		sideBar = new SideBar(list, this);
 	}
-	
+
 	private void initComponents() {
 		setBackground(Color.white);
 		windowTitle = new JLabel("Welcome to ClimbSafe");
 		windowTitle.setFont(new Font("Corbel Light", Font.PLAIN, 30));
-		button = new JButton("Quit");
-		button.addActionListener(e -> {
-			   this.dispose();
-			});
-		
+		quit = new JButton("Exit Application");
+		quit.addActionListener(e -> {
+			this.dispose();
+		});
+
+		empty = new JLabel(" ");
+		empty.setFont(new Font("Corbel Light", Font.PLAIN, 400));
+
 		contentPanel.setBackground(Color.white);
-		
+
 		GroupLayout layout = new GroupLayout(getContentPane());
-	    getContentPane().setLayout(layout);
-	    getContentPane().setBackground(Color.WHITE);
-	    layout.setAutoCreateGaps(true);
-	    layout.setAutoCreateContainerGaps(true);
-	    
-	    layout.setHorizontalGroup(
-		   layout.createSequentialGroup()
-		   	  .addGroup(layout.createParallelGroup()
-		   			  .addComponent(sideBar.getSideBar()))
-		      .addGroup(layout.createParallelGroup()
-		    		  .addComponent(windowTitle)
-		    		  .addComponent(titleSeparator)
-					  .addComponent(contentPanel)
-					  .addComponent(button))
+		getContentPane().setLayout(layout);
+		getContentPane().setBackground(Color.WHITE);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+
+		layout.setHorizontalGroup(
+				layout.createSequentialGroup()
+						.addGroup(layout.createParallelGroup()
+								.addComponent(sideBar.getSideBar())
+								.addComponent(empty)
+								.addComponent(quit))
+						.addGroup(layout.createParallelGroup()
+								.addComponent(windowTitle)
+								.addComponent(titleSeparator)
+								.addComponent(contentPanel)
+						)
 		);
 		layout.setVerticalGroup(
-		   layout.createParallelGroup()
-		      .addGroup(layout.createSequentialGroup()
-		    		  .addComponent(sideBar.getSideBar()))
-		      .addGroup(layout.createSequentialGroup()
-		    		  .addComponent(windowTitle)
-		    		  .addComponent(titleSeparator)
-					  .addComponent(contentPanel)
-					  .addComponent(button)
-			  )
+				layout.createParallelGroup()
+						.addGroup(layout.createSequentialGroup()
+								.addComponent(sideBar.getSideBar())
+								.addComponent(empty)
+								.addComponent(quit)
+						)
+						.addGroup(layout.createSequentialGroup()
+								.addComponent(windowTitle)
+								.addComponent(titleSeparator)
+								.addComponent(contentPanel)
+
+						)
 		);
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addWindowListener(new WindowListener() {
 			@Override
@@ -112,7 +122,7 @@ public class ClimbSafeGUI extends JFrame{
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
 	}
-	
+
 	public void setPagePanel(JPanel panel) {
 		contentPanel.removeAll();
 		contentPanel.add(panel);
