@@ -117,7 +117,7 @@ public class ClimbSafeFeatureSet2Controller {
    * @author Theo Ghanem
    */
 
-  public static void emailIsValid(String email) throws InvalidInputException {
+  private static void emailIsValid(String email) throws InvalidInputException {
     int countOfAt = 0;
     int lastIndexOfDot = 0;
     int indexOfAt = 0;
