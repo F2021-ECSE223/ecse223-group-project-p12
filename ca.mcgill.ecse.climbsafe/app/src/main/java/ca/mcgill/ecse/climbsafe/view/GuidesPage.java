@@ -1,12 +1,27 @@
  package ca.mcgill.ecse.climbsafe.view;
 
-    import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.GroupLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet1Controller;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet3Controller;
 import ca.mcgill.ecse.climbsafe.model.Guide;
-
-import javax.swing.*;
-    import java.awt.*;
+    
+    /**
+     * This class takes care of creating the page (accesible from the sidebar) where the admin can
+     * add, update and delete guides.
+     * The admin can enter all the required information for a member such as:
+     * email, password, name, emergency contact.
+     * From this page, the admin can see a list of the added guides and all their corresponding information.
+     * 
+     * @author Chris Hatoum
+     *
+     */
 
 public class GuidesPage implements Page {
 
@@ -23,7 +38,10 @@ public class GuidesPage implements Page {
         initComponents();
     }
     
-
+/**
+ *  Method used to display the components of the Guide's page by placing
+ *  them correctly in the Table
+ */
         private void initComponents(){
             titleLabel = new JLabel("Guides");
             titleLabel.setFont(titleLabel.getFont().deriveFont(20.0f).deriveFont(Font.PLAIN));
