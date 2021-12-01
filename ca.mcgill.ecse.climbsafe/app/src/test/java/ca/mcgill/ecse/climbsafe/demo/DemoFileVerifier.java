@@ -63,7 +63,7 @@ public class DemoFileVerifier {
         new int[] {1, 2}, new String[] {"plus", "rope"});
     verifyMember("jane@hotmail.com", "1234", "Jane Black", "(222) 987-6541", 3, false, false,
         new int[] {1, 1, 1}, new String[] {"rope", "stove", "pickaxe"});
-    verifyMember("jack@hotmail.com", "1234", "Jack Black", "(222) 987-6542", 4, true, false,
+    verifyMember("jack@hotmail.com", "1234", "Jack Black", "(222) 987-6542", 4, true, true,
         new int[] {1, 1}, new String[] {"standard", "plus"});
     verifyMember("julie@hotmail.com", "1234", "Julie Black", "(222) 987-6543", 1, true, false,
         new int[] {}, new String[] {});
