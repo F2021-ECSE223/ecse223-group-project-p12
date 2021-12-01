@@ -51,6 +51,7 @@ public class Table extends JPanel {
     private JButton addButton;
 
     private JLabel statusLabel;
+    private static int dimensions = 250;
 
     /**
      * Constructor for the table.
@@ -98,9 +99,9 @@ public class Table extends JPanel {
         for(int i = 0; i < columns.length; i++){
             titles[i] = new JLabel(columns[i]);
             titles[i].setFont(titles[i].getFont().deriveFont(15.0f));
-            titles[i].setMinimumSize(new Dimension(250 ,20));
-            titles[i].setPreferredSize(new Dimension(250 ,20));
-            titles[i].setMaximumSize(new Dimension(250 ,20));
+            titles[i].setMinimumSize(new Dimension(dimensions ,20));
+            titles[i].setPreferredSize(new Dimension(dimensions ,20));
+            titles[i].setMaximumSize(new Dimension(dimensions ,20));
         }
         GroupLayout.SequentialGroup horizontalGroup = titlesLayout.createSequentialGroup();
         GroupLayout.ParallelGroup verticalGroup = titlesLayout.createParallelGroup();
@@ -126,9 +127,9 @@ public class Table extends JPanel {
         for(int i = 0; i < columns.length; i++){
             addFields[i] = new JTextField("");
             addFields[i].setFont(addFields[i].getFont().deriveFont(15.0f));
-            addFields[i].setMinimumSize(new Dimension(250 ,30));
-            addFields[i].setPreferredSize(new Dimension(250 ,30));
-            addFields[i].setMaximumSize(new Dimension(250 ,30));
+            addFields[i].setMinimumSize(new Dimension(dimensions ,30));
+            addFields[i].setPreferredSize(new Dimension(dimensions ,30));
+            addFields[i].setMaximumSize(new Dimension(dimensions ,30));
         }
         addButton = new JButton("Add");
         addButton.setMinimumSize(new Dimension(80, 30));
@@ -306,9 +307,9 @@ public class Table extends JPanel {
 
             updateLabels();
 
-            setMinimumSize(new Dimension(columns.length * 250 + 80, 40));
-            setPreferredSize(new Dimension(columns.length * 250 + 80, 40));
-            setMaximumSize(new Dimension(columns.length * 250 + 80, 40));
+            setMinimumSize(new Dimension(columns.length * dimensions + 80, 40));
+            setPreferredSize(new Dimension(columns.length * dimensions + 80, 40));
+            setMaximumSize(new Dimension(columns.length * dimensions + 80, 40));
 
             MouseListener hoverListener = new MouseListener() {
                 @Override
@@ -463,17 +464,17 @@ public class Table extends JPanel {
             for(int i = 0; i < rowData.length; i++){
                 labels[i] = new JLabel(rowData[i].toString());
                 labels[i].setFont(labels[i].getFont().deriveFont(Font.PLAIN, 15.0f));
-                labels[i].setMinimumSize(new Dimension(250 ,30));
-                labels[i].setPreferredSize(new Dimension(250 ,30));
-                labels[i].setMaximumSize(new Dimension(250 ,30));
+                labels[i].setMinimumSize(new Dimension(dimensions ,30));
+                labels[i].setPreferredSize(new Dimension(dimensions ,30));
+                labels[i].setMaximumSize(new Dimension(dimensions ,30));
             }
             fields = new JTextField[rowData.length];
             for(int i = 0; i < rowData.length; i++){
                 fields[i] = new JTextField(rowData[i].toString());
                 fields[i].setFont(labels[i].getFont().deriveFont(Font.PLAIN, 15.0f));
-                fields[i].setMinimumSize(new Dimension(250 ,30));
-                fields[i].setPreferredSize(new Dimension(250 ,30));
-                fields[i].setMaximumSize(new Dimension(250 ,30));
+                fields[i].setMinimumSize(new Dimension(dimensions ,30));
+                fields[i].setPreferredSize(new Dimension(dimensions ,30));
+                fields[i].setMaximumSize(new Dimension(dimensions ,30));
             }
         }
 
