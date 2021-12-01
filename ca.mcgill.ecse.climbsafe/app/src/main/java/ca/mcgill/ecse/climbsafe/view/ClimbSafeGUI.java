@@ -19,9 +19,9 @@ public class ClimbSafeGUI extends JFrame{
 
 	private JButton quit;
 
-
+	private Color dark_grey = new Color(48,48,48);
+	private Color green = new Color(42,78,54);
 	private JLabel windowTitle;
-	private JLabel empty;
 	private JSeparator titleSeparator = new JSeparator();
 	private JPanel contentPanel = new JPanel();
 
@@ -49,19 +49,17 @@ public class ClimbSafeGUI extends JFrame{
 		setBackground(Color.white);
 		windowTitle = new JLabel("Welcome to ClimbSafe");
 		windowTitle.setFont(new Font("Corbel Light", Font.PLAIN, 30));
+		windowTitle.setForeground(Color.white);
 		quit = new JButton("Exit Application");
 		quit.addActionListener(e -> {
 			this.dispose();
 		});
 
-		empty = new JLabel(" ");
-		empty.setFont(new Font("Corbel Light", Font.PLAIN, 400));
-
-		contentPanel.setBackground(Color.white);
+		contentPanel.setBackground(green);
 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		getContentPane().setBackground(Color.WHITE);
+		getContentPane().setBackground(green);
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 
@@ -69,7 +67,7 @@ public class ClimbSafeGUI extends JFrame{
 				layout.createSequentialGroup()
 						.addGroup(layout.createParallelGroup()
 								.addComponent(sideBar.getSideBar())
-								.addComponent(empty)
+								.addGap(6)
 								.addComponent(quit))
 						.addGroup(layout.createParallelGroup()
 								.addComponent(windowTitle)
@@ -81,7 +79,7 @@ public class ClimbSafeGUI extends JFrame{
 				layout.createParallelGroup()
 						.addGroup(layout.createSequentialGroup()
 								.addComponent(sideBar.getSideBar())
-								.addComponent(empty)
+								.addGap(9)
 								.addComponent(quit)
 						)
 						.addGroup(layout.createSequentialGroup()

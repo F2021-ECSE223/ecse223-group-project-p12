@@ -20,16 +20,16 @@ public class Assignment implements Serializable
   private int endWeek;
 
   //Assignment State Machines
-  public enum Sm { Assigned }
-  public enum SmAssignedS1 { Null, s1 }
-  public enum SmAssignedS1S1 { Null, NotStarted, Started, Finished, Cancelled }
-  public enum SmAssignedS2 { Null, s2 }
-  public enum SmAssignedS2S2 { Null, NotPaid, Paid }
+  public enum Sm { s }
+  public enum SmSS1 { Null, s1 }
+  public enum SmSS1S1 { Null, Assigned, Started, Finished, Cancelled }
+  public enum SmSS2 { Null, s2 }
+  public enum SmSS2S2 { Null, NotPaid, Paid }
   private Sm sm;
-  private SmAssignedS1 smAssignedS1;
-  private SmAssignedS1S1 smAssignedS1S1;
-  private SmAssignedS2 smAssignedS2;
-  private SmAssignedS2S2 smAssignedS2S2;
+  private SmSS1 smSS1;
+  private SmSS1S1 smSS1S1;
+  private SmSS2 smSS2;
+  private SmSS2S2 smSS2S2;
 
   //Assignment Associations
   private Member member;
@@ -56,11 +56,11 @@ public class Assignment implements Serializable
     {
       throw new RuntimeException("Unable to create assignment due to climbSafe. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    setSmAssignedS1(SmAssignedS1.Null);
-    setSmAssignedS1S1(SmAssignedS1S1.Null);
-    setSmAssignedS2(SmAssignedS2.Null);
-    setSmAssignedS2S2(SmAssignedS2S2.Null);
-    setSm(Sm.Assigned);
+    setSmSS1(SmSS1.Null);
+    setSmSS1S1(SmSS1S1.Null);
+    setSmSS2(SmSS2.Null);
+    setSmSS2S2(SmSS2S2.Null);
+    setSm(Sm.s);
   }
 
   //------------------------
@@ -109,10 +109,10 @@ public class Assignment implements Serializable
   public String getSmFullName()
   {
     String answer = sm.toString();
-    if (smAssignedS1 != SmAssignedS1.Null) { answer += "." + smAssignedS1.toString(); }
-    if (smAssignedS1S1 != SmAssignedS1S1.Null) { answer += "." + smAssignedS1S1.toString(); }
-    if (smAssignedS2 != SmAssignedS2.Null) { answer += "." + smAssignedS2.toString(); }
-    if (smAssignedS2S2 != SmAssignedS2S2.Null) { answer += "." + smAssignedS2S2.toString(); }
+    if (smSS1 != SmSS1.Null) { answer += "." + smSS1.toString(); }
+    if (smSS1S1 != SmSS1S1.Null) { answer += "." + smSS1S1.toString(); }
+    if (smSS2 != SmSS2.Null) { answer += "." + smSS2.toString(); }
+    if (smSS2S2 != SmSS2S2.Null) { answer += "." + smSS2S2.toString(); }
     return answer;
   }
 
@@ -121,47 +121,47 @@ public class Assignment implements Serializable
     return sm;
   }
 
-  public SmAssignedS1 getSmAssignedS1()
+  public SmSS1 getSmSS1()
   {
-    return smAssignedS1;
+    return smSS1;
   }
 
-  public SmAssignedS1S1 getSmAssignedS1S1()
+  public SmSS1S1 getSmSS1S1()
   {
-    return smAssignedS1S1;
+    return smSS1S1;
   }
 
-  public SmAssignedS2 getSmAssignedS2()
+  public SmSS2 getSmSS2()
   {
-    return smAssignedS2;
+    return smSS2;
   }
 
-  public SmAssignedS2S2 getSmAssignedS2S2()
+  public SmSS2S2 getSmSS2S2()
   {
-    return smAssignedS2S2;
+    return smSS2S2;
   }
 
   public boolean start()
   {
     boolean wasEventProcessed = false;
     
-    SmAssignedS1S1 aSmAssignedS1S1 = smAssignedS1S1;
-    switch (aSmAssignedS1S1)
+    SmSS1S1 aSmSS1S1 = smSS1S1;
+    switch (aSmSS1S1)
     {
-      case NotStarted:
+      case Assigned:
         if (!(isPaid()))
         {
-          exitSmAssignedS1S1();
+          exitSmSS1S1();
         // line 8 "../../../../../ClimbSafeSM.ump"
           getMember().ban();
-          setSmAssignedS1S1(SmAssignedS1S1.Cancelled);
+          setSmSS1S1(SmSS1S1.Cancelled);
           wasEventProcessed = true;
           break;
         }
         if (isPaid())
         {
-          exitSmAssignedS1S1();
-          setSmAssignedS1S1(SmAssignedS1S1.Started);
+          exitSmSS1S1();
+          setSmSS1S1(SmSS1S1.Started);
           wasEventProcessed = true;
           break;
         }
@@ -177,17 +177,17 @@ public class Assignment implements Serializable
   {
     boolean wasEventProcessed = false;
     
-    SmAssignedS1S1 aSmAssignedS1S1 = smAssignedS1S1;
-    switch (aSmAssignedS1S1)
+    SmSS1S1 aSmSS1S1 = smSS1S1;
+    switch (aSmSS1S1)
     {
-      case NotStarted:
-        exitSmAssignedS1S1();
-        setSmAssignedS1S1(SmAssignedS1S1.Cancelled);
+      case Assigned:
+        exitSmSS1S1();
+        setSmSS1S1(SmSS1S1.Cancelled);
         wasEventProcessed = true;
         break;
       case Started:
-        exitSmAssignedS1S1();
-        setSmAssignedS1S1(SmAssignedS1S1.Cancelled);
+        exitSmSS1S1();
+        setSmSS1S1(SmSS1S1.Cancelled);
         wasEventProcessed = true;
         break;
       default:
@@ -201,12 +201,12 @@ public class Assignment implements Serializable
   {
     boolean wasEventProcessed = false;
     
-    SmAssignedS1S1 aSmAssignedS1S1 = smAssignedS1S1;
-    switch (aSmAssignedS1S1)
+    SmSS1S1 aSmSS1S1 = smSS1S1;
+    switch (aSmSS1S1)
     {
       case Started:
-        exitSmAssignedS1S1();
-        setSmAssignedS1S1(SmAssignedS1S1.Finished);
+        exitSmSS1S1();
+        setSmSS1S1(SmSS1S1.Finished);
         wasEventProcessed = true;
         break;
       default:
@@ -220,12 +220,12 @@ public class Assignment implements Serializable
   {
     boolean wasEventProcessed = false;
     
-    SmAssignedS2S2 aSmAssignedS2S2 = smAssignedS2S2;
-    switch (aSmAssignedS2S2)
+    SmSS2S2 aSmSS2S2 = smSS2S2;
+    switch (aSmSS2S2)
     {
       case NotPaid:
-        exitSmAssignedS2S2();
-        setSmAssignedS2S2(SmAssignedS2S2.Paid);
+        exitSmSS2S2();
+        setSmSS2S2(SmSS2S2.Paid);
         wasEventProcessed = true;
         break;
       default:
@@ -239,9 +239,9 @@ public class Assignment implements Serializable
   {
     switch(sm)
     {
-      case Assigned:
-        exitSmAssignedS1();
-        exitSmAssignedS2();
+      case s:
+        exitSmSS1();
+        exitSmSS2();
         break;
     }
   }
@@ -253,105 +253,105 @@ public class Assignment implements Serializable
     // entry actions and do activities
     switch(sm)
     {
-      case Assigned:
-        if (smAssignedS1 == SmAssignedS1.Null) { setSmAssignedS1(SmAssignedS1.s1); }
-        if (smAssignedS2 == SmAssignedS2.Null) { setSmAssignedS2(SmAssignedS2.s2); }
+      case s:
+        if (smSS1 == SmSS1.Null) { setSmSS1(SmSS1.s1); }
+        if (smSS2 == SmSS2.Null) { setSmSS2(SmSS2.s2); }
         break;
     }
   }
 
-  private void exitSmAssignedS1()
+  private void exitSmSS1()
   {
-    switch(smAssignedS1)
+    switch(smSS1)
     {
       case s1:
-        exitSmAssignedS1S1();
-        setSmAssignedS1(SmAssignedS1.Null);
+        exitSmSS1S1();
+        setSmSS1(SmSS1.Null);
         break;
     }
   }
 
-  private void setSmAssignedS1(SmAssignedS1 aSmAssignedS1)
+  private void setSmSS1(SmSS1 aSmSS1)
   {
-    smAssignedS1 = aSmAssignedS1;
-    if (sm != Sm.Assigned && aSmAssignedS1 != SmAssignedS1.Null) { setSm(Sm.Assigned); }
+    smSS1 = aSmSS1;
+    if (sm != Sm.s && aSmSS1 != SmSS1.Null) { setSm(Sm.s); }
 
     // entry actions and do activities
-    switch(smAssignedS1)
+    switch(smSS1)
     {
       case s1:
-        if (smAssignedS1S1 == SmAssignedS1S1.Null) { setSmAssignedS1S1(SmAssignedS1S1.NotStarted); }
+        if (smSS1S1 == SmSS1S1.Null) { setSmSS1S1(SmSS1S1.Assigned); }
         break;
     }
   }
 
-  private void exitSmAssignedS1S1()
+  private void exitSmSS1S1()
   {
-    switch(smAssignedS1S1)
+    switch(smSS1S1)
     {
-      case NotStarted:
-        setSmAssignedS1S1(SmAssignedS1S1.Null);
+      case Assigned:
+        setSmSS1S1(SmSS1S1.Null);
         break;
       case Started:
-        setSmAssignedS1S1(SmAssignedS1S1.Null);
+        setSmSS1S1(SmSS1S1.Null);
         break;
       case Finished:
-        setSmAssignedS1S1(SmAssignedS1S1.Null);
+        setSmSS1S1(SmSS1S1.Null);
         break;
       case Cancelled:
-        setSmAssignedS1S1(SmAssignedS1S1.Null);
+        setSmSS1S1(SmSS1S1.Null);
         break;
     }
   }
 
-  private void setSmAssignedS1S1(SmAssignedS1S1 aSmAssignedS1S1)
+  private void setSmSS1S1(SmSS1S1 aSmSS1S1)
   {
-    smAssignedS1S1 = aSmAssignedS1S1;
-    if (smAssignedS1 != SmAssignedS1.s1 && aSmAssignedS1S1 != SmAssignedS1S1.Null) { setSmAssignedS1(SmAssignedS1.s1); }
+    smSS1S1 = aSmSS1S1;
+    if (smSS1 != SmSS1.s1 && aSmSS1S1 != SmSS1S1.Null) { setSmSS1(SmSS1.s1); }
   }
 
-  private void exitSmAssignedS2()
+  private void exitSmSS2()
   {
-    switch(smAssignedS2)
+    switch(smSS2)
     {
       case s2:
-        exitSmAssignedS2S2();
-        setSmAssignedS2(SmAssignedS2.Null);
+        exitSmSS2S2();
+        setSmSS2(SmSS2.Null);
         break;
     }
   }
 
-  private void setSmAssignedS2(SmAssignedS2 aSmAssignedS2)
+  private void setSmSS2(SmSS2 aSmSS2)
   {
-    smAssignedS2 = aSmAssignedS2;
-    if (sm != Sm.Assigned && aSmAssignedS2 != SmAssignedS2.Null) { setSm(Sm.Assigned); }
+    smSS2 = aSmSS2;
+    if (sm != Sm.s && aSmSS2 != SmSS2.Null) { setSm(Sm.s); }
 
     // entry actions and do activities
-    switch(smAssignedS2)
+    switch(smSS2)
     {
       case s2:
-        if (smAssignedS2S2 == SmAssignedS2S2.Null) { setSmAssignedS2S2(SmAssignedS2S2.NotPaid); }
+        if (smSS2S2 == SmSS2S2.Null) { setSmSS2S2(SmSS2S2.NotPaid); }
         break;
     }
   }
 
-  private void exitSmAssignedS2S2()
+  private void exitSmSS2S2()
   {
-    switch(smAssignedS2S2)
+    switch(smSS2S2)
     {
       case NotPaid:
-        setSmAssignedS2S2(SmAssignedS2S2.Null);
+        setSmSS2S2(SmSS2S2.Null);
         break;
       case Paid:
-        setSmAssignedS2S2(SmAssignedS2S2.Null);
+        setSmSS2S2(SmSS2S2.Null);
         break;
     }
   }
 
-  private void setSmAssignedS2S2(SmAssignedS2S2 aSmAssignedS2S2)
+  private void setSmSS2S2(SmSS2S2 aSmSS2S2)
   {
-    smAssignedS2S2 = aSmAssignedS2S2;
-    if (smAssignedS2 != SmAssignedS2.s2 && aSmAssignedS2S2 != SmAssignedS2S2.Null) { setSmAssignedS2(SmAssignedS2.s2); }
+    smSS2S2 = aSmSS2S2;
+    if (smSS2 != SmSS2.s2 && aSmSS2S2 != SmSS2S2.Null) { setSmSS2(SmSS2.s2); }
   }
   /* Code from template association_GetOne */
   public Member getMember()
@@ -497,7 +497,7 @@ public class Assignment implements Serializable
 
   // line 30 "../../../../../ClimbSafeSM.ump"
    private boolean isPaid(){
-    if( this.getSmAssignedS2S2() == SmAssignedS2S2.Paid ) return true;
+    if( this.getSmSS2S2() == SmSS2S2.Paid ) return true;
     return false;
   }
 

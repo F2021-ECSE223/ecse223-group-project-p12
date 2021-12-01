@@ -46,7 +46,8 @@ public class AssignmentsPage implements Page{
 				  "Guide",
 				  "Guide Email",
 				  "Start Week",
-				  "End Week"};
+				  "End Week",
+				  "Status"};
         assignmentTable = new JTable( new DefaultTableModel( getAssignmentObjects( 1 ), tableColumns ){
 
             /**
@@ -155,12 +156,15 @@ public class AssignmentsPage implements Page{
         Object[][] objectList = new Object[assignmentList.size()][11];
         int idx = 0;
         for( TOAssignment a : assignmentList ) {
+        	String status = ( MiscellaneousController.getMemberStatus( a.getMemberEmail() ).equals("Banned") )
+        						? "Banned" : a.getStatus().split("\\.")[2];
         	objectList[idx][0] = a.getMemberName();
         	objectList[idx][1] = a.getMemberEmail();
         	objectList[idx][2] = a.getGuideName();
         	objectList[idx][3] = a.getGuideEmail();
         	objectList[idx][4] = a.getStartWeek();
         	objectList[idx][5] = a.getEndWeek();
+        	objectList[idx][6] = status;
         	idx++;
         }
         return objectList;

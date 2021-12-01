@@ -127,10 +127,10 @@ public class AssignmentController {
 	 * @return Refund value in percentage for a given member
 	 */
 	private static int getRefund(Member member){
-		if(member.getAssignment().getSmAssignedS2S2() == Assignment.SmAssignedS2S2.Paid ) {
-			if(member.getAssignment().getSmAssignedS1S1() == Assignment.SmAssignedS1S1.NotStarted)
+		if(member.getAssignment().getSmSS2S2() == Assignment.SmSS2S2.Paid ) {
+			if(member.getAssignment().getSmSS1S1() == Assignment.SmSS1S1.Assigned)
 				return 50;
-			if(member.getAssignment().getSmAssignedS1S1() == Assignment.SmAssignedS1S1.Started)
+			if(member.getAssignment().getSmSS1S1() == Assignment.SmSS1S1.Started)
 				return 10;
 		}
 		return 0;
