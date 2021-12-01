@@ -6,6 +6,7 @@ import ca.mcgill.ecse.climbsafe.model.Equipment;
 import ca.mcgill.ecse.climbsafe.model.Member;
 
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 public class MiscellaneousController {
@@ -40,8 +41,16 @@ public class MiscellaneousController {
 		return climbSafe.getNrWeeks();
 	}
 	
-	public static String getMemberStatus( String memberEmail ) {
+	public static String getMemberStatus(String memberEmail ) {
 		Member m = climbSafe.findMemberFromEmail(memberEmail);
 		return m.getSmFullName();
+	}
+
+	public static Date getSeasonStartDate(){
+		return climbSafe.getStartDate();
+	}
+
+	public static int getPriceOfGuide(){
+		return climbSafe.getPriceOfGuidePerWeek();
 	}
 }

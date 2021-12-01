@@ -1,6 +1,8 @@
 package ca.mcgill.ecse.climbsafe.view;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
+import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet1Controller;
+import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +39,7 @@ public class SeasonsPage implements Page {
     private JLabel emptyLab = new JLabel("                    ");
     private JLabel invalidSomething = new JLabel("");
     private JTextField newPriceGuide = new JTextField("");
+    private JLabel dollarsPerWeek = new JLabel("$/week");
 
     public SeasonsPage(){
 
@@ -54,9 +57,9 @@ public class SeasonsPage implements Page {
     private void initComponents(){
         invalidSomething.setText("");
         panel.removeAll();
-        Date start = ClimbSafeApplication.getClimbSafe().getStartDate();
-        Integer numWeeks = ClimbSafeApplication.getClimbSafe().getNrWeeks();
-        Integer priceGuide =ClimbSafeApplication.getClimbSafe().getPriceOfGuidePerWeek();
+        Date start = MiscellaneousController.getSeasonStartDate();
+        Integer numWeeks = MiscellaneousController.getSeasonNumberOfWeeks();
+        Integer priceGuide =MiscellaneousController.getPriceOfGuide();
         startDate = new JLabel(start.getDate() + "-" + start.getMonth() + "-" + start.getYear());
         priceOfGuide = new JLabel(priceGuide.toString());
         weeks = new JLabel(numWeeks.toString() + " weeks long");
@@ -79,7 +82,11 @@ public class SeasonsPage implements Page {
                                         .addComponent(startDate)
                                         .addComponent(weeks)
                                         .addGap(28)
-                                        .addComponent(priceOfGuide)
+                                        .addGroup( layout.createSequentialGroup()
+                                                .addComponent(priceOfGuide)
+                                                .addComponent(dollarsPerWeek)
+                                        )
+
                                 )
 
                                 .addGroup( layout.createParallelGroup()
@@ -105,7 +112,10 @@ public class SeasonsPage implements Page {
                                         .addComponent(startDate)
                                         .addComponent(weeks)
                                         .addGap(28)
-                                        .addComponent(priceOfGuide)
+                                        .addGroup( layout.createParallelGroup()
+                                                .addComponent(priceOfGuide)
+                                                .addComponent(dollarsPerWeek)
+                                        )
                                 )
 
                                 .addGroup( layout.createSequentialGroup()
@@ -229,8 +239,8 @@ public class SeasonsPage implements Page {
             long timeDif = Math.abs(endUpDate.getTime() - startUpDate.getTime());
             long diff = TimeUnit.DAYS.convert(timeDif, TimeUnit.MILLISECONDS);
 
-            ClimbSafeApplication.getClimbSafe().setStartDate(startUpDate);
-            ClimbSafeApplication.getClimbSafe().setNrWeeks((int) diff/7);
+
+            ClimbSafeFeatureSet1Controller.setup(startUpDate,(int) diff/7 , MiscellaneousController.getPriceOfGuide());
             initComponents();
 
         }catch (Exception e){
@@ -255,7 +265,10 @@ public class SeasonsPage implements Page {
                                         .addComponent(startDate)
                                         .addComponent(weeks)
                                         .addGap(28)
-                                        .addComponent(newPriceGuide)
+                                        .addGroup( layout.createSequentialGroup()
+                                                .addComponent(newPriceGuide)
+                                                .addComponent(dollarsPerWeek)
+                                        )
                                 )
 
                                 .addGroup( layout.createParallelGroup()
@@ -281,7 +294,10 @@ public class SeasonsPage implements Page {
                                         .addComponent(startDate)
                                         .addComponent(weeks)
                                         .addGap(28)
-                                        .addComponent(newPriceGuide)
+                                        .addGroup( layout.createParallelGroup()
+                                                .addComponent(newPriceGuide)
+                                                .addComponent(dollarsPerWeek)
+                                        )
                                 )
 
                                 .addGroup( layout.createSequentialGroup()
@@ -298,7 +314,7 @@ public class SeasonsPage implements Page {
         String newPrice = newPriceGuide.getText();
         try{
             int upPrice = Integer.parseInt(newPrice);
-            ClimbSafeApplication.getClimbSafe().setPriceOfGuidePerWeek(upPrice);
+            ClimbSafeFeatureSet1Controller.setup(MiscellaneousController.getSeasonStartDate(),MiscellaneousController.getSeasonNumberOfWeeks() , upPrice);
             initComponents();
         }catch (Exception e){
             invalidSomething.setText("Please Enter a Number (Integer)");
