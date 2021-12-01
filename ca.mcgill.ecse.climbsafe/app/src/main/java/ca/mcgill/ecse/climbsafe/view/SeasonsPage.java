@@ -46,7 +46,7 @@ public class SeasonsPage implements Page {
         public void stateChanged(ChangeEvent e) {
             changedValue = (int) weeksChange.getValue();
             int nextInOrder;
-            System.out.println(changedValue-testNum);
+//            System.out.println(changedValue-testNum);
             if((changedValue-testNum) < 0){
                 nextInOrder = (int) weeksChange.getPreviousValue();
                 if(nextInOrder <= 0){

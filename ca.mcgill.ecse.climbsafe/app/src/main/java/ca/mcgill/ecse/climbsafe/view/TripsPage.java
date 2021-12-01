@@ -33,7 +33,7 @@ public class TripsPage implements Page{
             numOfWeeks = MiscellaneousController.getSeasonNumberOfWeeks();
             changedValue = (int) weekToStart.getValue();
             int nextInOrder;
-            System.out.println(changedValue-testNum);
+//            System.out.println(changedValue-testNum);
             if((changedValue-testNum) < 0){
                 nextInOrder = (int) weekToStart.getPreviousValue();
                 if(nextInOrder <= 0){
