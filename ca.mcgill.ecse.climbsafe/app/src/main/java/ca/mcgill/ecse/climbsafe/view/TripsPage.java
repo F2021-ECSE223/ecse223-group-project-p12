@@ -166,7 +166,7 @@ public class TripsPage implements Page{
 
     @Override
     public JPanel getPanel() {
-        whichMember.removeAll();
+        whichMember.removeAllItems();
         ArrayList<TOAssignment> aList = new ArrayList<TOAssignment>(ClimbSafeFeatureSet6Controller.getAssignments());
         String[] members = new String[aList.size()];
         int idx = 0;
