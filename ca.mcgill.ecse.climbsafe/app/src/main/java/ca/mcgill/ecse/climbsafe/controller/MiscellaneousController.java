@@ -5,6 +5,7 @@ import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
 import ca.mcgill.ecse.climbsafe.model.Equipment;
 import ca.mcgill.ecse.climbsafe.model.Member;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,5 +44,23 @@ public class MiscellaneousController {
 	public static String getMemberStatus( String memberEmail ) {
 		Member m = climbSafe.findMemberFromEmail(memberEmail);
 		return m.getSmFullName();
+	}
+
+	public static String getAbsolutePathRelativeToApp(String path){
+		String[] paths = Paths.get(".").toAbsolutePath().normalize().toString().split("\\\\");
+		String workingDirectory = paths[paths.length - 1];
+		String relativePath = "";
+		switch(workingDirectory){
+			case "ca.mcgill.ecse.climbsafe":
+				relativePath += "./app/";
+				break;
+			case "app":
+				relativePath += "./";
+				break;
+			default:
+				relativePath += "./ca.mcgill.ecse.climbsafe/app/";
+		}
+		relativePath += path;
+		return Paths.get(relativePath).toAbsolutePath().normalize().toString();
 	}
 }
