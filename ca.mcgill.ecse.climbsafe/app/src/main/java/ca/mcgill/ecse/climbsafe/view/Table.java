@@ -1,6 +1,10 @@
 package ca.mcgill.ecse.climbsafe.view;
 
+import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
+
 import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,11 +12,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.nio.file.Paths;
 
 /**
  * This class is a custom Table UI element.
@@ -324,7 +331,11 @@ public class Table extends JPanel {
                 }
             };
 
-            editButton = new JButton("E");
+            Icon editIcon = new ImageIcon(MiscellaneousController.getAbsolutePathRelativeToApp("images/editIcon.png"));
+            Icon saveIcon = new ImageIcon(MiscellaneousController.getAbsolutePathRelativeToApp("images/saveIcon.png"));
+           
+
+            editButton = new JButton(editIcon);
             editButton.setFont(editButton.getFont().deriveFont(8.5f));
             editButton.setMinimumSize(new Dimension(40, 30));
             editButton.setPreferredSize(new Dimension(40, 30));
@@ -335,11 +346,11 @@ public class Table extends JPanel {
                     editMode = !editMode;
                     checkEditDisplay();
                     if(editMode){
-                        editButton.setText("S");
+                        editButton.setIcon(saveIcon);
                         makeEditLayout();
                     } else {
                         modifyRow();
-                        editButton.setText("E");
+                        editButton.setIcon(editIcon);
                         updateLabels();
                         makeNonEditLayout();
                     }
@@ -347,8 +358,10 @@ public class Table extends JPanel {
                 }
             });
             editButton.addMouseListener(hoverListener);
+            Icon deleteIcon = new ImageIcon(MiscellaneousController.getAbsolutePathRelativeToApp("images/deleteIcon.png"));
 
-            deleteButton = new JButton("X");
+            deleteButton = new JButton(deleteIcon);
+           
             deleteButton.setFont(deleteButton.getFont().deriveFont(8.5f));
             deleteButton.setMinimumSize(new Dimension(40, 30));
             deleteButton.setPreferredSize(new Dimension(40, 30));

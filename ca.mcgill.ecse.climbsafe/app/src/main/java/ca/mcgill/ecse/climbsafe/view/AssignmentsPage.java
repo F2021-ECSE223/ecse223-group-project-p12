@@ -108,6 +108,7 @@ public class AssignmentsPage implements Page{
      */
     @Override
     public JPanel getPanel() {
+    	displayNewAssignmentTable();
         return panel;
     }
     

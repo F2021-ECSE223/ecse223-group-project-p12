@@ -123,6 +123,8 @@ public class ClimbSafeFeatureSet3Controller {
 			throw new InvalidInputException("Email already linked to a guide account");
 		if (ClimbSafeApplication.getClimbSafe().findMemberFromEmail(email) != null)
 			throw new InvalidInputException("Email already linked to a member account");
+		if (email.indexOf("@") == - 1)
+			throw new InvalidInputException("Email must contain @ symbol");
 	}
 
 	/**
