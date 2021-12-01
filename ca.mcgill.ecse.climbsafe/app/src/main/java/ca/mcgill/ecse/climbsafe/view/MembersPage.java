@@ -370,7 +370,7 @@ public class MembersPage implements Page{
                     }
                 }
             equipmentSelector = new EquipmentSelector(MiscellaneousController.getEquipmentNamesList(), equipmentNames, equipmentQuantities, false);
-            equipmentSelector.setBorder(new EmptyBorder(0, 100, 0, 0));
+            equipmentSelector.setBorder(new EmptyBorder(0, 100, 30, 0));
             bundleSelector = new EquipmentSelector(MiscellaneousController.getEquipmentBundleNamesList(), bundleNames, bundleQuantities, true);
             bundleSelector.setBorder(new EmptyBorder(0, 100, 0, 0));
 
