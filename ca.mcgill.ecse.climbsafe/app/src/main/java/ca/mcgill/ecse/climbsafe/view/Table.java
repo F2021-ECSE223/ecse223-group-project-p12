@@ -1,5 +1,7 @@
 package ca.mcgill.ecse.climbsafe.view;
 
+import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
+
 import javax.swing.*;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -10,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -326,11 +330,9 @@ public class Table extends JPanel {
                     checkEditDisplay();
                 }
             };
-            
 
-            
-            Icon editIcon = new ImageIcon(Paths.get("./images/editIcon.png").toAbsolutePath().normalize().toString());
-            Icon saveIcon = new ImageIcon(Paths.get("./images/saveIcon.png").toAbsolutePath().normalize().toString());
+            Icon editIcon = new ImageIcon(MiscellaneousController.getAbsolutePathRelativeToApp("images/editIcon.png"));
+            Icon saveIcon = new ImageIcon(MiscellaneousController.getAbsolutePathRelativeToApp("images/saveIcon.png"));
            
 
             editButton = new JButton(editIcon);
@@ -356,7 +358,7 @@ public class Table extends JPanel {
                 }
             });
             editButton.addMouseListener(hoverListener);
-            Icon deleteIcon = new ImageIcon(Paths.get("./images/deleteIcon.png").toAbsolutePath().normalize().toString());
+            Icon deleteIcon = new ImageIcon(MiscellaneousController.getAbsolutePathRelativeToApp("images/deleteIcon.png"));
 
             deleteButton = new JButton(deleteIcon);
            
