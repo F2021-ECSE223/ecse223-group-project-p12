@@ -5,6 +5,8 @@ import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
 import ca.mcgill.ecse.climbsafe.model.Equipment;
 import ca.mcgill.ecse.climbsafe.model.Member;
 
+import java.io.File;
+import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,10 @@ public class MiscellaneousController {
 	}
 
 	public static String getAbsolutePathRelativeToApp(String path){
-		String[] paths = Paths.get(".").toAbsolutePath().normalize().toString().split("\\\\");
+		/*String separator = FileSystems.getDefault().getSeparator();
+		System.out.println(separator);
+		String[] paths = Paths.get(".").toAbsolutePath().normalize().toString().split("");
+		System.out.println(Paths.get(".").toAbsolutePath().normalize().endsWith("ca.mcgill.ecse.climbsafe"));
 		String workingDirectory = paths[paths.length - 1];
 		String relativePath = "";
 		switch(workingDirectory){
@@ -59,7 +64,15 @@ public class MiscellaneousController {
 				break;
 			default:
 				relativePath += "./ca.mcgill.ecse.climbsafe/app/";
+		}*/
+		String relativePath = "";
+		if(Paths.get(".").normalize().toAbsolutePath().endsWith("app"))
+			relativePath += "./";
+		else if(Paths.get(".").normalize().toAbsolutePath().endsWith("ca.mcgill.ecse.climbsafe")) {
+			relativePath += "./app/";
 		}
+		else
+			relativePath += "./ca.mcgill.ecse.climbsafe/app/";
 		relativePath += path;
 		return Paths.get(relativePath).toAbsolutePath().normalize().toString();
 	}
