@@ -25,11 +25,15 @@ public class AssignmentsPage implements Page{
     private JComboBox		weeksComboBox;
     private JTable			assignmentTable;
     private JScrollPane		scrollPane;
+    private JLabel			deleteText;
+    private JButton			deleteButton;
 
     public AssignmentsPage(){
         panel = new JPanel();
         layout = new GroupLayout(panel);
         initiateText = new JLabel( "Press here to initate assignments:" );
+        deleteText = new JLabel( "In case of an error in the assignments during initiation, "
+        		+ "press here to delete all assignments before launching another initiation process" );
         errorText = new JLabel( "" );
         errorText.setForeground(Color.red);
         
@@ -67,6 +71,8 @@ public class AssignmentsPage implements Page{
         
         initiateButton = new JButton( "Initiate" );
         initiateButton.addActionListener( e -> buttonPressed() );
+        deleteButton = new JButton( "Delete Assignments" );
+        deleteButton.addActionListener( e -> deleteAssignments() );
         initComponents();
     }
 
@@ -87,8 +93,11 @@ public class AssignmentsPage implements Page{
                         .addComponent( errorText )
                         .addGroup( layout.createSequentialGroup()
                         		.addComponent( viewText )
-                        		.addComponent( weeksComboBox) )
+                        		.addComponent( weeksComboBox ) )
                         .addComponent( scrollPane )
+                        .addGroup( layout.createSequentialGroup()
+                        		.addComponent( deleteText )
+                        		.addComponent( deleteButton ) )
         );
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
@@ -96,9 +105,12 @@ public class AssignmentsPage implements Page{
                         .addComponent( initiateButton )
                         .addComponent( errorText )
                         .addGroup(layout.createParallelGroup()
-                        		.addComponent(viewText)
-                        		.addComponent(weeksComboBox))
+                        		.addComponent( viewText )
+                        		.addComponent( weeksComboBox ))
                         .addComponent( scrollPane )
+                        .addGroup( layout.createParallelGroup()
+                        		.addComponent( deleteText )
+                        		.addComponent( deleteButton ) )
         );
     }
 
@@ -125,7 +137,14 @@ public class AssignmentsPage implements Page{
     	} catch ( Exception e ) {
     		errorText.setText("Error occured: " + e.getMessage());
     		errorText.setForeground(Color.red);
+    		displayNewAssignmentTable();
     	}
+    }
+    
+    private void deleteAssignments() {
+    	MiscellaneousController.deleteAllAssignments();
+    	displayNewAssignmentTable();
+    	errorText.setText("");
     }
     
     /**
