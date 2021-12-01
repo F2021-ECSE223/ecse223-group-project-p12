@@ -308,7 +308,7 @@ public class EquipmentBundlesPage implements Page{
                     equipmentNames.add(b.getEquipment().getName());
                     equipmentQuantities.add(b.getQuantity());
                 }
-            equipmentSelector = new EquipmentSelector(equipmentNames, equipmentQuantities);
+            equipmentSelector = new EquipmentSelector(MiscellaneousController.getEquipmentNamesList(), equipmentNames, equipmentQuantities, false);
             equipmentSelector.setBorder(new EmptyBorder(0, 100, 0, 0));
 
             saveButton = new JButton("Save");

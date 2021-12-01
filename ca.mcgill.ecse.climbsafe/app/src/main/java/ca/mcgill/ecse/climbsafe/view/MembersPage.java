@@ -2,7 +2,10 @@ package ca.mcgill.ecse.climbsafe.view;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet1Controller;
+import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
 import ca.mcgill.ecse.climbsafe.model.BookedItem;
+import ca.mcgill.ecse.climbsafe.model.Equipment;
+import ca.mcgill.ecse.climbsafe.model.EquipmentBundle;
 import ca.mcgill.ecse.climbsafe.model.Member;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet2Controller;
 
@@ -284,6 +287,7 @@ public class MembersPage implements Page{
         private JToggleButton enterHotelRequired;
 
         private EquipmentSelector equipmentSelector;
+        private EquipmentSelector bundleSelector;
 
         private JButton saveButton;
 
@@ -352,13 +356,23 @@ public class MembersPage implements Page{
 
             ArrayList<String> equipmentNames = new ArrayList<>();
             ArrayList<Integer> equipmentQuantities = new ArrayList<>();
+            ArrayList<String> bundleNames = new ArrayList<>();
+            ArrayList<Integer> bundleQuantities = new ArrayList<>();
             if(!newMember)
                 for(BookedItem b: member.getBookedItems()){
-                    equipmentNames.add(b.getItem().getName());
-                    equipmentQuantities.add(b.getQuantity());
+                    if(b.getItem() instanceof Equipment) {
+                        equipmentNames.add(b.getItem().getName());
+                        equipmentQuantities.add(b.getQuantity());
+                    }
+                    else if(b.getItem() instanceof EquipmentBundle){
+                        bundleNames.add(b.getItem().getName());
+                        bundleQuantities.add(b.getQuantity());
+                    }
                 }
-            equipmentSelector = new EquipmentSelector(equipmentNames, equipmentQuantities);
+            equipmentSelector = new EquipmentSelector(MiscellaneousController.getEquipmentNamesList(), equipmentNames, equipmentQuantities, false);
             equipmentSelector.setBorder(new EmptyBorder(0, 100, 0, 0));
+            bundleSelector = new EquipmentSelector(MiscellaneousController.getEquipmentBundleNamesList(), bundleNames, bundleQuantities, true);
+            bundleSelector.setBorder(new EmptyBorder(0, 100, 0, 0));
 
             saveButton = new JButton("Save");
             saveButton.addActionListener(new ActionListener() {
@@ -393,7 +407,11 @@ public class MembersPage implements Page{
                                             .addComponent(enterGuideRequired)
                                             .addComponent(enterHotelRequired)
                             )
+                                    .addGroup(memberInfoLayout.createParallelGroup()
+
                             .addComponent(equipmentSelector)
+                                                    .addComponent(bundleSelector)
+                                    )
                 )
                             .addComponent(statusLabel)
             );
@@ -439,7 +457,10 @@ public class MembersPage implements Page{
                                             )
                                             .addComponent(saveButton)
                             )
+                            .addGroup(memberInfoLayout.createSequentialGroup()
                             .addComponent(equipmentSelector)
+                                            .addComponent(bundleSelector)
+                            )
                                     )
                             .addComponent(statusLabel)
             );
@@ -456,12 +477,12 @@ public class MembersPage implements Page{
          * @author Theo Ghanem
          */
         private void SaveModification(){
-            equipmentSelector.getEquipmentQuantities().keySet(); //gets the items that have quantities
-            equipmentSelector.getEquipmentQuantities().values(); //gets the quantities of the items
             ArrayList<Integer> quantities = new ArrayList<Integer>();
             quantities.addAll(equipmentSelector.getNonZeroEquipmentQuantities().values());
+            quantities.addAll(bundleSelector.getNonZeroEquipmentQuantities().values());
             ArrayList<String> items = new ArrayList<String>();
             items.addAll(equipmentSelector.getNonZeroEquipmentQuantities().keySet());
+            items.addAll(bundleSelector.getNonZeroEquipmentQuantities().keySet());
             try {
                 if (newMember) {
                     ClimbSafeFeatureSet2Controller.registerMember(

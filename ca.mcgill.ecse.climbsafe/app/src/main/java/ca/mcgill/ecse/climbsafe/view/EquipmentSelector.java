@@ -21,8 +21,8 @@ public class EquipmentSelector extends JPanel {
     private JLabel titleLabel;
     private EquipmentSelectorItem[] items;
 
-    public EquipmentSelector(java.util.List<String> equipmentNames, java.util.List<Integer> quantities){
-        this.equipmentNames = MiscellaneousController.getEquipmentNamesList();
+    public EquipmentSelector(java.util.List<String> fullList, java.util.List<String> equipmentNames, java.util.List<Integer> quantities, boolean bundles){
+        this.equipmentNames = fullList;
         this.quantities = new ArrayList<Integer>();
         for(String en: this.equipmentNames){
             int i = equipmentNames.indexOf(en);
@@ -30,7 +30,7 @@ public class EquipmentSelector extends JPanel {
             else this.quantities.add(quantities.get(i));
         }
 
-        titleLabel = new JLabel("<HTML><U>Equipment Selector</U></HTML>");
+        titleLabel = new JLabel(bundles ? "<HTML><U>Bundle Selector</U></HTML>" : "<HTML><U>Equipment Selector</U></HTML>");
         items = new EquipmentSelectorItem[this.equipmentNames.size()];
 
         equipmentLayout = new GroupLayout(this);
