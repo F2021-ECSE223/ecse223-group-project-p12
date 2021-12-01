@@ -48,16 +48,15 @@ public class ClimbSafeFeatureSet5Controller {
 
     // create new equipment bundle
     EquipmentBundle equipmentBundle = new EquipmentBundle(name, discount, climbSafe);
+    for (int i = 0; i < equipmentNames.size(); i++) {
+      BundleItem bundleItem = new BundleItem(equipmentQuantities.get(i), climbSafe, equipmentBundle,
+              climbSafe.findEquipmentFromName(equipmentNames.get(i)));
+      equipmentBundle.addBundleItem(bundleItem);
+    }
     // add bundle to climb safe
     climbSafe.addBundle(equipmentBundle);
 
-    // create new bundle items and then add them to bundle
-    for (int i = 0; i < equipmentNames.size(); i++) {
-      BundleItem bundleItem = new BundleItem(equipmentQuantities.get(i), climbSafe, equipmentBundle,
-          climbSafe.findEquipmentFromName(equipmentNames.get(i)));
-      equipmentBundle.addBundleItem(bundleItem);
-      ClimbSafePersistence.save();
-    }
+    ClimbSafePersistence.save();
   }
 
 
