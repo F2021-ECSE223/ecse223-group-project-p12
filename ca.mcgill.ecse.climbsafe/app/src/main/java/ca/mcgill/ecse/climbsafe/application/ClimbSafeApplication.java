@@ -11,7 +11,7 @@ public class ClimbSafeApplication {
   private static ClimbSafe climbSafe = null;
 
   public String getGreeting() {
-    return "Hello World!";
+    return "Successfully started the ClimbSafe Application!";
   }
 
   public static void main(String[] args) {

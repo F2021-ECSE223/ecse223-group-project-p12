@@ -46,7 +46,7 @@ public class SeasonsPage implements Page {
         public void stateChanged(ChangeEvent e) {
             changedValue = (int) weeksChange.getValue();
             int nextInOrder;
-            System.out.println(changedValue-testNum);
+//            System.out.println(changedValue-testNum);
             if((changedValue-testNum) < 0){
                 nextInOrder = (int) weeksChange.getPreviousValue();
                 if(nextInOrder <= 0){
@@ -74,10 +74,10 @@ public class SeasonsPage implements Page {
         weeksChange.setValue(1);
         invalidSomething.setText("");
         panel.removeAll();
-        Date start = MiscellaneousController.getSeasonStartDate();
         Integer numWeeks = MiscellaneousController.getSeasonNumberOfWeeks();
         Integer priceGuide =MiscellaneousController.getPriceOfGuide();
-        startDate = new JLabel(start.getDate() + "-" + start.getMonth() + "-" + start.getYear());
+        String[] date = MiscellaneousController.getSeasonStartDate().toString().split("\\-");
+        startDate = new JLabel( date[2] + "-" + date[1] + "-" + date[0]);
         priceOfGuide = new JLabel(priceGuide.toString());
         weeks = new JLabel(numWeeks.toString() + " weeks long");
         panel.setLayout(layout);
@@ -232,13 +232,14 @@ public class SeasonsPage implements Page {
         int newMonth;
         int newYear;
         int numWeeks;
+        String date;
         try {
             newDay = Integer.parseInt(dayChange.getText());
             newMonth = Integer.parseInt(monthChange.getText());
             newYear = Integer.parseInt(yearChange.getText());
+            date = newYear + "-" + newMonth + "-" + newDay;
             numWeeks = (int) weeksChange.getValue();
-            Date startUpDate = new Date(newYear,newMonth,newDay);
-
+            Date startUpDate = new Date(Date.valueOf(date).getTime());
             Calendar startCal = Calendar.getInstance();
             startCal.setTime(startUpDate);
 
