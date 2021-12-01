@@ -3,6 +3,7 @@ package ca.mcgill.ecse.climbsafe.controller;
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.ClimbSafe;
 import ca.mcgill.ecse.climbsafe.model.Equipment;
+import ca.mcgill.ecse.climbsafe.model.Member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,5 +38,10 @@ public class MiscellaneousController {
 
 	public static int getSeasonNumberOfWeeks() {
 		return climbSafe.getNrWeeks();
+	}
+	
+	public static String getMemberStatus( String memberEmail ) {
+		Member m = climbSafe.findMemberFromEmail(memberEmail);
+		return m.getSmFullName();
 	}
 }

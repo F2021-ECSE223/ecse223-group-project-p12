@@ -2,9 +2,9 @@ class Assignment{
   String paymentCode = null;
 
   sm{
-    Assigned{
+    s{
       s1{
-        NotStarted{
+        Assigned{
           start [!isPaid()] -> /{getMember().ban();} Cancelled;
           start [isPaid()] -> Started;
           cancel -> Cancelled;
@@ -27,7 +27,7 @@ class Assignment{
   }
   
   private boolean isPaid() {
-    if( this.getSmAssignedS2S2() == SmAssignedS2S2.Paid ) return true;
+    if( this.getSmSS2S2() == SmSS2S2.Paid ) return true;
     return false;
   }
 }
