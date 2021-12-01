@@ -11,6 +11,13 @@ import ca.mcgill.ecse.climbsafe.controller.TOAssignment;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * This class outlines the front end interactions and components
+ * used in the Payments page of the application
+ * 
+ * @author Cedric Barre
+ *
+ */
 public class PaymentsPage implements Page{
 
     private GroupLayout 	layout;
@@ -67,6 +74,10 @@ public class PaymentsPage implements Page{
         initComponents();
     }
 
+    /**
+     * Method used to display the components of the Payment page by placing
+     * them correctly in the layout of the Panel object
+     */
     private void initComponents(){
         panel.setLayout(layout);
         panel.setBackground(Color.WHITE);
@@ -98,12 +109,24 @@ public class PaymentsPage implements Page{
         );
     }
 
+    /**
+     * Method used to retrieve the panel used to display the Payment page
+     * content
+     */
     @Override
     public JPanel getPanel() {
     	updateTable();
         return panel;
     }
 
+    /**
+     * Method used to get all the data for the payment table. It looks at all the
+     * initiated assignments and displays all the sattes related to expenses and
+     * payments
+     * 
+     * @return		2D array of objects containing the attributes relating to
+     * 				expenses and payment for each assignment
+     */
     private Object[][] getPaymentObjects() {
     	ArrayList<TOAssignment> assignmentList = (ArrayList<TOAssignment>) ClimbSafeFeatureSet6Controller.getAssignments();
         Object[][] objectList = new Object[assignmentList.size()][8];
@@ -131,6 +154,9 @@ public class PaymentsPage implements Page{
         return objectList;
     }
     
+    /**
+     * Method use to update the payment information in the display table
+     */
     private void updateTable() {
     	DefaultTableModel model = (DefaultTableModel) paymentTable.getModel();
     	Object[][] list = getPaymentObjects();
@@ -143,6 +169,9 @@ public class PaymentsPage implements Page{
     	paymentTable.updateUI();
     }
     
+    /**
+     * Callback method for the pay button which pays for a specific member's trip
+     */
     private void payAction() {
     	String code = codeField.getText();
     	int row = paymentTable.getSelectedRow();
