@@ -43,7 +43,7 @@ public class GuidesPage implements Page {
  *  them correctly in the Table
  */
         private void initComponents(){
-            titleLabel = new JLabel("Guides");
+            titleLabel = new JLabel("<HTML><B><U>Guides</U></B></HTML>");
             titleLabel.setFont(titleLabel.getFont().deriveFont(20.0f).deriveFont(Font.PLAIN));
             statusLabel = new JLabel("");
             statusLabel.setFont(statusLabel.getFont().deriveFont(Font.PLAIN, 15.0f));

@@ -27,7 +27,7 @@ public class EquipmentsPage implements Page {
     }
 
     private void initComponents(){
-        titleLabel = new JLabel("Equipments");
+        titleLabel = new JLabel("<HTML><B><U>Equipments</U></B></HTML>");
         titleLabel.setFont(titleLabel.getFont().deriveFont(20.0f).deriveFont(Font.PLAIN));
         statusLabel = new JLabel("");
         statusLabel.setFont(statusLabel.getFont().deriveFont(Font.PLAIN, 15.0f));

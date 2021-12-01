@@ -2,12 +2,15 @@ package ca.mcgill.ecse.climbsafe.view;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.controller.AssignmentController;
+import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet6Controller;
 import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
+import ca.mcgill.ecse.climbsafe.controller.TOAssignment;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class TripsPage implements Page{
 
@@ -17,7 +20,7 @@ public class TripsPage implements Page{
     JSpinner weekToStart = new JSpinner();
     JButton start = new JButton("start");
     JLabel editMemberTripLab = new JLabel("Finish or Cancel Member's Trip: ");
-    JTextField whichMember =  new JTextField("");
+    JComboBox whichMember;
     JButton finishTrip = new JButton("Finish");
     JButton cancelTrip = new JButton("Cancel");
     JLabel invalidSomething = new JLabel("");
@@ -55,7 +58,14 @@ public class TripsPage implements Page{
     }
 
     private void initComponents(){
-        panel.removeAll();
+        ArrayList<TOAssignment> aList = new ArrayList<TOAssignment>(ClimbSafeFeatureSet6Controller.getAssignments());
+        String[] members = new String[aList.size()];
+        int idx = 0;
+        for(TOAssignment a : aList){
+            members[idx] = a.getMemberEmail();
+            idx++;
+        }
+        whichMember = new JComboBox(members);
         invalidSomething.setForeground(Color.red);
         JLabel label = new JLabel("<HTML><B><U>Trips</U></B></HTML>");
         ((JSpinner.DefaultEditor) weekToStart.getEditor()).getTextField().setEditable(false);
@@ -126,22 +136,18 @@ public class TripsPage implements Page{
     }
 
     private void cancelButtonPressed() {
-        String member = whichMember.getText();
         try{
-            AssignmentController.cancelTrip(member);
+            AssignmentController.cancelTrip((String)whichMember.getSelectedItem());
             invalidSomething.setText("");
-            whichMember.setText("");
         }catch(Exception e){
             invalidSomething.setText("User Not Found");
         }
     }
 
     private void finishButtonPressed() {
-        String member = whichMember.getText();
         try {
-            AssignmentController.finishTrip(member);
+            AssignmentController.finishTrip((String)whichMember.getSelectedItem());
             invalidSomething.setText("");
-            whichMember.setText("");
         }catch (Exception e){
             invalidSomething.setText("User Not Found");
         }
@@ -160,6 +166,14 @@ public class TripsPage implements Page{
 
     @Override
     public JPanel getPanel() {
+        whichMember.removeAll();
+        ArrayList<TOAssignment> aList = new ArrayList<TOAssignment>(ClimbSafeFeatureSet6Controller.getAssignments());
+        String[] members = new String[aList.size()];
+        int idx = 0;
+        for(TOAssignment a : aList) {
+            whichMember.addItem(a.getMemberEmail());
+        }
+        whichMember.updateUI();
         return panel;
     }
 

@@ -32,7 +32,7 @@ public class SeasonsPage implements Page {
     private JLabel monthLab = new JLabel("Month");
     private JLabel yearLab = new JLabel("Year");
     private JLabel slash = new JLabel("/");
-    private JLabel label = new JLabel("Seasons");
+    private JLabel label = new JLabel("<HTML><B><U>Seasons</U></B></HTML>");
     private JButton saveStart = new JButton("save");
     private JButton savePriceGuide = new JButton("save");
     private JLabel emptyLab = new JLabel("                    ");
