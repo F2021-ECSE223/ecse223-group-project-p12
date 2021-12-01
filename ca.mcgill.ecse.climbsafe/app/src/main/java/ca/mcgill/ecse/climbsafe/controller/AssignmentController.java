@@ -20,12 +20,12 @@ public class AssignmentController {
 	 */
 	public static void initiateAssignments() throws Exception {
 		List<Member> memberList = new ArrayList<Member>(climbSafe.getMembers());
-		memberList.sort((m1, m2) -> {
-			if( m1.getNrWeeks() == m2.getNrWeeks() ) {
-				return 0;
-			}
-			return (m1.getNrWeeks() > m2.getNrWeeks()) ? -1 : 1;
-		});
+//		memberList.sort((m1, m2) -> {
+//			if( m1.getNrWeeks() == m2.getNrWeeks() ) {
+//				return 0;
+//			}
+//			return (m1.getNrWeeks() > m2.getNrWeeks()) ? -1 : 1;
+//		});
 		
 		for( Guide g : climbSafe.getGuides() ) {
 			for( Member m : memberList ) {
