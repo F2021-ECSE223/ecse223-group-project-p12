@@ -49,7 +49,7 @@ public class SeasonsPage implements Page {
             System.out.println(changedValue-testNum);
             if((changedValue-testNum) < 0){
                 nextInOrder = (int) weeksChange.getPreviousValue();
-                if(nextInOrder <= -1){
+                if(nextInOrder <= 0){
                     weeksChange.setValue(1);
                 }
             }
@@ -71,6 +71,7 @@ public class SeasonsPage implements Page {
     }
 
     private void initComponents(){
+        weeksChange.setValue(1);
         invalidSomething.setText("");
         panel.removeAll();
         Date start = MiscellaneousController.getSeasonStartDate();
