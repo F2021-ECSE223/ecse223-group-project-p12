@@ -1,10 +1,11 @@
 package ca.mcgill.ecse.climbsafe.view;
 
-import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet1Controller;
 import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.sql.Date;
 import java.util.Calendar;
@@ -16,7 +17,7 @@ public class SeasonsPage implements Page {
     private GroupLayout layout;
     private JPanel panel;
     private JLabel startDateLabel = new JLabel("Start Date:");;
-    private JLabel endDateLabel = new JLabel("End Date :");;
+    private JLabel weekModLab = new JLabel("Number of Weeks :");;
     private JLabel priceOfGuideLabel = new JLabel("Price of Guide Per Week:");;
     private JLabel startDate;
     private JLabel weeks;
@@ -26,9 +27,7 @@ public class SeasonsPage implements Page {
     private JTextField dayChange = new JTextField("");
     private JTextField monthChange = new JTextField("");
     private JTextField yearChange = new JTextField("");
-    private JTextField endDayChange = new JTextField("");
-    private JTextField endMonthChange = new JTextField("");
-    private JTextField endYearChange = new JTextField("");
+    private JSpinner weeksChange = new JSpinner();
     private JLabel dayLab = new JLabel("Day");
     private JLabel monthLab = new JLabel("Month");
     private JLabel yearLab = new JLabel("Year");
@@ -40,6 +39,23 @@ public class SeasonsPage implements Page {
     private JLabel invalidSomething = new JLabel("");
     private JTextField newPriceGuide = new JTextField("");
     private JLabel dollarsPerWeek = new JLabel("$/week");
+    int testNum = 1;
+    int changedValue = (int) weeksChange.getValue();
+    ChangeListener changeListner = new ChangeListener() {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            changedValue = (int) weeksChange.getValue();
+            int nextInOrder;
+            System.out.println(changedValue-testNum);
+            if((changedValue-testNum) < 0){
+                nextInOrder = (int) weeksChange.getPreviousValue();
+                if(nextInOrder <= -1){
+                    weeksChange.setValue(1);
+                }
+            }
+            testNum = (int) weeksChange.getValue();
+        }
+    };
 
     public SeasonsPage(){
 
@@ -70,7 +86,7 @@ public class SeasonsPage implements Page {
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addComponent(label)
-                        .addGap(100)
+                        .addGap(20)
                         .addGroup( layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup()
                                         .addComponent(startDateLabel)
@@ -100,7 +116,7 @@ public class SeasonsPage implements Page {
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
                         .addComponent(label)
-                        .addGap(100)
+                        .addGap(20)
                         .addGroup( layout.createParallelGroup()
                                 .addGroup(layout.createSequentialGroup()
                                         .addComponent(startDateLabel)
@@ -135,6 +151,8 @@ public class SeasonsPage implements Page {
 
 
     private void startButtonPressed() {
+        weeksChange.addChangeListener(changeListner);
+        ((JSpinner.DefaultEditor) weeksChange.getEditor()).getTextField().setEditable(false);
         panel.removeAll();
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.CENTER)
@@ -143,7 +161,7 @@ public class SeasonsPage implements Page {
                                 .addGroup(layout.createParallelGroup()
                                         .addComponent(emptyLab)
                                         .addComponent(startDateLabel)
-                                        .addComponent(endDateLabel)
+                                        .addComponent(weekModLab)
                                 )
 
                                 .addGroup( layout.createParallelGroup()
@@ -162,9 +180,7 @@ public class SeasonsPage implements Page {
                                         )
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(endDayChange)
-                                                        .addComponent(endMonthChange)
-                                                        .addComponent(endYearChange)
+                                                        .addComponent(weeksChange)
                                                 )
 
                                         )
@@ -180,7 +196,7 @@ public class SeasonsPage implements Page {
                                 .addGroup(layout.createSequentialGroup()
                                         .addComponent(emptyLab)
                                         .addComponent(startDateLabel)
-                                        .addComponent(endDateLabel)
+                                        .addComponent(weekModLab)
                                 )
 
                                 .addGroup( layout.createSequentialGroup()
@@ -198,9 +214,7 @@ public class SeasonsPage implements Page {
                                         )
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup()
-                                                        .addComponent(endDayChange)
-                                                        .addComponent(endMonthChange)
-                                                        .addComponent(endYearChange)
+                                                        .addComponent(weeksChange)
                                                 )
 
                                         )
@@ -216,31 +230,26 @@ public class SeasonsPage implements Page {
         int newDay;
         int newMonth;
         int newYear;
+        int numWeeks;
         try {
             newDay = Integer.parseInt(dayChange.getText());
             newMonth = Integer.parseInt(monthChange.getText());
             newYear = Integer.parseInt(yearChange.getText());
+            numWeeks = (int) weeksChange.getValue();
             Date startUpDate = new Date(newYear,newMonth,newDay);
-            newDay = Integer.parseInt(endDayChange.getText());
-            newMonth = Integer.parseInt(endMonthChange.getText());
-            newYear = Integer.parseInt(endYearChange.getText());
-            Date endUpDate = new Date(newYear,newMonth,newDay);
 
             Calendar startCal = Calendar.getInstance();
             startCal.setTime(startUpDate);
 
-            Calendar endCal = Calendar.getInstance();
-            endCal.setTime(endUpDate);
-
-            if(startCal.get(Calendar.DAY_OF_WEEK) != endCal.get(Calendar.DAY_OF_WEEK)){
-                invalidSomething.setText("Season Length Must Be a Multiple of 7 Days");
-            }
-
-            long timeDif = Math.abs(endUpDate.getTime() - startUpDate.getTime());
-            long diff = TimeUnit.DAYS.convert(timeDif, TimeUnit.MILLISECONDS);
+//            if(startCal.get(Calendar.DAY_OF_WEEK) != endCal.get(Calendar.DAY_OF_WEEK)){
+//                invalidSomething.setText("Season Length Must Be a Multiple of 7 Days");
+//            }
+//
+//            long timeDif = Math.abs(endUpDate.getTime() - startUpDate.getTime());
+//            long diff = TimeUnit.DAYS.convert(timeDif, TimeUnit.MILLISECONDS);
 
 
-            ClimbSafeFeatureSet1Controller.setup(startUpDate,(int) diff/7 , MiscellaneousController.getPriceOfGuide());
+            ClimbSafeFeatureSet1Controller.setup(startUpDate, numWeeks, MiscellaneousController.getPriceOfGuide());
             initComponents();
 
         }catch (Exception e){

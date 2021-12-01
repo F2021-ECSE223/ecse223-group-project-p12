@@ -55,6 +55,7 @@ public class TripsPage implements Page{
     }
 
     private void initComponents(){
+        panel.removeAll();
         invalidSomething.setForeground(Color.red);
         JLabel label = new JLabel("Trips");
         ((JSpinner.DefaultEditor) weekToStart.getEditor()).getTextField().setEditable(false);
@@ -74,6 +75,7 @@ public class TripsPage implements Page{
                                 .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup()
                                                 .addComponent(startTripsForWeekLab)
+                                                .addGap(15)
                                                 .addComponent(editMemberTripLab)
                                         )
                                         .addGroup(layout.createParallelGroup()
@@ -101,6 +103,7 @@ public class TripsPage implements Page{
                                 .addGroup(layout.createParallelGroup()
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(startTripsForWeekLab)
+                                                .addGap(15)
                                                 .addComponent(editMemberTripLab)
                                         )
                                         .addGroup(layout.createSequentialGroup()
@@ -127,6 +130,7 @@ public class TripsPage implements Page{
         try{
             AssignmentController.cancelTrip(member);
             invalidSomething.setText("");
+            whichMember.setText("");
         }catch(Exception e){
             invalidSomething.setText("User Not Found");
         }
@@ -137,6 +141,7 @@ public class TripsPage implements Page{
         try {
             AssignmentController.finishTrip(member);
             invalidSomething.setText("");
+            whichMember.setText("");
         }catch (Exception e){
             invalidSomething.setText("User Not Found");
         }
