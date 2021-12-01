@@ -125,10 +125,12 @@ public class MembersPage implements Page{
         JTextField addEmailField;
         JButton addButton;
         JButton deleteButton;
+        private JLabel statusLabel;
 
         public MemberSelector(String[] memberNames, Consumer<String> select, Consumer<String> addEvent){
             this.memberNames = memberNames;
             this.select = select;
+            this.statusLabel = new JLabel("");
 
             bar = new JList(memberNames);
             bar.addListSelectionListener(new ListSelectionListener() {
@@ -158,8 +160,17 @@ public class MembersPage implements Page{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        ClimbSafeFeatureSet2Controller.emailIsValid(addEmailField.getText());
+                        ClimbSafeFeatureSet2Controller.emailIsValid(addEmailField.getText()); //the email must be valid to be added
                     } catch (Exception ex) {
+                        Timer timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                statusLabel.setText("");
+                            }
+                        }, 5000);
+                        statusLabel.setText("Error occurred: " + ex.getMessage());
+                        statusLabel.setForeground(Color.red);
                         return;
                     }
                     addEvent.accept(addEmailField.getText());
@@ -202,6 +213,7 @@ public class MembersPage implements Page{
                             .addComponent(addEmailField)
                             .addComponent(addButton)
                             .addComponent(deleteButton)
+                            .addComponent(statusLabel)
             );
             barLayout.setVerticalGroup(
                     barLayout.createSequentialGroup()
@@ -209,6 +221,7 @@ public class MembersPage implements Page{
                             .addComponent(addEmailField)
                             .addComponent(addButton)
                             .addComponent(deleteButton)
+                            .addComponent(statusLabel)
             );
             setLayout(barLayout);
             updateUI();
