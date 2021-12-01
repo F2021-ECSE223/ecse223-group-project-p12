@@ -9,20 +9,29 @@ import java.util.LinkedHashMap;
 
 public class SideBar {
 
+	private Color dark_grey = new Color(48,48,48);
+	private Color green = new Color(42,78,54);
     ClimbSafeGUI mainGUI;
     LinkedHashMap<String, Page> pages;
     JList<String> bar;
 
     public SideBar(LinkedHashMap<String, Page> pages, ClimbSafeGUI mainGUI){
         this.pages = pages;
-        String[] items = new String[pages.size()];
+        String[] items = new String[pages.size()+20];
         int i = 0;
         for(String s : pages.keySet()){
             items[i] = s;
             i++;
         }
+        
+        for (int j = i+1; j< pages.size()+20; j++) {
+        	items[j] = " ";
+        }
+        
         this.bar = new JList<String>(items);
         this.bar.setFont(this.bar.getFont().deriveFont(Font.PLAIN, 15.0f));
+        this.bar.setForeground(Color.white);
+        this.bar.setBackground(dark_grey);
         this.bar.setFixedCellHeight(30);
         this.bar.setBorder(BorderFactory.createEmptyBorder());
 
