@@ -66,7 +66,6 @@ public class TripsPage implements Page{
             idx++;
         }
         whichMember = new JComboBox(members);
-        invalidSomething.setForeground(Color.red);
         JLabel label = new JLabel("<HTML><B><U>Trips</U></B></HTML>");
         ((JSpinner.DefaultEditor) weekToStart.getEditor()).getTextField().setEditable(false);
         weekToStart.setValue(1);
@@ -138,8 +137,10 @@ public class TripsPage implements Page{
     private void cancelButtonPressed() {
         try{
             AssignmentController.cancelTrip((String)whichMember.getSelectedItem());
-            invalidSomething.setText("");
+            invalidSomething.setForeground(Color.green);
+            invalidSomething.setText("Trip Successfully Cancelled");
         }catch(Exception e){
+            invalidSomething.setForeground(Color.red);
             invalidSomething.setText("User Not Found");
         }
     }
@@ -147,8 +148,10 @@ public class TripsPage implements Page{
     private void finishButtonPressed() {
         try {
             AssignmentController.finishTrip((String)whichMember.getSelectedItem());
-            invalidSomething.setText("");
+            invalidSomething.setForeground(Color.green);
+            invalidSomething.setText("Trip Successfully Finished");
         }catch (Exception e){
+            invalidSomething.setForeground(Color.red);
             invalidSomething.setText("User Not Found");
         }
     }
@@ -157,6 +160,8 @@ public class TripsPage implements Page{
         int week = (int) weekToStart.getValue();
         try{
             AssignmentController.startTrips(week);
+            invalidSomething.setForeground(Color.green);
+            invalidSomething.setText("Trip Started");
         }catch(Exception e){
 
         }
