@@ -57,7 +57,7 @@ public class TripsPage implements Page{
     private void initComponents(){
         panel.removeAll();
         invalidSomething.setForeground(Color.red);
-        JLabel label = new JLabel("Trips");
+        JLabel label = new JLabel("<HTML><B><U>Trips</U></B></HTML>");
         ((JSpinner.DefaultEditor) weekToStart.getEditor()).getTextField().setEditable(false);
         weekToStart.setValue(1);
         weekToStart.addChangeListener(changeListner);
