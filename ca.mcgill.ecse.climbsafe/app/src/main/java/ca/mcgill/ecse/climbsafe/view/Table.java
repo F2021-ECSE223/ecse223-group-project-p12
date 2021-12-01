@@ -1,6 +1,8 @@
 package ca.mcgill.ecse.climbsafe.view;
 
 import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.nio.file.Paths;
 
 /**
  * This class is a custom Table UI element.
@@ -323,8 +326,14 @@ public class Table extends JPanel {
                     checkEditDisplay();
                 }
             };
+            
 
-            editButton = new JButton("E");
+            
+            Icon editIcon = new ImageIcon(Paths.get("./images/editIcon.png").toAbsolutePath().normalize().toString());
+            Icon saveIcon = new ImageIcon(Paths.get("./images/saveIcon.png").toAbsolutePath().normalize().toString());
+           
+
+            editButton = new JButton(editIcon);
             editButton.setFont(editButton.getFont().deriveFont(8.5f));
             editButton.setMinimumSize(new Dimension(40, 30));
             editButton.setPreferredSize(new Dimension(40, 30));
@@ -335,11 +344,11 @@ public class Table extends JPanel {
                     editMode = !editMode;
                     checkEditDisplay();
                     if(editMode){
-                        editButton.setText("S");
+                        editButton.setIcon(saveIcon);
                         makeEditLayout();
                     } else {
                         modifyRow();
-                        editButton.setText("E");
+                        editButton.setIcon(editIcon);
                         updateLabels();
                         makeNonEditLayout();
                     }
@@ -347,8 +356,10 @@ public class Table extends JPanel {
                 }
             });
             editButton.addMouseListener(hoverListener);
+            Icon deleteIcon = new ImageIcon(Paths.get("./images/deleteIcon.png").toAbsolutePath().normalize().toString());
 
-            deleteButton = new JButton("X");
+            deleteButton = new JButton(deleteIcon);
+           
             deleteButton.setFont(deleteButton.getFont().deriveFont(8.5f));
             deleteButton.setMinimumSize(new Dimension(40, 30));
             deleteButton.setPreferredSize(new Dimension(40, 30));
