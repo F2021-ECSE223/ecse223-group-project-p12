@@ -230,6 +230,12 @@ public class MembersPage implements Page{
             updateUI();
         }
 
+        public void select(String member){
+            int i;
+            for(i = 0; i < memberNames.length; i++) if(memberNames[i].equals(member)) break;
+            bar.setSelectedIndex(i);
+        }
+
         /**
          * Removes the selected member from the list of added members
          * @author Philippe Sarouphim Hochar
@@ -498,6 +504,7 @@ public class MembersPage implements Page{
                     );
                     memberSelector.addMember(enterEmail.getText());
                     memberSelector.makeNewBar();
+                    memberSelector.select(enterEmail.getText());
                 } else {
                     ClimbSafeFeatureSet2Controller.updateMember(
                             enterEmail.getText(),

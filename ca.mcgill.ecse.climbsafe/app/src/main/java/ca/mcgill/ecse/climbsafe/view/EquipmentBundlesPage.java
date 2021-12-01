@@ -203,6 +203,13 @@ public class EquipmentBundlesPage implements Page{
             updateUI();
         }
 
+        public void select(String bundle){
+            int i;
+            for(i = 0; i < equipmentBundleNames.length; i++) if(equipmentBundleNames[i].equals(bundle)) break;
+            System.out.println(i);
+            bar.setSelectedIndex(i);
+        }
+
         /**
          * removes the selected equipment bundle from the list 
          */
@@ -386,6 +393,7 @@ public class EquipmentBundlesPage implements Page{
                     );
                     equipmentBundleSelector.addBundle(enterName.getText());
                     equipmentBundleSelector.makeNewBar();
+                    equipmentBundleSelector.select(enterName.getText());
                 } else {
                     String oldName = equipmentBundle.getName();
                     ClimbSafeFeatureSet5Controller.updateEquipmentBundle(
