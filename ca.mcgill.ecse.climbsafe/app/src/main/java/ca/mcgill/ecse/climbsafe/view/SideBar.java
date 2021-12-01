@@ -17,14 +17,14 @@ public class SideBar {
 
     public SideBar(LinkedHashMap<String, Page> pages, ClimbSafeGUI mainGUI){
         this.pages = pages;
-        String[] items = new String[pages.size()+20];
+        String[] items = new String[pages.size()+17];
         int i = 0;
         for(String s : pages.keySet()){
             items[i] = s;
             i++;
         }
         
-        for (int j = i+1; j< pages.size()+20; j++) {
+        for (int j = i+1; j< pages.size()+17; j++) {
         	items[j] = " ";
         }
         
