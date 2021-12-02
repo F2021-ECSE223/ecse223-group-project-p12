@@ -7,6 +7,7 @@ import ca.mcgill.ecse.climbsafe.model.Equipment;
 import ca.mcgill.ecse.climbsafe.model.EquipmentBundle;
 import ca.mcgill.ecse.climbsafe.model.Guide;
 import ca.mcgill.ecse.climbsafe.model.Member;
+import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
 
 import java.io.File;
 import java.nio.file.FileSystems;
@@ -89,5 +90,6 @@ public class MiscellaneousController {
 		for( Guide g : guideList ) {
 			g.setBookings(0);
 		}
+		ClimbSafePersistence.save();
 	}
 }
