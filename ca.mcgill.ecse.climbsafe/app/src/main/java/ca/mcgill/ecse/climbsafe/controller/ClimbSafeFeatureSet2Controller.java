@@ -92,10 +92,16 @@ public class ClimbSafeFeatureSet2Controller {
     validNrWeeks(newNrWeeks);
     itemNamesIsValid(newItemNames);
     bookedItemQuanityIsValid(newItemQuantities);
-
-    member.delete();
-    member = new Member(email, newPassword, newName, newEmergencyContact, newNrWeeks,
-        newGuideRequired, newHotelRequired, climbSafe);
+    
+    member.setPassword(newPassword);
+    member.setName(newName);
+    member.setEmergencyContact(newEmergencyContact);
+    member.setNrWeeks(newNrWeeks);
+    member.setGuideRequired(newGuideRequired);
+    member.setHotelRequired(newHotelRequired);
+    while( member.getBookedItems().size() != 0 ) {
+    	member.getBookedItem(0).delete();
+    }
 
     // Adds the newItemNames as BookableItems and then as a BookedItem associated with it's new
     // quantity
