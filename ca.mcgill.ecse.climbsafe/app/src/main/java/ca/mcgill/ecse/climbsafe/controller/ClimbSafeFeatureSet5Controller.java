@@ -57,6 +57,7 @@ public class ClimbSafeFeatureSet5Controller {
     climbSafe.addBundle(equipmentBundle);
 
     ClimbSafePersistence.save();
+    ClimbSafePersistence.load();
   }
 
 
@@ -109,7 +110,7 @@ public class ClimbSafeFeatureSet5Controller {
       equipmentBundle.addBundleItem(bundleItem);
     }
     ClimbSafePersistence.save();
-
+    ClimbSafePersistence.load();
   }
 
   /**
