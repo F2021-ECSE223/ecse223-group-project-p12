@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet1Controller;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet3Controller;
+import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
 import ca.mcgill.ecse.climbsafe.model.Guide;
     
     /**
@@ -86,8 +87,8 @@ public class GuidesPage implements Page {
                 },
                     statusLabel
             );
-            for(Guide e: ClimbSafeApplication.getClimbSafe().getGuides()){
-                customTable.addRow(new Object[]{ e.getEmail(),e.getPassword(), e.getName(), e.getEmergencyContact() });
+            for(Object[] guide: MiscellaneousController.getGuidesAsObjectArrays()){
+                customTable.addRow(guide);
             }
 
             panel.setLayout(layout);

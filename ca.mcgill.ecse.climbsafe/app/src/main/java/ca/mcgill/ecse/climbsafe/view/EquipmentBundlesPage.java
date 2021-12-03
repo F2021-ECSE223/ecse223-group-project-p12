@@ -55,7 +55,7 @@ public class EquipmentBundlesPage implements Page{
         equipmentBundleSelector = new EquipmentBundleSelector(equipmentBundleNames,
                 (selected) -> {
                     panel.remove(equipmentBundlePanel);
-                    equipmentBundlePanel = new EquipmentBundlePanel(ClimbSafeApplication.getClimbSafe().findEquipmentBundleFromName(selected));
+                    equipmentBundlePanel = new EquipmentBundlePanel(MiscellaneousController.getBundleByName(selected));
                     makeLayout();
                 },
                 (name) -> {

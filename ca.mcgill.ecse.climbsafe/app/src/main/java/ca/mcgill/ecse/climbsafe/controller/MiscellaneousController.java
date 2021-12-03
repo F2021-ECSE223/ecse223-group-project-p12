@@ -8,6 +8,7 @@ import ca.mcgill.ecse.climbsafe.model.EquipmentBundle;
 import ca.mcgill.ecse.climbsafe.model.Guide;
 import ca.mcgill.ecse.climbsafe.model.Member;
 import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.File;
 import java.nio.file.FileSystems;
@@ -37,6 +38,26 @@ public class MiscellaneousController {
 		return names;
 	}
 
+	public static List<Object[]> getEquipmentsAsObjectArrays(){
+		ArrayList<Object[]> equipments = new ArrayList<Object[]>();
+		for(Equipment e: ClimbSafeApplication.getClimbSafe().getEquipment()){
+			equipments.add(new Object[]{ e.getName(), e.getWeight(), e.getPricePerWeek() });
+		}
+		return equipments;
+	}
+
+	public static EquipmentBundle getBundleByName(String bundleName){
+		return ClimbSafeApplication.getClimbSafe().findEquipmentBundleFromName(bundleName);
+	}
+
+	public static List<Object[]> getGuidesAsObjectArrays(){
+		ArrayList<Object[]> guides = new ArrayList<Object[]>();
+		for(Guide e: ClimbSafeApplication.getClimbSafe().getGuides()){
+			guides.add(new Object[]{ e.getEmail(),e.getPassword(), e.getName(), e.getEmergencyContact() });
+		}
+		return guides;
+	}
+
 	public static List<String> getEquipmentBundleNamesList(){
 		ArrayList<String> names = new ArrayList<>();
 		for(EquipmentBundle b: climbSafe.getBundles()) names.add(b.getName());
@@ -57,6 +78,18 @@ public class MiscellaneousController {
 	public static String getMemberStatus(String memberEmail ) {
 		Member m = climbSafe.findMemberFromEmail(memberEmail);
 		return m.getSmFullName();
+	}
+
+	public static String[] getMemberEmails(){
+		String[] memberEmails = new String[ClimbSafeApplication.getClimbSafe().getMembers().size()];
+		for(int i = 0; i < ClimbSafeApplication.getClimbSafe().getMembers().size(); i++){
+			memberEmails[i] = ClimbSafeApplication.getClimbSafe().getMember(i).getEmail();
+		}
+		return memberEmails;
+	}
+
+	public static Member getMemberByEmail(String email){
+		return climbSafe.findMemberFromEmail(email);
 	}
 
 

@@ -51,15 +51,12 @@ public class MembersPage implements Page{
 
     private void initComponents(){
         label = new JLabel("<HTML><B><U>Members</U></B></HTML>");
-        String[] memberNames = new String[ClimbSafeApplication.getClimbSafe().getMembers().size()];
-        for(int i = 0; i < ClimbSafeApplication.getClimbSafe().getMembers().size(); i++){
-            memberNames[i] = ClimbSafeApplication.getClimbSafe().getMember(i).getEmail();
-        }
+        String[] memberEmails = MiscellaneousController.getMemberEmails();
         memberPanel = new MemberPanel();
-        memberSelector = new MemberSelector(memberNames,
+        memberSelector = new MemberSelector(memberEmails,
                 (selected) -> {
                     panel.remove(memberPanel);
-                    memberPanel = new MemberPanel(ClimbSafeApplication.getClimbSafe().findMemberFromEmail(selected));
+                    memberPanel = new MemberPanel(MiscellaneousController.getMemberByEmail(selected));
                     makeLayout();
                 },
                 (email) -> {

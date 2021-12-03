@@ -4,6 +4,7 @@ import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet4Controller;
 import ca.mcgill.ecse.climbsafe.controller.ClimbSafeFeatureSet6Controller;
 import ca.mcgill.ecse.climbsafe.controller.InvalidInputException;
+import ca.mcgill.ecse.climbsafe.controller.MiscellaneousController;
 import ca.mcgill.ecse.climbsafe.model.Equipment;
 
 import javax.swing.*;
@@ -68,8 +69,8 @@ public class EquipmentsPage implements Page {
             },
                 statusLabel
         );
-        for(Equipment e: ClimbSafeApplication.getClimbSafe().getEquipment()){
-            customTable.addRow(new Object[]{ e.getName(), e.getWeight(), e.getPricePerWeek() });
+        for(Object[] equipment: MiscellaneousController.getEquipmentsAsObjectArrays()){
+            customTable.addRow(equipment);
         }
 
         panel.setLayout(layout);
