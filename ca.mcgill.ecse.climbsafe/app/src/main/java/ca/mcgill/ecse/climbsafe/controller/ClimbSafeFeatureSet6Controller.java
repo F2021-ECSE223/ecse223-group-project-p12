@@ -72,74 +72,17 @@ public class ClimbSafeFeatureSet6Controller {
 
     List<TOAssignment> assignments = new ArrayList<TOAssignment>();
     // instantiates an ArrayList that will be returned containing TOAssignments
-    for (Assignment assignment : ClimbSafeApplication.getClimbSafe().getAssignments()) {
-      // Iterates through all assignments in CLimbSafe
-      int totalItemPrice = 0; // total price of equipment
-      double bundPrice = 0; // Price of a specific bundle
-      int stepPrice = 0; // intermediate price for calculating
-      double discount; // price of bundle discount in currency
-      for (BookedItem item : assignment.getMember().getBookedItems()) {
-        // Iterates through the booked items in an assignment to get its price
-        if (item.getItem() instanceof Equipment) { // If the bookedItem is an Equipment
-          Equipment equ = (Equipment) item.getItem(); // creates an instance of specific equipment
-          totalItemPrice += equipmentPrice(equ, item.getQuantity(),
-              assignment.getEndWeek() - assignment.getStartWeek() + 1);
-          // updates the totalPrice based on equipment price
-        } else if (item.getItem() instanceof EquipmentBundle) { // if bookedItem is a bundle
-          EquipmentBundle bun = (EquipmentBundle) item.getItem(); // creates an instance of the
-                                                                  // EquipmentBundle
-          for (BundleItem bunItem : bun.getBundleItems()) { // iterates through equipments in the
-                                                            // Bundle
-            stepPrice += equipmentPrice(bunItem.getEquipment(), bunItem.getQuantity(),
-                assignment.getEndWeek() - assignment.getStartWeek() + 1);
-            // calculates price of specific equipment in bundle
-          }
-          if (assignment.getGuide() == null) {
-            // if assignment does not have a guide then bundle does not get a discount
-            discount = 1;
-          } else {
-            discount = (double) (100 - (double) bun.getDiscount()) / 100; // calculates the discount
-                                                                          // based on the bundle
-          }
-          bundPrice = ((double) stepPrice) * discount; // calculates the specific bundle price
-          totalItemPrice += bundPrice * item.getQuantity(); // adds the bundle price to the
-                                                            // totalPrice for equipment
-        }
+    for (Assignment a : ClimbSafeApplication.getClimbSafe().getAssignments()) {
+      int equipmentCost = 0;
+      for(BookedItem e: a.getMember().getBookedItems()){
+        if(e.getItem() instanceof EquipmentBundle) equipmentCost += bundlePrice((EquipmentBundle) e.getItem(), e.getQuantity(), a.getEndWeek() - a.getStartWeek() + 1, a.hasGuide());
+        else if(e.getItem() instanceof Equipment) equipmentCost += equipmentPrice((Equipment) e.getItem(), e.getQuantity(), a.getEndWeek() - a.getStartWeek() + 1);
       }
-      String guideEmail;
-      String guideName;
-      String hotelName;
-      int priceGuide = 0;
-      if (assignment.getGuide() == null) { // if the assignment does not have a guide
-        guideEmail = null;
-        guideName = null;
-        priceGuide = 0;
-      } else { // if the member hired a guide
-        guideEmail = assignment.getGuide().getEmail(); // sets guide email to String
-        guideName = assignment.getGuide().getName(); // sets guide Name to String
-        priceGuide = (assignment.getEndWeek() - assignment.getStartWeek() + 1)
-            * ClimbSafeApplication.getClimbSafe().getPriceOfGuidePerWeek();
-        // Calculates the total price of a guide
-      }
-      if (assignment.getHotel() == null) { // if the assignment does not have a booked hotel
-        hotelName = null;
-      } else {
-        hotelName = assignment.getHotel().getName(); // sets hotel Name to String
-      }
-      
-      String status;
-      String authorizationCode;
-      int refundPercentage;
-      
-      status = assignment.getSmFullName();
-      authorizationCode = assignment.getPaymentCode();
-      refundPercentage = assignment.getMember().getRefund();
-      
-      assignments.add(new TOAssignment(assignment.getMember().getEmail(),
-          assignment.getMember().getName(), guideEmail, guideName, hotelName,
-          assignment.getStartWeek(), assignment.getEndWeek(), priceGuide, totalItemPrice,
-          status, authorizationCode, refundPercentage));
-      // adds assignment from loop to the return List
+      int guideCost = a.hasGuide() ? ClimbSafeApplication.getClimbSafe().getPriceOfGuidePerWeek() * (a.getEndWeek() - a.getStartWeek() + 1) : 0;
+      TOAssignment to = new TOAssignment(a.getMember().getEmail(), a.getMember().getName(), a.getGuide() == null ? "" : a.getGuide().getEmail(),
+              a.getGuide() == null ? "" : a.getGuide().getName(), a.getHotel() == null ? "" : a.getHotel().getName(), a.getStartWeek(), a.getEndWeek(), guideCost, equipmentCost,
+              a.getSmFullName(), a.getPaymentCode(), a.getMember().getRefund());
+      assignments.add(to);
     }
 
 
@@ -158,6 +101,15 @@ public class ClimbSafeFeatureSet6Controller {
    */
   private static int equipmentPrice(Equipment equ, int amount, int time) {
     int price = equ.getPricePerWeek() * time * amount; // calculates total price of equipment
+    return price;
+  }
+
+  private static int bundlePrice(EquipmentBundle bundle, int amount, int weeks, boolean guide){
+    int price = 0;
+    for(BundleItem i: bundle.getBundleItems()) price += i.getEquipment().getPricePerWeek() * i.getQuantity();
+    price *= weeks;
+    price *= amount;
+    if(guide) price *= (1 - ((double) bundle.getDiscount()) / 100d);
     return price;
   }
 
