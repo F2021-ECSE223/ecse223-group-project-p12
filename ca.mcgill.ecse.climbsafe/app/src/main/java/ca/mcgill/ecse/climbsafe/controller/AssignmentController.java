@@ -2,6 +2,7 @@ package ca.mcgill.ecse.climbsafe.controller;
 
 import ca.mcgill.ecse.climbsafe.application.ClimbSafeApplication;
 import ca.mcgill.ecse.climbsafe.model.*;
+import ca.mcgill.ecse.climbsafe.persistence.ClimbSafePersistence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class AssignmentController {
 		for( Member m: memberList ) {
 			if( m.getAssignment() == null ) throw new Exception("Assignments could not be completed for all members");
 		}
-		
+		ClimbSafePersistence.save();
 	}
 
 	/**
@@ -64,9 +65,10 @@ public class AssignmentController {
 			if (a.getMember().equals(climbSafe.findMemberFromEmail(memberEmail)) ) {
 				climbSafe.getAssignment(climbSafe.indexOfAssignment(a)).setPaymentCode(authorizationCode);
 				climbSafe.getAssignment(climbSafe.indexOfAssignment(a)).pay();
-				}
 			}
 		}
+		ClimbSafePersistence.save();
+	}
 
 	/**
 	 * @author Philippe Sarouphim Hochar
@@ -81,6 +83,7 @@ public class AssignmentController {
 			if(a.getStartWeek() == week) {
 				a.start();
 			}
+		ClimbSafePersistence.save();
 	}
 
 	/**
@@ -95,7 +98,8 @@ public class AssignmentController {
 	  Member member = climbSafe.findMemberFromEmail(memberEmail);
 	  if(member==null) throw new InvalidInputException("Member with email address " + memberEmail +" does not exist");
 	  member.getAssignment().finish();
-	  }
+	  ClimbSafePersistence.save();
+	}
 	  
 	/**
 	 * @author Chris Hatoum
@@ -108,7 +112,7 @@ public class AssignmentController {
 		if(member == null) throw new InvalidInputException("The member with " + memberEmail + " doesn't exist");
 		member.setRefund(getRefund(member));
 		member.getAssignment().cancel();
-		
+		ClimbSafePersistence.save();
 	}
 
 	/**
